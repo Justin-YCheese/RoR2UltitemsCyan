@@ -53,7 +53,7 @@ namespace UltitemsCyan.Items.Tier3
             {
                 CharacterBody killer = damageReport.attackerBody;
                 CharacterBody victim = damageReport.victimBody;
-                int grabCount = killer.inventory.GetItemCount(item);
+                int grabCount = killer.inventory.GetItemCountEffective(item);
                 //int buffCount = killer.GetBuffCount(Buffs.OverclockedBuff.buff);
                 if (grabCount > 0)
                 {

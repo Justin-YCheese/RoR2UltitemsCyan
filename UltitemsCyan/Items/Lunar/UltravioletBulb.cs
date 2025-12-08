@@ -50,7 +50,7 @@ namespace UltitemsCyan.Items.Lunar
             if (skill && skill.skillDef.baseRechargeInterval > 0 && self && self.inventory)
             {
                 //Log.Debug("Cooldown remain: " + skill.cooldownRemaining + " Scale: " + skill.cooldownScale + " Base Interval: " + skill.skillDef.baseRechargeInterval + " Reset Cooldown?: " + skill.skillDef.resetCooldownTimerOnUse);
-                int grabCount = self.inventory.GetItemCount(item.itemIndex); // Change Luck
+                int grabCount = self.inventory.GetItemCountEffective(item.itemIndex); // Change Luck
                 if (grabCount > 0)
                 {
                     grabCount += (int)self.master.luck;
@@ -93,7 +93,7 @@ namespace UltitemsCyan.Items.Lunar
         {
             if (sender && sender.inventory)
             {
-                int grabCount = sender.inventory.GetItemCount(item);
+                int grabCount = sender.inventory.GetItemCountEffective(item);
                 if (grabCount > 0)
                 {
                     int increase = 1;
@@ -110,7 +110,7 @@ namespace UltitemsCyan.Items.Lunar
                     }
                     increase--;
                     //Log.Debug("New Bulb Cooldown Extend? " + (increase + 1));
-                    args.cooldownMultAdd += increase;
+                    args.allSkills.cooldownMultAdd += increase;
                 }
             }
         }

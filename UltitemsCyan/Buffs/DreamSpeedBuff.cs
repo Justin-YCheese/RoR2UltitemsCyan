@@ -26,7 +26,7 @@ namespace UltitemsCyan.Buffs
         {
             if (sender && sender.inventory && sender.HasBuff(buff))
             {
-                int grabCount = sender.inventory.GetItemCount(DreamFuel.item);
+                int grabCount = sender.inventory.GetItemCountEffective(DreamFuel.item);
                 args.moveSpeedMultAdd += dreamSpeed / 100f * grabCount;
             }
         }

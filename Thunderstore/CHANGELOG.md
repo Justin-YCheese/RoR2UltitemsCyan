@@ -1,3 +1,32 @@
+## 0.13.2
+
+- Now I actually removed Birthday Candles...
+
+## 0.13.1
+
+- Mod no work. Need to fix.
+
+## 0.13.0
+- Updated for Alloyed Convergence DLC
+    - All items can be temparary!
+- Removed some items that don't work now. Plan on adding them back in
+    - Deluged Pail
+    - Grapevine
+    - Silver Thread
+    - Koala Sticker
+    - Bithday Candle & Rotten Bones
+    - HMT & Zorse Pill
+    - Oboslute
+- Pot of Regolith
+    - Mininum damage 5% -> 4%
+    - Chance to deal 20% increased 20% -> 25%
+    - Cannot deal maximum damage if user below 25% health
+- ViralEssence
+    - Now has a max count of 6 status effects +6 per item
+- InhabitedCoffin
+    - Clarified description that "Bad luck grants more Coffins"
+
+
 ## 0.12.2
 
 - Fixed Tiny Igloo for multiplayer

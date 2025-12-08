@@ -100,7 +100,7 @@ namespace UltitemsCyan.Items.Void
             orig(self);
             if (self && self.inventory)
             {
-                _ = self.AddItemBehavior<JealousFoeBehaviour>(self.inventory.GetItemCount(item));
+                _ = self.AddItemBehavior<JealousFoeBehaviour>(self.inventory.GetItemCountEffective(item));
             }
         }
 
@@ -110,7 +110,7 @@ namespace UltitemsCyan.Items.Void
             CharacterBody body = other.GetComponent<CharacterBody>();
             if (body && body.inventory)
             {
-                int grabCount = body.inventory.GetItemCount(item);
+                int grabCount = body.inventory.GetItemCountEffective(item);
                 if (grabCount > 0 && NetworkServer.active)// && Util.CheckRoll(chancePerStack * grabCount, body.master.luck)
                 {
                     body.GetComponent<JealousFoeBehaviour>().GotPickup();

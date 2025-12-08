@@ -92,7 +92,7 @@ namespace UltitemsCyan.Items.Tier2
             {
                 //Log.Debug(" ? ? ? Xenon Perform Equipment Action Actually Activated?");
                 CharacterBody activator = self.characterBody;
-                int grabCount = activator.inventory.GetItemCount(item);
+                int grabCount = activator.inventory.GetItemCountEffective(item);
                 if (grabCount > 0)
                 {
                     // Cooldown after reduction from items

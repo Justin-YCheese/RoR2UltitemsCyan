@@ -59,7 +59,7 @@ namespace UltitemsCyan.Items.Tier2
             {
                 if (master.inventory)
                 {
-                    int grabCount = master.inventory.GetItemCount(item.itemIndex) * consumedPerScissor; // 2 consumed items per Scissor
+                    int grabCount = master.inventory.GetItemCountEffective(item.itemIndex) * consumedPerScissor; // 2 consumed items per Scissor
                     if (grabCount > 0)
                     {
                         //Log.Warning("Scissors on body start global..." + master.name);
@@ -116,11 +116,13 @@ namespace UltitemsCyan.Items.Tier2
                     ItemDef selectedItem = consumedItems[itemPos]; // Don't need to subtract 1 from length because random excludes the max
                                                                    // Remove 1 consumed item
                                                                    //Log.Debug("Removing " + selectedItem.name); // + " at " + itemPos);
-                    master.inventory.RemoveItem(selectedItem);
+                    master.inventory.RemoveItemPermanent(selectedItem);
 
                     // Give 2 white scraps
                     //self.inventory.GiveItem(ItemCatalog.FindItemIndex("ScrapWhite"), scrapsPerConsumed);
                     scrapsCounted += scrapsPerConsumed;
+                    
+
                     CharacterMasterNotificationQueue.SendTransformNotification(
                         master,
                         selectedItem.itemIndex,
@@ -128,7 +130,9 @@ namespace UltitemsCyan.Items.Tier2
                         CharacterMasterNotificationQueue.TransformationType.Default);
 
                     // If ran out of that consumable item in player's inventory
-                    if (master.inventory.GetItemCount(selectedItem) <= 0)
+
+                    // TODO check if temporary items will mess with this count for scissors
+                    if (master.inventory.GetItemCountPermanent(selectedItem) <= 0)
                     {
                         //Log.Debug("Out of " + selectedItem.name);
                         //Log.Debug("New length of " + (length - 1));
@@ -142,16 +146,22 @@ namespace UltitemsCyan.Items.Tier2
                         }
                     }
                 }
-                master.inventory.GiveItem(ItemCatalog.FindItemIndex("ScrapWhite"), scrapsCounted);
+                master.inventory.GiveItemPermanent(ItemCatalog.FindItemIndex("ScrapWhite"), scrapsCounted);
             }
             else
             {
                 // Player doesn't have any consumed items
                 //Log.Warning(master.name + " has no consumed items: Scissors cuts itself");
                 // Remove a scissors (Garenteed to have at least scissors)
-                master.inventory.RemoveItem(item);
-                // Give 2 white scraps
-                master.inventory.GiveItem(ItemCatalog.FindItemIndex("ScrapWhite"), scrapsPerConsumed);
+                
+                Log.Debug("Out of garbage for scissors");
+                if (master.inventory.GetItemCountPermanent(item.itemIndex) > 0)
+                {
+                    Log.Debug("But can scrap a permananet Scissor!");
+                    master.inventory.RemoveItemPermanent(item);
+                    // Give 2 white scraps
+                    master.inventory.GiveItemPermanent(ItemCatalog.FindItemIndex("ScrapWhite"), scrapsPerConsumed);
+                }
             }
             // Really doesn't need sound, can't hear anyways
             //Util.PlaySound("Play_merc_sword_impact", self.gameObject);

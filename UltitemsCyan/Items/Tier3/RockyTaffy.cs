@@ -41,14 +41,28 @@ namespace UltitemsCyan.Items.Tier3
 
         protected override void Hooks()
         {
-            // Add Shield
+            // Add Shield and freeze barrier if no shield
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
             // Grant Barrier when losing shield
             On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
             // No Barrier Decay without shield
-            On.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
+            //On.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
+            On.RoR2.HealthComponent.GetBarrierDecayRate += HealthComponent_GetBarrierDecayRate;
             // Add Recalculate Stats on shield lost / gained
             On.RoR2.CharacterBody.OnInventoryChanged += CharacterBody_OnInventoryChanged;
+        }
+
+        private float HealthComponent_GetBarrierDecayRate(On.RoR2.HealthComponent.orig_GetBarrierDecayRate orig, HealthComponent self)
+        {
+            // Calculate just in case of compatability with other mods?
+            //float barrierDecay = orig(self);
+            // If you have taffy and no shield
+            if (self.body.inventory.GetItemCountEffective(item) > 0 && self.shield <= 0)
+            {
+                // Then don't lose barrier
+                return 0;
+            }
+            return orig(self);
         }
 
         // Add Shield
@@ -56,11 +70,22 @@ namespace UltitemsCyan.Items.Tier3
         {
             if (sender && sender.inventory)
             {
-                int grabCount = sender.inventory.GetItemCount(item);
+                int grabCount = sender.inventory.GetItemCountEffective(item);
                 if (grabCount > 0)
                 {
                     //Log.Debug("Taffy On the rocks | Health: " + sender.healthComponent.fullHealth);
                     args.baseShieldAdd += sender.healthComponent.fullHealth * (shieldPercent / 100f * grabCount);
+
+                    if (sender.healthComponent.shield <= 0)
+                    {
+                        Log.Debug("Freezing my taffy's barrier");
+                        args.shouldFreezeBarrier = true;
+                    }
+                    else
+                    {
+                        Log.Debug("Unfreeze my taffy's barrier");
+                        args.shouldFreezeBarrier = false;
+                    }
                 }
             }
         }
@@ -73,7 +98,7 @@ namespace UltitemsCyan.Items.Tier3
 
             if (self && self.body && self.body.inventory)
             {
-                int grabCount = self.body.inventory.GetItemCount(item);
+                int grabCount = self.body.inventory.GetItemCountEffective(item);
                 if (grabCount > 0)
                 {
                     runOrig = false;
@@ -111,7 +136,7 @@ namespace UltitemsCyan.Items.Tier3
             // bool runOrig = true;
             if (self && self.inventory)
             {
-                int grabCount = self.inventory.GetItemCount(item);
+                int grabCount = self.inventory.GetItemCountEffective(item);
                 if (grabCount > 0)
                 {
                     //runOrig = false;
@@ -141,7 +166,7 @@ namespace UltitemsCyan.Items.Tier3
             orig(self);
             if (self && self.inventory)
             {
-                _ = self.AddItemBehavior<RockyTaffyBehaviour>(self.inventory.GetItemCount(item));
+                _ = self.AddItemBehavior<RockyTaffyBehaviour>(self.inventory.GetItemCountEffective(item));
             }
         }
 

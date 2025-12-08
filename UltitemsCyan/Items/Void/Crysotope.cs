@@ -53,7 +53,7 @@ namespace UltitemsCyan.Items.Void
             orig(self);
             if (self && self.inventory)
             {
-                _ = self.AddItemBehavior<CrysotopeBehavior>(self.inventory.GetItemCount(item));
+                _ = self.AddItemBehavior<CrysotopeBehavior>(self.inventory.GetItemCountEffective(item));
             }
         }
 
@@ -68,7 +68,7 @@ namespace UltitemsCyan.Items.Void
             if (self.characterBody && self.characterBody.inventory)
             {
                 CharacterBody body = self.characterBody;
-                int grabCount = body.inventory.GetItemCount(item);
+                int grabCount = body.inventory.GetItemCountEffective(item);
 
                 if (grabCount > 0 && self.hasCharacterMotor && self.jumpInputReceived)
                 {

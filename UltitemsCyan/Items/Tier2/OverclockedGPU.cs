@@ -53,7 +53,7 @@ namespace UltitemsCyan.Items.Tier2
             if (self && damageReport.attacker && damageReport.attackerBody && damageReport.attackerBody.inventory)
             {
                 CharacterBody killer = damageReport.attackerBody;
-                int grabCount = killer.inventory.GetItemCount(item);
+                int grabCount = killer.inventory.GetItemCountEffective(item);
                 int buffCount = killer.GetBuffCount(Buffs.OverclockedBuff.buff);
                 // If body has the item and has fewer than the max stack then add buff
                 if (grabCount > 0 && buffCount < maxOverclockedPerItem * grabCount) // maxOverclockedPerStack * grabCount

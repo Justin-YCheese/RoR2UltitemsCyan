@@ -58,7 +58,7 @@ namespace UltitemsCyan
         public static Sprite DriedHamSprite;
         public static Sprite InhabitedCoffinSprite;
         public static Sprite JubilantFoeSprite;
-        public static Sprite QuantumPeelSprite;
+        public static Sprite ResinWhirlpoolSprite;
         public static Sprite RottenBonesSprite;
         //public static Sprite TungstenRodSprite;
         //public static Sprite WormHolesSprite;
@@ -68,7 +68,7 @@ namespace UltitemsCyan
         public static GameObject DriedHamPrefab;
         public static GameObject InhabitedCoffinPrefab;
         public static GameObject JubilantFoePrefab;
-        public static GameObject QuantumPeelPrefab;
+        public static GameObject ResinWhirlpoolPrefab;
         public static GameObject RottenBonesPrefab;
         //public static GameObject TungstenRodPrefab;
         //public static GameObject WormHolesPrefab;
@@ -232,7 +232,7 @@ namespace UltitemsCyan
             DriedHamSprite = mainBundle.LoadAsset<Sprite>("DriedHam.png");
             InhabitedCoffinSprite = mainBundle.LoadAsset<Sprite>("InhabitedCoffin.png");
             JubilantFoeSprite = mainBundle.LoadAsset<Sprite>("JubilantFoe.png");
-            QuantumPeelSprite = mainBundle.LoadAsset<Sprite>("QuantumPeel.png");
+            ResinWhirlpoolSprite = mainBundle.LoadAsset<Sprite>("ResinWhirlpool.png");
             RottenBonesSprite = mainBundle.LoadAsset<Sprite>("RottenBones.png");
             //TungstenRodSprite = mainBundle.LoadAsset<Sprite>("TungstenRod.png");
             //WormHolesSprite = mainBundle.LoadAsset<Sprite>("WormHoles.png");
@@ -242,7 +242,7 @@ namespace UltitemsCyan
             DriedHamPrefab = mainBundle.LoadAsset<GameObject>("DriedHam.prefab");
             InhabitedCoffinPrefab = mainBundle.LoadAsset<GameObject>("InhabitedCoffin.prefab");
             JubilantFoePrefab = mainBundle.LoadAsset<GameObject>("JubilantFoe.prefab");
-            QuantumPeelPrefab = mainBundle.LoadAsset<GameObject>("QuantumPeel.prefab");
+            ResinWhirlpoolPrefab = mainBundle.LoadAsset<GameObject>("ResinWhirlpool.prefab");
             RottenBonesPrefab = mainBundle.LoadAsset<GameObject>("RottenBones.prefab");
             //TungstenRodPrefab = mainBundle.LoadAsset<GameObject>("TungstenRod.prefab");
             //WormHolesPrefab = mainBundle.LoadAsset<GameObject>("WormHoles.prefab");

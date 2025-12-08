@@ -61,7 +61,7 @@ namespace UltitemsCyan.Equipment
             if (equipmentDef == equipment)
             {
                 Log.Debug("Yields qStop");
-                self.characterBody.inventory.SetEquipmentIndex(YieldSign.equipment.equipmentIndex);
+                self.characterBody.inventory.SetEquipmentIndex(YieldSign.equipment.equipmentIndex, true);
                 return true;
             }
             else

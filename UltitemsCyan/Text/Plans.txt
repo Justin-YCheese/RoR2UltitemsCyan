@@ -6,7 +6,6 @@
 - Add jump buffer timer to Frisbee (because it's being janky, Test with Hunter's Harpoon)
 
 	When Testing:
-- Test Landing on quartz to reset jumps
 - Rotten Bones works when time is frozen...
 	- Because using Run.instance.time
 - Check that Mythrixs can apply starve
@@ -24,16 +23,95 @@
 	When updating mod check:
 - Bugs / Tests
 - Version number (Ultitems Main / Manifest)
-- Readme
+- Readme in Thunderstore folder
+	- Then copy to workspace
 - Update DLL and Bundle
 - Update Manifest dependencies
+	- Check current item count
 - zip
-- Has the tags: Mods | Items | Survivors of the Void | Seekers of the Storm Update
+	- by compressing content of thunderstore folder not the folder itself
+- Has the tags: Mods | Items | Survivors of the Void | Seekers of the Storm Update | Alloyed Collective
+
+	DLC Notes:
+- An item transforamtion can fail if there are not enough items for min transformation, or if the inventory is diabled
+
+
+	Removed for now...
+- Deluged Pail
+	- They changed something about inventory count so I'll investigate later
+- Removed TAKEDAMAGEPROCESS IL code insertion
+    - Grapevine
+    - Silver Thread
+    - Koala Sticker
+- Bithday Candle & Rotten Bones
+	- Doesn't give buff on pickup for some reason...
+	- But it does on stage start
+- HMT & Zorse Pill
+	- HMT Doesn't apply any fire despite 100% chance...
+	- And I don't think the void version can easily compile without base item
+- Oboslute
+	- It is just overall funky and I don't know if it fully works
+	- Uses transforms and I don't know if Shrine of Order was changed too
+
+
+	Fixing for DLC:
+
+- What is the item tag AllowedForUseAsCraftingIngredient?
+- What is the item tag ExtractorUnitBlacklist?
+	- I know what it probably is, but also check everything else with extractor units
+
+- Use WithPickupIndex instead of .itemindex property for unique pickups
+	- public readonly UniquePickup WithPickupIndex(PickupIndex pickupIndex)
+
+- What is inventory.inventoryDisabled? and this.allowWhenDisabled?
+	- if (inventory.inventoryDisabled && !this.allowWhenDisabled) | In inventory dll
+
+- Zorse Pill Does not include Head shot damage from railgunner
+
+- Find each GetItemCount() use and change to either 
+- RemoveItem obsolete, use RemoveItemPermanent or RemoveItemTemp or RemoveItemChanneled
+- Try using item transform function
+	- It is used for when items break. Items Checked:
+		Silver Thread
+	- When items are scrapped?
+
+// TODO doublecheck this orders temporary items as well
+// TODO add temporary item blacklist to all lunars
+// TODO check if channeled items can be removed
+// TODO Change to use Reference
+// TODO check if temporary items will mess with this count for scissors
+
+The Temporary List
+- Check temporary Birthday Candles
+	- Should be fine but who knows?
+- Temporary Vault and Scissors
+	- How do they work between stages? should the things they grant be temp?
+	- For vault ues for Scissors no
+- Temporary Scissors turns into temporary scraps when consumed?
+	- Pointlss as nothing takes temporary scraps?
+
+
 
 
 
 	For Future Consideration:
+
+- See if Lowhealth tag can be added to Pot of Regolith
+- For now Rocky Taffy doesn't freeze barrier when there's no shield
+	- so I increased barrier...
+- For now a tmep Corroding Vault gives 15 real items (mostly because that race of 80 seconds to beat the level is real?)
+	- Does the time only start when you pick up the item? or will it despawn
+	- Same for InhabitedCoffin
+- For now a temp scissors will function with scrap. But it will always return permanant scrap, and will always try removeing only permanant scissors.
+
+
+- Zorse not Network Effect? (or even work?)
+    - Does affect appear in multiplayer?
+- Permenant fire bug?
+- If jumping with Crysotope the frame of landing? then infinite buff? with frisbee too?
+- Crysotope and Frisbee are disabled when gaining certain buffs (i.e. hunter's harpoon)
 - If hit with flea bag greater than 200% double flea bag drop chance (now that crit is only x2)
+
 - Make Pot of Regolith give lots of armor for a second after use
 	- Or some other thing so it's like a parry in a way
 - Blast showers on bandit has visual glitch? Doesn't appear and put on special (perhaps because I switched equipment after using)
@@ -49,45 +127,28 @@
 	- Doesn't work? Why?
 - Test Threads
 	- Offer to Rebirth check consumed items
-- Flea Bag rework..
-	- Too many drops when you have crits?
 - See how many Jealous Foes does it takes to activate each on kill frenzy effect
 	- Berserker's Pauldron, Resonant Disc, Chronic Expansion
-- Add sound for losing Birthdyay Buff
+- Add sound for losing Birthday Buff
 - Change Rocky Taffy to only give buff at Full Heath?
-- Should Dream Fuel use amuptated Max Health (how does it interact with the Shine of Soul)
-- Rework Obsolute
-	- For every item deleted, gain half a chest worth of gold
-		- A full normal chest worth?
-		- More gold for rarer items?		
-		- Match roll of pennies method
-		- Test with free chest lunar & war bonds
-	- Make delete self when you have no items?
-- Birthday Candle
-	- Test New Birthday Candles with gaining several new Birthday Candles at a time
-	- With 4 Birthday candles you have a 5:00, 5:20, 5:40, and 6:00 minute timer
-	- Gaining 3 more should give the same lengths of timers (except 6:00)
-		- Thus two buffs should be lost each interval until the last interval
-	- Does removing Birthday Candles remove the buff?
+
+
 - fix Rocky Taffy with Transcendence
-- Crysotope and Frisbee are disabled when gaining certain buffs (i.e. hunter's harpoon)
+
 - Use heal fraction for percent heals
-- Koala does nothing if player doesn't have one shot protection enabled?
-- Sue's Mandibles has no warning
+- Change Koala to do nothing if player doesn't have one shot protection enabled? ()
+
 - remove public static ExpansionDef sotvDLC;
 - Optimize SonorousPail by using indexing arrays
 - Add DLC required to void items (Void items can still be obtained with dlc disabled?)
 - Yield Sign can reduce your speed when using speed mode (because displacement greater than max speed)
 - change Yield Attack from will o' wisp to blast attack
-- If jumping with Crysotope the frame of landing? then infinite buff? with frisbee too?
-- RockyTaffy's Shield doesn't contribute to Transcendence
+
+
 - What happens with pickups if you die after gravitating pickup?
 - Universal Solute
 	- When disolving all available red items, doesn't replace with solvent (because of Microbots?)
 	- Add transform notification when picking up a dissolved item?
-- Sonorous Server Client differences?
-	- Visual Glitch with Blizzard (I picked up sonorous pail while haveing blizzard up)
-	- Getting Bands may not work?
 - Add VFX:
 	- Add visual affect for treads triggering (extra items and snap)
 	- Add visual and audio effect for picking up and using grapes
@@ -121,12 +182,16 @@
 	- Add Toy Robot radius, and other radius effects
 	- Birthday Candles
 		- Losing stacks
-
+- Zorse Pill has wrong sprit in read me
 - Change Fleabag and Grape orb color
+
+
+- Sonorous Server Client differences?
+	- Visual Glitch with Blizzard (I picked up sonorous pail while haveing blizzard up)
+	- Getting Bands may not work?
 - Add Support for Simulacrum
 - Silver Thread still activating cauldron fireworks if have normal amount of items but not new cost
 - Add actual proc chain accountability for items?
-- HMT with Shared Design (Perfect Elite) causes infinte loop?
 - Downloaded RAM and Jealous Foe will not synergize with buff duration increase as they don't use addTimedBuff
 
 
@@ -154,18 +219,18 @@ Xenon Ampoule
 ** Red **
 Corroding Vault
 Sue's Mandibles
-? Indicate Sue's Mandibles is ending
 Grapevine
 ? Change color of orb
 Viral Smog
 Rocky Taffy
-- Reduce Shield to 32%
 Pig's Spork
 - Pig's spork no longer heals from hemerage
 + Wave is doubled in radius
 
 ** Equipment **
 Pot of Regolith
++ Change mininum damage to 2%
++ Make so only 2% damage when below 25% health?
 9 Ice Cubes
 
 ** Lunar **

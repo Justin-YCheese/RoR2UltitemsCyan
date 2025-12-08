@@ -87,7 +87,7 @@ namespace UltitemsCyan.Items.Tier1
             CharacterBody body = grabber.GetComponent<CharacterBody>();
             if (body && body.healthComponent && body.inventory)
             {
-                int grabCount = body.inventory.GetItemCount(item);
+                int grabCount = body.inventory.GetItemCountEffective(item);
                 if (grabCount > 0)
                 {
                     //Log.Debug("staying toy barrier...");
@@ -100,7 +100,7 @@ namespace UltitemsCyan.Items.Tier1
         {
             if (self && self.inventory)
             {
-                _ = self.AddItemBehavior<ToyRobotBehaviour>(self.inventory.GetItemCount(item));
+                _ = self.AddItemBehavior<ToyRobotBehaviour>(self.inventory.GetItemCountEffective(item));
             }
             orig(self);
         }

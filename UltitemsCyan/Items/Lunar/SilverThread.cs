@@ -62,14 +62,15 @@ namespace UltitemsCyan.Items.Lunar
             // Increase cauldron and 3D printer cost
             On.RoR2.PurchaseInteraction.OnInteractionBegin += PurchaseInteraction_OnInteractionBegin;
             // Increase scrapper cost
-            On.RoR2.ScrapperController.BeginScrapping += ScrapperController_BeginScrapping;
+            On.RoR2.ScrapperController.BeginScrapping_UniquePickup += ScrapperController_BeginScrapping_UniquePickup;
+            //On.RoR2.ScrapperController.BeginScrapping += ScrapperController_BeginScrapping; // Old Scrapper Method
             // Remove Item on Death
             On.RoR2.CharacterBody.OnDeathStart += CharacterBody_OnDeathStart;
         }
 
         private int MaxStack(Inventory inv)
         {//Test This Code
-            return Math.Min(inv.GetItemCount(item), maxStack);
+            return Math.Min(inv.GetItemCountEffective(item), maxStack);
         }
 
         // Chance of Death on hit
@@ -169,9 +170,13 @@ namespace UltitemsCyan.Items.Lunar
             {
                 // Remove Item Stack
                 Log.Debug("An item snapped...");
+                // TODO doublecheck this orders temporary items as well
                 List<ItemIndex> itemList = body.inventory.itemAcquisitionOrder;
                 ItemDef lastItem = ItemCatalog.GetItemDef(itemList[^1]);
-                body.inventory.RemoveItem(lastItem, body.inventory.GetItemCount(lastItem));
+                // Remove full stack including Permanent, Temp, and Channeled
+                body.inventory.RemoveItemPermanent(lastItem.itemIndex, body.inventory.GetItemCountPermanent(lastItem));
+                body.inventory.RemoveItemTemp(lastItem.itemIndex, body.inventory.GetItemCountTemp(lastItem));
+                body.inventory.RemoveItemChanneled(lastItem.itemIndex, body.inventory.GetItemCountChanneled(lastItem));
                 //body.inventory.GiveItem(SilverThreadConsumed.item); // Don't actually give item but at least send notification of a broken item
                 CharacterMasterNotificationQueue.SendTransformNotification(
                     body.master,
@@ -195,17 +200,17 @@ namespace UltitemsCyan.Items.Lunar
             //Log.Warning("Silver Normal Death?");
             if (self && self.master && self.master.inventory)
             {
-                int grabCount = self.master.inventory.GetItemCount(item);
+                int grabCount = self.master.inventory.GetItemCountEffective(item);
                 if (grabCount > 0)
                 {
-                    //Log.Debug("Removing Silver threads from " + self.GetUserName());
-                    self.master.inventory.RemoveItem(item.itemIndex, grabCount);
-                    self.master.inventory.GiveItem(SilverThreadConsumed.item, grabCount);
-                    CharacterMasterNotificationQueue.SendTransformNotification(
-                        self.master,
-                        item.itemIndex,
-                        SilverThreadConsumed.item.itemIndex,
-                        CharacterMasterNotificationQueue.TransformationType.Default);
+                    Log.Debug("Removing Silver threads from " + self.GetUserName()); //-JYPrint
+                    _ = new Inventory.ItemTransformation
+                    {
+                        originalItemIndex = item.itemIndex, // Silver Thread
+                        newItemIndex = SilverThreadConsumed.item.itemIndex, // Snapped Silver Thread
+                        maxToTransform = 2147483647, // Transforms all
+                        transformationType = 0
+                    }.TryTransform(self.master.inventory, out _);
                 }
             }
         }
@@ -227,8 +232,7 @@ namespace UltitemsCyan.Items.Lunar
                 {
                     Log.Warning("Silver Purchase check");
                     CharacterBody player = activator.GetComponent<CharacterBody>();
-                    //int grabSilverCount = MaxStack(player.master.inventory);
-                    if (player.master.inventory.GetItemCount(item) > 0)
+                    if (player.master.inventory.GetItemCountEffective(item) > 0)
                     {
                         runOrig = false;
                         //Log.Debug("Self Cost? " + self.cost + " * " + costMultiplier);
@@ -250,6 +254,73 @@ namespace UltitemsCyan.Items.Lunar
         }
 
         // Make Scrapper return fewer items per Silver Thread Held
+        private void ScrapperController_BeginScrapping_UniquePickup(On.RoR2.ScrapperController.orig_BeginScrapping_UniquePickup orig, ScrapperController self, UniquePickup pickupToTake)
+        {
+            Log.Warning("My ****NEW**** Silver Scrapping check");
+            bool runOrig = true;
+            if (NetworkServer.active && self)
+            {
+                CharacterBody player = self.interactor.GetComponent<CharacterBody>();
+                if (player && player.master.inventory)
+                {
+                    if (player.master.inventory.GetItemCountEffective(item) > 0)
+                    {
+                        //Log.Debug("Silver Scrapping custom function");
+                        // body has a silver thread in their inventory
+                        runOrig = false;
+
+                        //self.itemsEaten = 0; // TODO REPLACE
+                        PickupDef pickupDef = PickupCatalog.GetPickupDef(pickupToTake.pickupIndex);
+                        if (pickupDef != null && self.interactor)
+                        {
+                            //self.lastScrappedItemIndex = pickupDef.itemIndex;
+                            int scrapCount = Mathf.Min(self.maxItemsToScrapAtATime * costMultiplier, player.inventory.GetItemCountPermanent(pickupDef.itemIndex));
+                            //Log.Debug("Scrap Count: " + scrapCount);
+                            //Log.Debug(player.master.inventory.GetItemCount((ItemIndex)intPickupIndex) + " =? " + player.inventory.GetItemCount(pickupDef.itemIndex));
+                            if (scrapCount < costMultiplier)
+                            {
+                                // not enough items to convert item, don't return anything
+                                //Log.Debug("Silver Scrapper Consume poor items");
+                                //self.itemsEaten = -1; // TODO REPLACE
+                            }
+                            else
+                            {
+                                // return reduced amount
+
+                                // So basically the new scrappers know what item they are taking, and will return temporary items
+                                // if it used temorary scrap
+
+
+                                /*
+                                Log.Debug("scrapCount: " + scrapCount + " returnCount: " + scrapCount / costMultiplier);
+                                player.inventory.RemoveItemPermament(pickupDef.itemIndex, scrapCount);
+                                self.itemsEaten += scrapCount / costMultiplier; // TODO REPLACE
+                                for (int i = 0; i < scrapCount; i++)
+                                {
+                                    ScrapperController.CreateItemTakenOrb(player.corePosition, self.gameObject, pickupDef.itemIndex);
+                                }
+                                if (self.esm)
+                                {
+                                    self.esm.SetNextState(new EntityStates.Scrapper.WaitToBeginScrapping());
+                                }
+                                */
+                            }
+                        }
+                    }
+                }
+            }
+            // If checks failed, run original function
+            if (runOrig)
+            {
+                Log.Debug("runOrig in SilverThread");
+                orig(self, pickupToTake);
+                Log.Debug("runOrig out SilverThread");
+            }
+        }
+
+        // Make Scrapper return fewer items per Silver Thread Held
+        // ******************** OLD OLD OLD CODE CODE CODE ********************
+        /*
         private void ScrapperController_BeginScrapping(On.RoR2.ScrapperController.orig_BeginScrapping orig, ScrapperController self, int intPickupIndex)
         {
             Log.Warning("Silver Scrapping check");
@@ -260,32 +331,32 @@ namespace UltitemsCyan.Items.Lunar
                 if (player && player.master.inventory)
                 {
                     //int grabSilverCount = MaxStack(player.master.inventory);
-                    if (player.master.inventory.GetItemCount(item) > 0)
+                    if (player.master.inventory.GetItemCountEffective(item) > 0)
                     {
                         //Log.Debug("Silver Scrapping custom function");
                         // body has a silver thread in their inventory
                         runOrig = false;
 
-                        self.itemsEaten = 0;
+                        //self.itemsEaten = 0;
                         PickupDef pickupDef = PickupCatalog.GetPickupDef(new PickupIndex(intPickupIndex));
                         if (pickupDef != null && self.interactor)
                         {
-                            self.lastScrappedItemIndex = pickupDef.itemIndex;
-                            int scrapCount = Mathf.Min(self.maxItemsToScrapAtATime * costMultiplier, player.inventory.GetItemCount(pickupDef.itemIndex));
+                            //self.lastScrappedItemIndex = pickupDef.itemIndex;
+                            int scrapCount = Mathf.Min(self.maxItemsToScrapAtATime * costMultiplier, player.inventory.GetItemCountPermanent(pickupDef.itemIndex));
                             //Log.Debug("Scrap Count: " + scrapCount);
                             //Log.Debug(player.master.inventory.GetItemCount((ItemIndex)intPickupIndex) + " =? " + player.inventory.GetItemCount(pickupDef.itemIndex));
                             if (scrapCount < costMultiplier)
                             {
                                 // not enough items to convert item, don't return anything
                                 //Log.Debug("Silver Scrapper Consume poor items");
-                                self.itemsEaten = -1;
+                                //self.itemsEaten = -1;
                             }
                             else
                             {
                                 // return reduced amount
                                 //Log.Debug("scrapCount: " + scrapCount + " returnCount: " + scrapCount / costMultiplier);
                                 player.inventory.RemoveItem(pickupDef.itemIndex, scrapCount);
-                                self.itemsEaten += scrapCount / costMultiplier;
+                                //self.itemsEaten += scrapCount / costMultiplier;
                                 for (int i = 0; i < scrapCount; i++)
                                 {
                                     ScrapperController.CreateItemTakenOrb(player.corePosition, self.gameObject, pickupDef.itemIndex);
@@ -296,31 +367,6 @@ namespace UltitemsCyan.Items.Lunar
                                 }
                             }
                         }
-                        /*/ Scrapper Controller Begin Scrapper
-                        this.itemsEaten = 0;
-                        PickupDef pickupDef = PickupCatalog.GetPickupDef(new PickupIndex(intPickupIndex));
-                        if (pickupDef != null && this.interactor)
-                        {
-                            this.lastScrappedItemIndex = pickupDef.itemIndex;
-                            CharacterBody component = this.interactor.GetComponent<CharacterBody>();
-                            if (component && component.inventory)
-                            {
-                                int num = Mathf.Min(this.maxItemsToScrapAtATime, component.inventory.GetItemCount(pickupDef.itemIndex));
-                                if (num > 0)
-                                {
-                                    component.inventory.RemoveItem(pickupDef.itemIndex, num);
-                                    this.itemsEaten += num;
-                                    for (int i = 0; i < num; i++)
-                                    {
-                                        ScrapperController.CreateItemTakenOrb(component.corePosition, base.gameObject, pickupDef.itemIndex);
-                                    }
-                                }
-                            }
-                        }
-                        if (this.esm)
-                        {
-                            this.esm.SetNextState(new WaitToBeginScrapping());
-                        }//*/
                     }
                 }
             }
@@ -332,6 +378,7 @@ namespace UltitemsCyan.Items.Lunar
                 //Log.Debug("runOrig out SilverThread");
             }
         }
+        */
 
         // Increase Items gained when given
         public void Inventory_GiveItem_ItemIndex_int(On.RoR2.Inventory.orig_GiveItem_ItemIndex_int orig, Inventory self, ItemIndex itemIndex, int count)

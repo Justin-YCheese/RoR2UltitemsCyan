@@ -48,7 +48,9 @@ namespace UltitemsCyan.Items
             item.hidden = false;
 
             item.pickupIconSprite = sprite;
+#pragma warning disable CS0618 // Type or member is obsolete
             item.pickupModelPrefab = prefab;
+#pragma warning restore CS0618 // Type or member is obsolete
 
             item.tags = tags;
 

@@ -90,7 +90,7 @@ namespace UltitemsCyan.Items.Tier2
                 CharacterBody inflictor = onHitAttacker.GetComponent<CharacterBody>();
                 if (inflictor && inflictor.inventory && inflictor.master && self.gameObject)
                 {
-                    int grabCount = inflictor.inventory.GetItemCount(item);
+                    int grabCount = inflictor.inventory.GetItemCountEffective(item);
                     // Have item and got chance
                     if (grabCount > 0 && Util.CheckRoll(igniteChance * grabCount, inflictor.master.luck))
                     {
@@ -111,8 +111,9 @@ namespace UltitemsCyan.Items.Tier2
                      && NetworkServer.active)
             {
                 CharacterBody body = attackerObject.GetComponent<CharacterBody>();
-                int grabCount = body.inventory.GetItemCount(item);
+                int grabCount = body.inventory.GetItemCountEffective(item);
                 // Have item and got chance
+                Log.Debug("HMT check roll: " + igniteChance * grabCount + "% chance");
                 if (grabCount > 0 && Util.CheckRoll(igniteChance * grabCount, body.master.luck))
                 {
                     // Inflict Burn!
@@ -123,7 +124,7 @@ namespace UltitemsCyan.Items.Tier2
 
         private void InflictBurn(GameObject victimObject, GameObject attackerObject, Inventory inventory, int grabCount)
         {
-            //Log.Debug("Hot Burns! HMT");
+            Log.Debug("Hot Burns! HMT");
             InflictDotInfo inflictDotInfo = new()
             {
                 victimObject = victimObject,

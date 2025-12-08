@@ -78,9 +78,9 @@ namespace UltitemsCyan
         public const string PluginGUID = PluginAuthor + "." + PluginName;
         public const string PluginAuthor = "SporkySpig";
         public const string PluginName = "UltitemsCyan";
-        public const string PluginVersion = "0.12.2";
+        public const string PluginVersion = "0.13.2";
 
-        public const string PluginSuffix = "Clients can see stars too!";
+        public const string PluginSuffix = "Alloyed! These temp items are tough to handle...";
 
         private static ConfigFile UltitemsConfig { get; set; }
 
@@ -117,7 +117,7 @@ namespace UltitemsCyan
 
             // *** *** Add buffs to the game
             List<BuffBase> ultitemBuffs = [];
-            ultitemBuffs.Add(new BirthdayBuff());
+            //ultitemBuffs.Add(new BirthdayBuff()); //ALLOYED
             ultitemBuffs.Add(new CrysotopeFlyingBuff());
             ultitemBuffs.Add(new EyeAwakeBuff());
             ultitemBuffs.Add(new EyeDrowsyBuff());
@@ -126,9 +126,9 @@ namespace UltitemsCyan
             ultitemBuffs.Add(new DownloadedBuff());
             ultitemBuffs.Add(new FrisbeeGlidingBuff());
             ultitemBuffs.Add(new OverclockedBuff());
-            ultitemBuffs.Add(new RottingBuff());
+            //ultitemBuffs.Add(new RottingBuff()); //ALLOYED
 
-            ultitemBuffs.Add(new SlipperyGrapeBuff()); // % TAKEDAMAGEPROCESS
+            //ultitemBuffs.Add(new SlipperyGrapeBuff()); // % TAKEDAMAGEPROCESS
 
             ////// ultitemBuffs.Add(new PeelBuff());
             ultitemBuffs.Add(new QuarkGravityBuff());
@@ -136,7 +136,7 @@ namespace UltitemsCyan
             ultitemBuffs.Add(new SporkBleedBuff());
             ultitemBuffs.Add(new TaffyChewBuff());
             ultitemBuffs.Add(new TickCritBuff());
-            ultitemBuffs.Add(new ZorseStarvingBuff());
+            //ultitemBuffs.Add(new ZorseStarvingBuff()); //ALLOYED
 
             foreach (BuffBase newBuff in ultitemBuffs)
             {
@@ -150,30 +150,29 @@ namespace UltitemsCyan
             ultitemItems.Add(new CorrodingVaultConsumed());
             ultitemItems.Add(new InhabitedCoffinConsumed());
             ultitemItems.Add(new SuesMandiblesConsumed());
-            ultitemItems.Add(new SilverThreadConsumed()); // % TAKEDAMAGEPROCESS
+            //ultitemItems.Add(new SilverThreadConsumed()); // % TAKEDAMAGEPROCESS
             ultitemItems.Add(new GreySolvent());
 
             // *** White
             ultitemItems.Add(new CremeBrulee());
 
-            ultitemItems.Add(new KoalaSticker()); // % TAKEDAMAGEPROCESS
+            //ultitemItems.Add(new KoalaSticker()); // % TAKEDAMAGEPROCESS
 
             ultitemItems.Add(new ToyRobot());
             ultitemItems.Add(new FleaBag());
             ultitemItems.Add(new Frisbee());
 
             // *** Green
-            ultitemItems.Add(new BirthdayCandles());
+            //ultitemItems.Add(new BirthdayCandles()); //ALLOYED
             // moved Last Priority // ultitemItems.Add(new DegreeScissors());
-            ultitemItems.Add(new HMT());
+            //ultitemItems.Add(new HMT()); //ALLOYED
             ultitemItems.Add(new OverclockedGPU());
-            ultitemItems.Add(new TinyIgloo());
-            //ultitemItems.Add(new TeleporterRadius());
+            ultitemItems.Add(new TinyIgloo()); // % ILContext
             ultitemItems.Add(new XenonAmpoule());
 
             // *** Red
             ultitemItems.Add(new CorrodingVault()); // Has Consumed Item
-            ultitemItems.Add(new Grapevine()); // % TAKEDAMAGEPROCESS
+            //ultitemItems.Add(new Grapevine()); // % TAKEDAMAGEPROCESS
             ultitemItems.Add(new PigsSpork()); // HealthComponent_UpdateLastHitTime
             ultitemItems.Add(new RockyTaffy());
             ultitemItems.Add(new SuesMandibles()); // Has Consumed Item
@@ -184,9 +183,9 @@ namespace UltitemsCyan
             ultitemItems.Add(new UltravioletBulb());
             ////// ultitemItems.Add(new PowerChip());
 
-            ultitemItems.Add(new SilverThread()); // % TAKEDAMAGEPROCESS // Has Consumed Item
+            //ultitemItems.Add(new SilverThread()); // % TAKEDAMAGEPROCESS // Has Consumed Item
 
-            ultitemItems.Add(new DelugedPail());
+            //ultitemItems.Add(new DelugedPail()); //ALLOYED
 
             // *** Equipments
             ultitemItems.Add(new IceCubes());
@@ -199,18 +198,18 @@ namespace UltitemsCyan
             ultitemItems.Add(new Macroseismograph());
             ultitemItems.Add(new MacroseismographConsumed());
             ultitemItems.Add(new PotOfRegolith());
-            ultitemItems.Add(new Obsolute()); // Has Consumed Item (creates consumed items from other items)
+            //ultitemItems.Add(new Obsolute()); // Has Consumed Item (creates consumed items from other items)
 
 
             // *** Void Items
             ultitemItems.Add(new Crysotope());
             ultitemItems.Add(new DriedHam());
-            ultitemItems.Add(new RottenBones());
+            //ultitemItems.Add(new RottenBones()); //ALLOYED
             ////// ultitemItems.Add(new QuantumPeel());
             ultitemItems.Add(new DownloadedRAM());
             ultitemItems.Add(new JealousFoe());
             ultitemItems.Add(new InhabitedCoffin()); // Has Consumed Item
-            ultitemItems.Add(new ZorsePill());
+            //ultitemItems.Add(new ZorsePill()); //ALLOYED
 
             // Last Priority
             ultitemItems.Add(new DegreeScissors()); // After Vault and Coffin to grab consumed items

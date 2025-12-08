@@ -2,6 +2,7 @@
 using UltitemsCyan.Items.Untiered;
 using UnityEngine.Networking;
 using BepInEx.Configuration;
+using UltitemsCyan.Buffs;
 
 namespace UltitemsCyan.Items.Tier3
 {
@@ -54,41 +55,55 @@ namespace UltitemsCyan.Items.Tier3
                 if (master.inventory)
                 {
                     // Get number of vaults
-                    int grabCount = master.inventory.GetItemCount(item.itemIndex);
+                    int grabCount = master.inventory.GetItemCountEffective(item.itemIndex);
                     if (grabCount > 0)
                     {
-                        //Log.Warning("Rusted Vault on body start global..." + master.name);
-                        // Remove a vault
-                        master.inventory.RemoveItem(item);
-                        // Give Consumed vault
-                        master.inventory.GiveItem(CorrodingVaultConsumed.item);
-
-                        // Get all white items
-                        PickupIndex[] allWhiteItems = new PickupIndex[Run.instance.availableTier1DropList.Count];
-                        Run.instance.availableTier1DropList.CopyTo(allWhiteItems);
-                        int length = allWhiteItems.Length;
-
-                        Xoroshiro128Plus rng = new(Run.instance.stageRng.nextUlong);
-
-                        // Give 15 different white items
-                        for (int i = 0; i < quantityInVault; i++)
+                        // Prioritize consuming temporary Vaults before permanent ones
+                        // Consume Corroding Vault
+                        Inventory.ItemTransformation.TryTransformResult tryTransformResult;
+                        if (new Inventory.ItemTransformation
                         {
-                            int randItemPos = rng.RangeInt(0, length);
+                            originalItemIndex = item.itemIndex,
+                            newItemIndex = CorrodingVaultConsumed.item.itemIndex,
+                            maxToTransform = 1,
+                            transformationType = 0
+                        }.TryTransform(master.inventory, out tryTransformResult))
+                        {
+                            // If item succesfully transformed
+                            Log.Debug(" Corroding my Vault! ");
 
-                            ItemIndex foundItem = PickupCatalog.GetPickupDef(allWhiteItems[randItemPos]).itemIndex;
-                            master.inventory.GiveItem(foundItem);
-                            GenericPickupController.SendPickupMessage(master, allWhiteItems[randItemPos]);
+                            //tryTransformResult.givenItem
 
-                            allWhiteItems[randItemPos] = allWhiteItems[length - 1];
-                            length--;
+                            // Get all white items
+                            PickupIndex[] allWhiteItems = new PickupIndex[Run.instance.availableTier1DropList.Count];
+                            Run.instance.availableTier1DropList.CopyTo(allWhiteItems);
+                            int length = allWhiteItems.Length;
 
-                            if (length == 0)
+                            Xoroshiro128Plus rng = new(Run.instance.stageRng.nextUlong);
+
+                            // Give 15 different white items
+                            for (int i = 0; i < quantityInVault; i++)
                             {
-                                Log.Debug("Ran out of white items...   Resetting Pool");
-                                length = allWhiteItems.Length;
-                                Run.instance.availableTier1DropList.CopyTo(allWhiteItems);
+                                int randItemPos = rng.RangeInt(0, length);
+
+                                ItemIndex foundItem = PickupCatalog.GetPickupDef(allWhiteItems[randItemPos]).itemIndex;
+                                master.inventory.GiveItemPermanent(foundItem); //TODO should this match vault's state?
+
+                                GenericPickupController.SendPickupMessage(master, new UniquePickup(allWhiteItems[randItemPos]));
+
+                                allWhiteItems[randItemPos] = allWhiteItems[length - 1];
+                                length--;
+
+                                if (length == 0)
+                                {
+                                    Log.Debug("Ran out of white items...   Resetting Pool");
+                                    length = allWhiteItems.Length;
+                                    Run.instance.availableTier1DropList.CopyTo(allWhiteItems);
+                                }
                             }
                         }
+
+                        
                     }
                 }
             }

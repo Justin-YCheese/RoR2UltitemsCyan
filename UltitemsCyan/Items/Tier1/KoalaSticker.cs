@@ -100,7 +100,7 @@ namespace UltitemsCyan.Items.Tier1
                         if (cb.master && cb.master.inventory)
                         {
                             // grab Count
-                            int gC = cb.master.inventory.GetItemCount(item);
+                            int gC = cb.master.inventory.GetItemCountEffective(item);
                             if (gC > 0)
                             {
                                 //Log.Debug("Koala Taken Damage for " + cb.GetUserName() + " with " + hc.fullCombinedHealth + "\t health");

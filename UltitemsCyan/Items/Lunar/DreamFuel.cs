@@ -52,7 +52,7 @@ namespace UltitemsCyan.Items.Lunar
             orig(self);
             if (self && self.inventory)
             {
-                _ = self.AddItemBehavior<DreamFuelBehaviour>(self.inventory.GetItemCount(item));
+                _ = self.AddItemBehavior<DreamFuelBehaviour>(self.inventory.GetItemCountEffective(item));
             }
         }//*/
 
@@ -117,7 +117,7 @@ namespace UltitemsCyan.Items.Lunar
                 if (self && victim && victim.GetComponent<CharacterBody>() && victim.GetComponent<CharacterBody>().inventory && !damageInfo.rejected && damageInfo.damageType != DamageType.DoT)
                 {
                     CharacterBody injured = victim.GetComponent<CharacterBody>();
-                    int grabCount = injured.inventory.GetItemCount(item);
+                    int grabCount = injured.inventory.GetItemCountEffective(item);
                     if (grabCount > 0)
                     {
                         _ = Util.PlaySound("Play_item_lunar_secondaryReplace_explode", injured.gameObject);

@@ -58,7 +58,7 @@ namespace UltitemsCyan.Items.Void
             orig(self);
             if (self && self.inventory)
             {
-                _ = self.AddItemBehavior<DownloadedVoidBehavior>(self.inventory.GetItemCount(item));
+                _ = self.AddItemBehavior<DownloadedVoidBehavior>(self.inventory.GetItemCountEffective(item));
             }
         }
 
@@ -96,7 +96,7 @@ namespace UltitemsCyan.Items.Void
                 if (self && victim && damageInfo.attacker.GetComponent<CharacterBody>() && damageInfo.attacker.GetComponent<CharacterBody>().inventory && !damageInfo.rejected && damageInfo.damageType != DamageType.DoT)
                 {
                     CharacterBody inflictor = damageInfo.attacker.GetComponent<CharacterBody>();
-                    int grabCount = inflictor.inventory.GetItemCount(item);
+                    int grabCount = inflictor.inventory.GetItemCountEffective(item);
                     if (grabCount > 0)
                     {
                         //Log.Warning("RAM Download ! ! ! Def no Viris");

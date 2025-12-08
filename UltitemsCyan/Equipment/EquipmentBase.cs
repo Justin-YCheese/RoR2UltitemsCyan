@@ -54,7 +54,9 @@ namespace UltitemsCyan.Equipment
             equipment.enigmaCompatible = true;
 
             equipment.pickupIconSprite = sprite;
-            equipment.pickupModelPrefab = prefab;
+#pragma warning disable CS0618 // Type or member is obsolete
+            equipment.pickupModelPrefab = prefab; // TODO Change to use Reference
+#pragma warning restore CS0618 // Type or member is obsolete
 
             equipment.appearsInSinglePlayer = true;
             equipment.appearsInMultiPlayer = true;

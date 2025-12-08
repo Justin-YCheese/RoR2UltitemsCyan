@@ -26,7 +26,7 @@ namespace UltitemsCyan.Buffs
         {
             if (sender && sender.inventory && sender.HasBuff(buff))
             {
-                int grabCount = sender.inventory.GetItemCount(Frisbee.item);
+                int grabCount = sender.inventory.GetItemCountEffective(Frisbee.item);
                 args.moveSpeedMultAdd += airSpeed / 100f * grabCount;
             }
         }

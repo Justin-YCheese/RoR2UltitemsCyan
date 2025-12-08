@@ -1,39 +1,40 @@
-﻿using RoR2;
+﻿using R2API;
+using RoR2;
+using UltitemsCyan.Items.Void;
 
 namespace UltitemsCyan.Buffs
 {
-    public class PeelBuff : BuffBase
+    public class ResinBounceBuff : BuffBase
     {
         public static BuffDef buff;
 
+        private const float jumpPowMult = ResinWhirlpool.bounceJumpPowMult;
+
         public override void Init()
         {
-            //buff = DefineBuff("Peel buff", true, false, UltAssets.PeelSprite);
-            //Log.Info(buff.name + " Initialized");
+            buff = DefineBuff("Resin Bounce Buff", true, false, UltAssets.ResinBounceSprite);
+            Log.Info(buff.name + " Initialized");
 
             Hooks();
         }
 
         protected void Hooks()
         {
-            //RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
+            RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
         }
 
-        /*
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
             if (sender && sender.inventory && sender.HasBuff(buff) && sender.characterMotor)
             {
                 int buffCount = sender.GetBuffCount(buff);
-                int grabCount = sender.inventory.GetItemCount(item);
                 // Calculate Logistic Growth of Speed Po = 20
                 //double totalSpeed = Math.E;
                 //totalSpeed = 1 + (pLogiConstant * Math.Pow(totalSpeed, buffCount * -pLogiRate));
                 //totalSpeed = pLogiLimit / totalSpeed * grabCount / 100;
-                //Log.Debug(" s s s @ s s s | Peeling at " + totalSpeed + " but actually? " + (float)totalSpeed);
-                args.moveSpeedMultAdd += peelSpeed / 100 * buffCount * grabCount;
+                Log.Debug(" s s s @ s s s | Bouncing at " + jumpPowMult / 100 * buffCount);
+                args.jumpPowerMultAdd += jumpPowMult / 100 * buffCount;
             }
         }
-        //*/
     }
 }

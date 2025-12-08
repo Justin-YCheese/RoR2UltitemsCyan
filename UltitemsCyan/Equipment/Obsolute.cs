@@ -6,6 +6,7 @@ using UltitemsCyan.Items.Lunar;
 using BepInEx.Configuration;
 using RoR2.Orbs;
 using UnityEngine;
+using UltitemsCyan.Buffs;
 
 namespace UltitemsCyan.Equipment
 {
@@ -248,9 +249,10 @@ namespace UltitemsCyan.Equipment
         private void ChestBehavior_ItemDrop(On.RoR2.ChestBehavior.orig_ItemDrop orig, ChestBehavior self)
         {
             // If item in chest is in dissolved list then reroll untill it isn't
-            if (dissolvedList.Count > 0 && dissolvedList.Contains(PickupCatalog.GetPickupDef(self.dropPickup).itemIndex))
+            // Using currentPickup instead of dropPickup
+            if (dissolvedList.Count > 0 && dissolvedList.Contains(PickupCatalog.GetPickupDef(self.currentPickup.pickupIndex).itemIndex))
             {
-                Log.Debug(" // Chest Universal has a dissolved item: " + PickupCatalog.GetPickupDef(self.dropPickup).nameToken);
+                Log.Debug(" // Chest Universal has a dissolved item: " + PickupCatalog.GetPickupDef(self.currentPickup.pickupIndex).nameToken);
                 // When rerolled will use updated avaialbe items list
                 self.Roll();
                 //Log.Debug("Is still dissolved?.. " + PickupCatalog.GetPickupDef(self.dropPickup).nameToken + " | " + dissolvedList.Contains(PickupCatalog.GetPickupDef(self.dropPickup).itemIndex));
@@ -326,20 +328,26 @@ namespace UltitemsCyan.Equipment
             Inventory inventory = body.inventory;
             if (inventory)
             {
-                int grabCount = inventory.GetItemCount(item);
-                if (inventory.GetItemCount(item) > 0)
+                // TODO check if channeled items can be removed
+                int grabCount = inventory.GetItemCountEffective(item);
+                if (grabCount > 0)
                 {
                     //Log.Debug("Dissolving item into grey mush...");
-                    inventory.RemoveItem(item, grabCount);
-                    inventory.GiveItem(GreySolvent.item, grabCount);
-                    CharacterMasterNotificationQueue.SendTransformNotification(
-                        body,
-                        item.itemIndex,
-                        GreySolvent.item.itemIndex,
-                        CharacterMasterNotificationQueue.TransformationType.Default);
-                    if (body.GetBody())
+                    Inventory.ItemTransformation.TryTransformResult tryTransformResult;
+                    if (new Inventory.ItemTransformation
                     {
-                        RefundGoldForItem(body.GetBody(), grabCount, item.tier);
+                        originalItemIndex = item.itemIndex,
+                        newItemIndex = GreySolvent.item.itemIndex,
+                        maxToTransform = 2147483647,
+                        transformationType = 0
+                    }.TryTransform(inventory, out tryTransformResult))
+                    {
+                        // If item succesfully transformed
+                        Log.Warning(" New Obsolute Transformation ");
+                        if (body.GetBody())
+                        {
+                            RefundGoldForItem(body.GetBody(), grabCount, item.tier);
+                        }
                     }
                 }
             }
@@ -426,6 +434,7 @@ namespace UltitemsCyan.Equipment
                     Log.Warning(" !!! " + item.name + " Oh! Didn't expect AssignedAtRuntime tier item after runtime?");
                     break;
                 default:
+                    Log.Warning(" !!! " + item.name + " Huh? Not a handeled tier case for Obsolute");
                     break;
             }
             if (list.Count == 0)

@@ -81,6 +81,7 @@ namespace UltitemsCyan.Buffs
                     origin = self.corePosition,
                     color = new Color(0.2392f, 0.8196f, 0.917647f) // Cyan Lunar color
                 }, true);*/
+                Log.Warning(" zzor zzor OnBuffFinalStackLost: pre spawn zorse");
                 EffectManager.SpawnEffect(FractureEffect, new EffectData
                 {
                     origin = self.corePosition,
@@ -91,6 +92,7 @@ namespace UltitemsCyan.Buffs
                     origin = self.corePosition,
                     color = new Color(0.2392f, 0.8196f, 0.917647f) // Cyan Lunar color
                 }, true);
+                Log.Warning(" zzor zzor OnBuffFinalStackLost: POST spawn zorse");
                 /*EffectManager.SpawnEffect(ElementalRingVoidImplodeEffect, new EffectData
                 {
                     origin = self.corePosition,

@@ -119,7 +119,7 @@ namespace UltitemsCyan.Items.Tier2
         {
             if (self && self.body && self.body.inventory)
             {
-                int grabCount = self.body.inventory.GetItemCount(item);
+                int grabCount = self.body.inventory.GetItemCountEffective(item);
                 if (grabCount > 0)
                 {
                     int zoneCount = GetOccupiedZoneList(self.body, true).Length;
@@ -163,7 +163,7 @@ namespace UltitemsCyan.Items.Tier2
                     if (tO)
                     {
                         CharacterBody cB = tO.GetComponent<CharacterBody>();
-                        int gC = cB.inventory.GetItemCount(item);
+                        int gC = cB.inventory.GetItemCountEffective(item);
                         if (gC > 0)
                         {
                             HealthComponent hC = tO.GetComponent<HealthComponent>();

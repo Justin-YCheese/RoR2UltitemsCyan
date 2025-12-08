@@ -44,7 +44,7 @@ namespace UltitemsCyan.Items.Lunar
                 ItemTier.Lunar,
                 UltAssets.SandPailSprite,
                 UltAssets.SandPailPrefab,
-                [ItemTag.Utility]
+                [ItemTag.Utility] // TODO add temporary item blacklist to all lunars
             );
         }
 
@@ -80,7 +80,7 @@ namespace UltitemsCyan.Items.Lunar
             if (sender && sender.inventory) // Valid Check
             {
                 Inventory inventory = sender.inventory;
-                int grabCount = inventory.GetItemCount(item);
+                int grabCount = inventory.GetItemCountEffective(item);
                 if (grabCount > 0)
                 {
                     //Log.Warning("Sonorous Recalculate");
@@ -124,7 +124,7 @@ namespace UltitemsCyan.Items.Lunar
                         {
                             tier = 5; // Crits
                         }
-                        statTiers[tier] += inventory.GetItemCount(itemIndex);
+                        statTiers[tier] += inventory.GetItemCountEffective(itemIndex);
                         // Check next Item
                         itemIndex++;
                     }
@@ -161,7 +161,7 @@ namespace UltitemsCyan.Items.Lunar
                 {
                     inDelugedAlready = true;
                     CharacterBody player = CharacterBody.readOnlyInstancesList.ToList().Find((body) => body.inventory == self);
-                    if (player && self.GetItemCount(item) > 0) // Valid Check
+                    if (player && self.GetItemCountEffective(item) > 0) // Valid Check
                     {
                         //Log.Warning("Spork the inventory");
                         SporkRestackInventory(self, new Xoroshiro128Plus(Run.instance.stageRng.nextUlong));
@@ -198,16 +198,20 @@ namespace UltitemsCyan.Items.Lunar
                     // Record what items exist and how many items in total
                     int num = 0;
                     list.Clear();
+                    
+                    // TODO Perhaps use try transform instead?
+
+                    /*/
                     for (int i = 0; i < inventory.itemStacks.Length; i++)
                     {
-                        if (inventory.itemStacks[i] > 0)
+                        if (inventory.itemStacks[i] > 0) // TODO REPLACE
                         {
                             ItemIndex itemIndex = (ItemIndex)i;
                             //ItemDef itemDef = ItemCatalog.GetItemDef(itemIndex);
                             if (itemTierDef.tier == ItemCatalog.GetItemDef(itemIndex).tier)
                             {
                                 // Add to total items
-                                num += inventory.itemStacks[i];
+                                num += inventory.itemStacks[i]; // TODO REPLACE
                                 // Add to list
                                 list.Add(itemIndex);
                                 // Remove from inventory
@@ -215,6 +219,8 @@ namespace UltitemsCyan.Items.Lunar
                             }
                         }
                     }
+                    //*/
+
                     if (list.Count > 0)
                     {
                         // Adjust count of ket item
@@ -226,7 +232,9 @@ namespace UltitemsCyan.Items.Lunar
                         {
                             //inventory.itemAcquisitionOrder.Remove(index);
                             SetItemCount(inventory, index, 0);
+#pragma warning disable CS0618 // Type or member is obsolete
                             inventory.ResetItem(index);
+#pragma warning restore CS0618 // Type or member is obsolete
                         }
 
                         flag = true;
@@ -242,7 +250,9 @@ namespace UltitemsCyan.Items.Lunar
         private void SetItemCount(Inventory inventory, ItemIndex item, int count)
         {
             //var currentCount = inventory.GetItemCount(item);
+#pragma warning disable CS0618 // Type or member is obsolete
             inventory.GiveItem(item, count - inventory.GetItemCount(item));
+#pragma warning restore CS0618 // Type or member is obsolete
         }
     }
 }

@@ -78,7 +78,7 @@ namespace UltitemsCyan.Items.Void
                 {
                     //Log.Debug(" / / / / / Zorse 1");
                     CharacterBody inflictor = dR.attackerBody;
-                    int grabCount = inflictor.inventory.GetItemCount(item);
+                    int grabCount = inflictor.inventory.GetItemCountEffective(item);
                     if (grabCount > 0)
                     {
                         //Log.Debug("  ...Starving enemy with reports...");

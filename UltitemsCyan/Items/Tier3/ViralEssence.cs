@@ -1,6 +1,7 @@
 ﻿using R2API;
 using RoR2;
 using BepInEx.Configuration;
+using System;
 
 namespace UltitemsCyan.Items.Tier3
 {
@@ -12,6 +13,7 @@ namespace UltitemsCyan.Items.Tier3
     {
         public static ItemDef item;
         private const float speedPerStackStatus = 20f;
+        private const int maxStatusCountperItem = 6;
 
         public override void Init(ConfigFile configs)
         {
@@ -24,7 +26,8 @@ namespace UltitemsCyan.Items.Tier3
                 "VIRALESSENCE",
                 itemName,
                 "Increase speed per unique status effect.",
-                "Increases <style=cIsUtility>movement speed</style> by <style=cIsUtility>20%</style> <style=cStack>(+20% per stack)</style> per <style=cIsDamage>unique status</style> you have.",
+                "Increases <style=cIsUtility>movement speed</style> by <style=cIsUtility>20%</style> <style=cStack>(+20% per stack)</style> per <style=cIsDamage>unique status</style> you have." +
+                    " Up to a maximum of <style=cIsUtility>6</style> <style=cStack>(+6 per stack)</style>.",
                 "Illness",
                 ItemTier.Tier3,
                 UltAssets.ViralSmogSprite,
@@ -46,7 +49,7 @@ namespace UltitemsCyan.Items.Tier3
         {
             if (sender && sender.inventory)
             {
-                int grabCount = sender.inventory.GetItemCount(item);
+                int grabCount = sender.inventory.GetItemCountEffective(item);
                 if (grabCount > 0)
                 {
                     //Log.Warning("Viral Smog Active");
@@ -70,9 +73,12 @@ namespace UltitemsCyan.Items.Tier3
                             //Log.Debug("Not Cool: " + buffDef.name);
                         }
                     }
+
+                    nonCooldownBuffs = Math.Min(nonCooldownBuffs, maxStatusCountperItem * grabCount);
+
                     //Log.Debug("Viral Smog\nCount: " + nonCooldownBuffs + "\n"
                     //    + "Speed from Virus: " + speedPerStackStatus / 100f * nonCooldownBuffs * grabCount);
-                    // Gives 30% speed per status per item
+                    // Gives 20% speed per status per item
                     if (activeBuffLength > 0)
                     {
                         args.moveSpeedMultAdd += speedPerStackStatus / 100f * nonCooldownBuffs * grabCount;

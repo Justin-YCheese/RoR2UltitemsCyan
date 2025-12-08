@@ -51,7 +51,7 @@ namespace UltitemsCyan.Items.Void
             // Add Behavior to player (expectially if the full time intervals have passed)
             if (NetworkServer.active && self && self.inventory)
             {
-                _ = self.AddItemBehavior<RottenBonesVoidBehavior>(self.inventory.GetItemCount(item));
+                _ = self.AddItemBehavior<RottenBonesVoidBehavior>(self.inventory.GetItemCountEffective(item));
             }
         }
         private void CharacterBody_OnInventoryChanged(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self)
@@ -60,13 +60,13 @@ namespace UltitemsCyan.Items.Void
             // Add Behavior to player (expectially if the full time intervals have passed)
             if (self && self.inventory)
             {
-                if (self.inventory.GetItemCount(item) > 0)
+                if (self.inventory.GetItemCountEffective(item) > 0)
                 {
                     //Log.Warning("Give Rotting Bones");
                     // If within time intervals give item behavior
                     if (Run.instance.time < Ultitems.stageStartTime + rotTimeInterval * rotsPerItem)
                     {
-                        RottenBonesVoidBehavior behavior = self.AddItemBehavior<RottenBonesVoidBehavior>(self.inventory.GetItemCount(item));
+                        RottenBonesVoidBehavior behavior = self.AddItemBehavior<RottenBonesVoidBehavior>(self.inventory.GetItemCountEffective(item));
                         //Log.Debug("New Bone? Intervals Passed! " + behavior.IntervalsPassed);
                         ApplyRot(self, behavior.IntervalsPassed);
                     }
@@ -89,7 +89,7 @@ namespace UltitemsCyan.Items.Void
 
         private static void ApplyRot(CharacterBody player, int intervals)
         {
-            int grabCount = player.inventory.GetItemCount(item);
+            int grabCount = player.inventory.GetItemCountEffective(item);
             int maxRotStacks = grabCount * intervals;
             if (player.GetBuffCount(RottingBuff.buff) < maxRotStacks)
             {

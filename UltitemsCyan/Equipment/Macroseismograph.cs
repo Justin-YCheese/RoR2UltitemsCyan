@@ -163,7 +163,7 @@ namespace UltitemsCyan.Equipment
                     // Send notification and consume equipment
                     CharacterMasterNotificationQueue.SendTransformNotification(
                         activator.master, activator.inventory.currentEquipmentIndex, MacroseismographConsumed.equipment.equipmentIndex, CharacterMasterNotificationQueue.TransformationType.Default);
-                    activator.inventory.SetEquipmentIndex(MacroseismographConsumed.equipment.equipmentIndex);
+                    activator.inventory.SetEquipmentIndex(MacroseismographConsumed.equipment.equipmentIndex, true);
 
                     return true;
                 }

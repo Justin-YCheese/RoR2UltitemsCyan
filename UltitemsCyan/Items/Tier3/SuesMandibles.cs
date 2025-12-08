@@ -28,7 +28,7 @@ namespace UltitemsCyan.Items.Tier3
                 ItemTier.Tier3,
                 UltAssets.SuesMandiblesSprite,
                 UltAssets.SuesMandiblesPrefab,
-                [ItemTag.Utility]
+                [ItemTag.Utility, ItemTag.ExtractorUnitBlacklist]
             );
         }
 
@@ -45,33 +45,44 @@ namespace UltitemsCyan.Items.Tier3
             // If dead after damage
             if (victim && victim.inventory && self && !self.alive && self.health <= 0)
             {
-                int grabCount = victim.inventory.GetItemCount(item);
+                int grabCount = victim.inventory.GetItemCountEffective(item);
                 if (grabCount > 0)
                 {
                     Log.Warning(" ! ! ! Killing Blow ! ! ! ");
                     //Log.Debug("S Teeth Combined: " + self.combinedHealth + " FullCombined: " + self.fullCombinedHealth + " Damage: " + damageInfo.damage + " Alive? " + self.alive);
 
-                    // Regain one health
-                    self.health = 1;
-
-                    // Trade Items
-                    victim.inventory.RemoveItem(item);
-                    victim.inventory.GiveItem(SuesMandiblesConsumed.item);
-
-                    // Sue's Teeth timer for duration
-                    for (int i = 1; i <= effectDuration; i++)
+                    // Consume Item
+                    // TODO test if discarding with '_' actually works
+                    Inventory.ItemTransformation.TryTransformResult tryTransformResult;
+                    if (new Inventory.ItemTransformation
                     {
-                        victim.AddTimedBuffAuthority(SuesTeethBuff.buff.buffIndex, i);
-                    }
-                    victim.AddTimedBuffAuthority(RoR2Content.Buffs.Immune.buffIndex, effectDuration);
-                    victim.AddTimedBuffAuthority(RoR2Content.Buffs.HealingDisabled.buffIndex, effectDuration); // Adds synergy with Ben's Raincoat and Genisis Loop
+                        originalItemIndex = item.itemIndex,
+                        newItemIndex = SuesMandiblesConsumed.item.itemIndex,
+                        maxToTransform = 1,
+                        transformationType = 0
+                    }.TryTransform(victim.inventory, out tryTransformResult))
+                    {
+                        // If item succesfully transformed
+                        Log.Warning(" Sue's saved your ! ! ! Killing Blow ! ! ! ");
 
-                    // Play Sounds
-                    _ = Util.PlaySound("Play_item_proc_ghostOnKill", victim.gameObject);
-                    _ = Util.PlaySound("Play_item_proc_ghostOnKill", victim.gameObject);
-                    _ = Util.PlaySound("Play_item_proc_phasing", victim.gameObject);
-                    _ = Util.PlaySound("Play_item_proc_phasing", victim.gameObject);
-                    _ = Util.PlaySound("Play_elite_haunt_ghost_convert", victim.gameObject);
+                        // Regain one health
+                        self.health = 1;
+
+                        // Sue's Teeth timer for duration
+                        for (int i = 1; i <= effectDuration; i++)
+                        {
+                            victim.AddTimedBuffAuthority(SuesTeethBuff.buff.buffIndex, i);
+                        }
+                        victim.AddTimedBuffAuthority(RoR2Content.Buffs.Immune.buffIndex, effectDuration);
+                        victim.AddTimedBuffAuthority(RoR2Content.Buffs.HealingDisabled.buffIndex, effectDuration); // Adds synergy with Ben's Raincoat and Genisis Loop
+
+                        // Play Sounds
+                        _ = Util.PlaySound("Play_item_proc_ghostOnKill", victim.gameObject);
+                        _ = Util.PlaySound("Play_item_proc_ghostOnKill", victim.gameObject);
+                        _ = Util.PlaySound("Play_item_proc_phasing", victim.gameObject);
+                        _ = Util.PlaySound("Play_item_proc_phasing", victim.gameObject);
+                        _ = Util.PlaySound("Play_elite_haunt_ghost_convert", victim.gameObject);
+                    }
                 }
             }
             //Log.Debug("Bye Sue");

@@ -28,7 +28,7 @@ namespace UltitemsCyan.Items.Void
                 "INHABITEDCOFFIN",
                 itemName,
                 "Breaks at the start of the next stage. Contains void items. <style=cIsVoid>Corrupts all Corroding Vaults</style>.",
-                "At the start of each stage, this item will <style=cIsUtility>break</style> and gives <style=cIsUtility>5</style> random void items. <style=cIsUtility>Affected by luck</style>. <style=cIsVoid>Corrupts all Corroding Vaults</style>.",
+                "At the start of each stage, this item will <style=cIsUtility>break</style> and gives <style=cIsUtility>5</style> random void items. <style=cIsUtility>Bad luck</style> grants more Coffins. <style=cIsVoid>Corrupts all Corroding Vaults</style>.",
                 "Something lives inside this coffin. That coffin is deeper than you think.",
                 ItemTier.VoidTier3,
                 UltAssets.InhabitedCoffinSprite,
@@ -58,52 +58,66 @@ namespace UltitemsCyan.Items.Void
                 if (master.inventory)
                 {
                     // Get number of vaults
-                    int grabCount = master.inventory.GetItemCount(item.itemIndex);
+                    int grabCount = master.inventory.GetItemCountEffective(item.itemIndex);
                     if (grabCount > 0)
                     {
                         //Log.Warning("Inhabited Coffin on body start global..." + master.name);
-                        // Remove a vault
-                        master.inventory.RemoveItem(item);
-                        // Give Consumed vault
-                        master.inventory.GiveItem(InhabitedCoffinConsumed.item);
 
-                        // All Void Items
-                        List<PickupIndex>[] allVoidDropList = [
+                        // Remove a vault
+                        //master.inventory.RemoveItem(item);
+                        // Give Consumed vault
+                        //master.inventory.GiveItem(InhabitedCoffinConsumed.item);
+
+                        Inventory.ItemTransformation.TryTransformResult tryTransformResult;
+                        if (new Inventory.ItemTransformation
+                        {
+                            originalItemIndex = item.itemIndex,
+                            newItemIndex = InhabitedCoffinConsumed.item.itemIndex,
+                            maxToTransform = 1,
+                            transformationType = 0
+                        }.TryTransform(master.inventory, out tryTransformResult))
+                        {
+                            // If item succesfully transformed
+                            Log.Debug(" Exiting my Coffin! ");
+
+                            // All Void Items
+                            List<PickupIndex>[] allVoidDropList = [
                             Run.instance.availableVoidTier1DropList,
                             Run.instance.availableVoidTier2DropList,
                             Run.instance.availableVoidTier3DropList,
                             Run.instance.availableVoidBossDropList
                             ];
 
-                        int length = allVoidDropList[0].Count + allVoidDropList[1].Count + allVoidDropList[2].Count + allVoidDropList[3].Count;
-                        //Log.Debug("All Void Items Length: " + length);
+                            int length = allVoidDropList[0].Count + allVoidDropList[1].Count + allVoidDropList[2].Count + allVoidDropList[3].Count;
+                            //Log.Debug("All Void Items Length: " + length);
 
-                        // 14 Vanilla void items
-                        // 4 modded void items
-                        int quantityInVault;
-                        if (Util.CheckRoll(100f - freeCoffinChance, master.luck))
-                        {
-                            // No coffin
-                            quantityInVault = minimumInCoffin;
-                        }
-                        else
-                        {
-                            // You get a free coffin
-                            master.inventory.GiveItem(item);
-                            //Log.Debug("- Coffin got Coffin");
-                            GenericPickupController.SendPickupMessage(master, PickupCatalog.itemIndexToPickupIndex[(int)item.itemIndex]);
-                            quantityInVault = minimumInCoffin - 1;
-                        }
+                            // 14 Vanilla void items
+                            // 4 modded void items
+                            int quantityInVault;
+                            if (Util.CheckRoll(100f - freeCoffinChance, master.luck))
+                            {
+                                // No coffin
+                                quantityInVault = minimumInCoffin;
+                            }
+                            else
+                            {
+                                // You get a free coffin
+                                master.inventory.GiveItemPermanent(item);
+                                //Log.Debug("- Coffin got Coffin");
+                                GenericPickupController.SendPickupMessage(master, new UniquePickup(PickupCatalog.itemIndexToPickupIndex[(int)item.itemIndex]));
+                                quantityInVault = minimumInCoffin - 1;
+                            }
 
-                        Xoroshiro128Plus rng = new(Run.instance.stageRng.nextUlong);
+                            Xoroshiro128Plus rng = new(Run.instance.stageRng.nextUlong);
 
-                        for (int i = 0; i < quantityInVault; i++)
-                        {
-                            int randItemPos = rng.RangeInt(0, length);
-                            PickupIndex foundItem = GetVoidItem(allVoidDropList, randItemPos);
+                            for (int i = 0; i < quantityInVault; i++)
+                            {
+                                int randItemPos = rng.RangeInt(0, length);
+                                PickupIndex foundItem = GetVoidItem(allVoidDropList, randItemPos);
 
-                            master.inventory.GiveItem(PickupCatalog.GetPickupDef(foundItem).itemIndex);
-                            GenericPickupController.SendPickupMessage(master, foundItem);
+                                master.inventory.GiveItemPermanent(PickupCatalog.GetPickupDef(foundItem).itemIndex);
+                                GenericPickupController.SendPickupMessage(master, new UniquePickup(foundItem));
+                            }
                         }
                     }
                 }

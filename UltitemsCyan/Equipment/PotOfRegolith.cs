@@ -11,8 +11,8 @@ namespace UltitemsCyan.Equipment
         private const float cooldown = 2f;
         private const float subCooldown = .2f;
 
-        private const float baseDamageChance = 80f;
-        private const float basePercentDamage = 5f;
+        private const float baseDamageChance = 75f;
+        private const float basePercentDamage = 4f;
         private const float maxPercentDamage = 20f;
 
         public override void Init(ConfigFile configs)
@@ -26,7 +26,7 @@ namespace UltitemsCyan.Equipment
                 "POTOFREGOLITH",
                 itemName,
                 "<style=cDeath>Take damage</style> on use.",
-                "Take <style=cIsHealth>5% or 20% of your health</style> as <style=cIsDamage>damage</style>",
+                "Take <style=cIsHealth>4% or 20% of your health</style> as <style=cIsDamage>damage</style>. Only deals <style=cIsHealth>4%</style> while at low health.",
                 "The dust is as sharp as a knife",
                 cooldown,
                 true,
@@ -50,7 +50,8 @@ namespace UltitemsCyan.Equipment
                 //UnityEngine.Random.Range(basePercentDamage, maxPercentDamage);
 
                 float percentDamage = maxPercentDamage;
-                if (Util.CheckRoll(baseDamageChance, activator.master.luck))
+                Log.Debug("Pot isHealthLow?" + activator.healthComponent.isHealthLow);
+                if (activator.healthComponent.isHealthLow || Util.CheckRoll(baseDamageChance, activator.master.luck))
                 {
                     percentDamage = basePercentDamage;
                 }

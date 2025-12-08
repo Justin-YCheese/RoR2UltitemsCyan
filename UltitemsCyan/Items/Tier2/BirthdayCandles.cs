@@ -53,7 +53,7 @@ namespace UltitemsCyan.Items.Tier2
         private void CharacterBody_OnInventoryChanged(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self)
         {
             orig(self);
-            if (self && self.inventory && self.inventory.GetItemCount(item) < 1)
+            if (self && self.inventory && self.inventory.GetItemCountEffective(item) < 1)
             {
                 self.SetBuffCount(BirthdayBuff.buff.buffIndex, 0);
             }
@@ -64,7 +64,7 @@ namespace UltitemsCyan.Items.Tier2
         {
             if (NetworkServer.active && self && self.inventory)
             {
-                int grabCount = self.inventory.GetItemCount(item.itemIndex);
+                int grabCount = self.inventory.GetItemCountEffective(item.itemIndex);
                 if (grabCount > 0)
                 {
                     //Log.Debug("Birthday Candles On Body Start Global for " + self.GetUserName() + " | Candles: " + grabCount);
@@ -104,9 +104,9 @@ namespace UltitemsCyan.Items.Tier2
                 CharacterBody player = CharacterBody.readOnlyInstancesList.ToList().Find((body) => body.inventory == self);
 
                 // If you don't have any Rotten Bones
-                if (player && player.inventory && player.inventory.GetItemCount(Void.RottenBones.item) <= 0)
+                if (player && player.inventory && player.inventory.GetItemCountEffective(Void.RottenBones.item) <= 0)
                 {
-                    ApplyBirthday(player, count, self.GetItemCount(item.itemIndex));
+                    ApplyBirthday(player, count, self.GetItemCountEffective(item.itemIndex));
                 }
             }
         }

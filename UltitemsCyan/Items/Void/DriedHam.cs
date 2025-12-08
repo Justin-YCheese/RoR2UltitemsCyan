@@ -47,7 +47,7 @@ namespace UltitemsCyan.Items.Void
                 if (self && damageInfo.attacker.GetComponent<CharacterBody>() && damageInfo.attacker.GetComponent<CharacterBody>().inventory && !damageInfo.rejected && damageInfo.damageType != DamageType.DoT)
                 {
                     CharacterBody inflictor = damageInfo.attacker.GetComponent<CharacterBody>();
-                    int grabCount = inflictor.inventory.GetItemCount(item);
+                    int grabCount = inflictor.inventory.GetItemCountEffective(item);
                     if (grabCount > 0)
                     {
                         //Log.Warning("Ham health");

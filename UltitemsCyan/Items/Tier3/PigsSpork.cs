@@ -58,7 +58,7 @@ namespace UltitemsCyan.Items.Tier3
             if (NetworkServer.active && self && self.body && self.body.inventory)
             {
                 CharacterBody body = self.body;
-                int grabCount = body.inventory.GetItemCount(item);
+                int grabCount = body.inventory.GetItemCountEffective(item);
                 if (grabCount > 0 && self.isHealthLow) // && !body.HasBuff(SporkBleedBuff.buff.buffIndex)
                 {
                     // Bleed Blast
@@ -101,11 +101,11 @@ namespace UltitemsCyan.Items.Tier3
             orig(self, damageValue, damagePosition, damageIsSilent, attacker, delayedDamage, firstHitOfDelayedDamage);
         }//*/
 
-        private void DotController_OnDotStackRemovedServer(On.RoR2.DotController.orig_OnDotStackRemovedServer orig, DotController self, object dotStack)
+        private void DotController_OnDotStackRemovedServer(On.RoR2.DotController.orig_OnDotStackRemovedServer orig, DotController self, DotController.DotStack dotStack)
         {
             orig(self, dotStack);
             //Log.Debug(" > > test bleed");
-            DotController.DotIndex dotIndex = ((DotController.DotStack)dotStack).dotIndex;
+            DotController.DotIndex dotIndex = dotStack.dotIndex;
             //Log.Debug(" > > test bleed stop");
             if (dotIndex == DotController.DotIndex.Bleed && self.victimBody)
             {
@@ -126,7 +126,7 @@ namespace UltitemsCyan.Items.Tier3
                 if (damageInfo.attacker)
                 {
                     CharacterBody inflictor = damageInfo.attacker.GetComponent<CharacterBody>();
-                    if (inflictor.inventory.GetItemCount(item) > 0 && victim && victim.GetComponent<CharacterBody>())
+                    if (inflictor.inventory.GetItemCountEffective(item) > 0 && victim && victim.GetComponent<CharacterBody>())
                     {
                         CharacterBody sporkVictim = victim.GetComponent<CharacterBody>();
                         if (sporkVictim.HasBuff(RoR2Content.Buffs.Bleeding))
@@ -157,7 +157,7 @@ namespace UltitemsCyan.Items.Tier3
             if (inflictDotInfo.dotIndex is DotController.DotIndex.Bleed or DotController.DotIndex.SuperBleed)
             {
                 CharacterBody inflictor = inflictDotInfo.attackerObject.GetComponent<CharacterBody>();
-                if (inflictor.inventory.GetItemCount(item) > 0)
+                if (inflictor.inventory.GetItemCountEffective(item) > 0)
                 {
                     CharacterBody victim = inflictDotInfo.victimObject ? inflictDotInfo.victimObject.GetComponent<CharacterBody>() : null;
 
@@ -180,7 +180,7 @@ namespace UltitemsCyan.Items.Tier3
                     CharacterBody[] inflictors = behavior.GetInflictors();
                     foreach (CharacterBody body in inflictors)
                     {
-                        int grabCount = body.inventory.GetItemCount(item);
+                        int grabCount = body.inventory.GetItemCountEffective(item);
                         if (grabCount > 0)
                         {
                             //Log.Warning("Healing Inflictors ! ! ! " + body.name);

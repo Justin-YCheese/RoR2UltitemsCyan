@@ -129,7 +129,7 @@ namespace UltitemsCyan.Items.Tier1
 
                     CharacterBody inflictor = damageInfo.attacker.GetComponent<CharacterBody>();
 
-                    int grabCount = inflictor.inventory.GetItemCount(item);
+                    int grabCount = inflictor.inventory.GetItemCountEffective(item);
                     if (grabCount > 0)
                     {
                         //Log.Warning("FleaBag on Hit chance: " + fleaDropChance * (damageInfo.crit ? fleaDropCritMultiplier : 1));
