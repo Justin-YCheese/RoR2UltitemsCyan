@@ -1,10 +1,22 @@
-## 0.13.2
-
+## 0.13.3
 
 - All items can be temparary! Again...
     - hadn't realized they needed an item tag...
+- Fixed and Readding
+    - Grapevine
+    - Silver Thread
+    - Koala Sticker
+    - Bithday Candle & Rotten Bones
+    - HMT & Zorse Pill
 - Rotten Bones
     - Reduced time required for buff from 3 -> 2.5 mins
+- Corroding Vault
+    - A temporary vault will be used before permanent vaults, and grant temporary items
+- Grapevine
+    - Drop chance is 50% -> 40%
+    - Stacks increase grapes gained instead of drop chance
+    - Block chance 80% -> 70%
+    - Now only uses one grape at a time
 
 ## 0.13.2
 
@@ -22,6 +34,7 @@
     - Grapevine
     - Silver Thread
     - Koala Sticker
+    - Pig's Spork
     - Bithday Candle & Rotten Bones
     - HMT & Zorse Pill
     - Oboslute

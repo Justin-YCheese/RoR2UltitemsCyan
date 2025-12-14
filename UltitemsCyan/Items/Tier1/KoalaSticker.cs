@@ -23,6 +23,7 @@ namespace UltitemsCyan.Items.Tier1
 
         public override void Init(ConfigFile configs)
         {
+            Log.Warning("-JYPrint Hello?!?! 1");
             const string itemName = "Koala Sticker";
             if (!CheckItemEnabledConfig(itemName, "White", configs))
             {
@@ -39,109 +40,51 @@ namespace UltitemsCyan.Items.Tier1
                 UltAssets.KoalaStickerPrefab,
                 [ItemTag.CanBeTemporary, ItemTag.Utility]
             );
+            Log.Warning("-JYPrint Hello?!?! 1.5");
         }
 
 
         protected override void Hooks()
         {
-            IL.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess;
-        }
-
-        private void HealthComponent_TakeDamageProcess(ILContext il)
-        {
-            ILCursor c = new(il); // Make new ILContext
-
-            int num3 = -1;   //Initial Total Damage
-            int num14 = -1; //New Total Damage
-
-            // Inject code just before damage is subtracted from health
-            // Go just before the "if (num12 > 0f && this.barrier > 0f)" line, which is equal to the following instructions
-
-            //Log.Warning("Koala Sticker Take Damage");
-
-            if (c.TryGotoNext(MoveType.Before,                              // TODO make cursor search more robust
-                x => x.MatchLdloc(out num3),                                // 1130 ldloc.s V_6 (7)
-                x => x.MatchStloc(out num14),                               // 1130 stloc.s V_7 (8)
-                x => x.MatchLdloc(out num14),                               // 1130 ldloc.s V_7 (8)
-                x => x.MatchLdcR4(0f),                                      // 1131 ldc.r4 0
-                x => x.Match(OpCodes.Ble_Un_S),                             // 1132 ble.un.s 1200 (0D38) ldloc.s V_7 (7)
-                x => x.MatchLdarg(0),                                       // 1133 ldarg.0
-                x => x.MatchLdcI4(0),                                       // 1134 ldci4.0
-                x => x.MatchStfld<HealthComponent>("isShieldRegenForced")   // 1135 ldfld float32 RoR2.HealthComponent::barrier
-            ))
+            //Log.Warning("-JYPrint Koala Hooks Start");
+            //IL.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess;
+            //IOnTakeDamageServerReceiver.OnTakeDamageServer +=  ??? Use delegates like Too Many Items Mod
+            GenericGameEvents.BeforeTakeDamage += (damageInfo, attackerInfo, victimInfo) =>
             {
+                CharacterBody victimBody = victimInfo.body;
+                
 
-                //Log.Debug(" * * * Start C Index: " + c.Index + " > " + c.ToString());
-                //[Warning:UltitemsCyan] * **Start C Index: 1129 > // ILCursor: System.Void DMD<RoR2.HealthComponent::TakeDamage>?-456176384::RoR2.HealthComponent::TakeDamage(RoR2.HealthComponent,RoR2.DamageInfo), 1129, Next
-                //IL_0e05: stfld System.Single RoR2.HealthComponent::adaptiveArmorValue
-                //IL_0e0a: ldloc.s V_7
-
-                //give_item koalasticker 100
-
-                c.Index += 4;
-
-                //Log.Debug(" * * * +4 Working Index: " + c.Index + " > " + c.ToString());
-                //[Debug  :UltitemsCyan] * **+4 Working Index: 1133 > // ILCursor: System.Void DMD<RoR2.HealthComponent::TakeDamage>?-771449600::RoR2.HealthComponent::TakeDamage(RoR2.HealthComponent,RoR2.DamageInfo), 1133, None
-                //IL_0e10: ldc.r4 0
-                //IL_0e15: ble.un.s IL_0e21
-
-
-                _ = c.Emit(OpCodes.Ldarg, 0);     // Load Health Component
-                _ = c.Emit(OpCodes.Ldarg, 1);     // Load Damage Info (If Damage rejected, returned earlier)
-                _ = c.Emit(OpCodes.Ldloc, num14);   // Load Total Damage
-
-                // Run custom code
-                _ = c.EmitDelegate<Func<HealthComponent, DamageInfo, float, float>>((hc, di, td) =>
+                if (victimBody && victimBody.master && victimBody.master.inventory &&
+                        damageInfo.rejected == false && damageInfo.damageColorIndex != DamageColorIndex.DelayedDamage)
                 {
-                    CharacterBody cb = hc.body;
-                    if (cb)
+                    // grab Count
+                    int grabCount = victimBody.master.inventory.GetItemCountEffective(item);
+                    if (grabCount > 0)
                     {
-                        //Log.Debug("Health: " + hc.fullCombinedHealth + "\t Body: " + cb.GetUserName() + "\t Damage: " + td);
-                        if (cb.master && cb.master.inventory)
+                        Log.Debug("Koala Taken Damage for " + victimBody.GetUserName() + " with " + victimBody.healthComponent.fullCombinedHealth + "\t health");
+                        Log.Debug("Max Percent: " + 100 / (hyperbolicPercent / 100 * grabCount + 1) + " of " + victimBody.healthComponent.fullCombinedHealth);
+                        // max Damage
+                        float maxDamage = victimBody.healthComponent.fullCombinedHealth / (hyperbolicPercent / 100 * grabCount + 1);
+                        if (maxDamage < minDamage)
                         {
-                            // grab Count
-                            int gC = cb.master.inventory.GetItemCountEffective(item);
-                            if (gC > 0)
+                            maxDamage = minDamage;
+                        }
+                        //Log.Debug("Is " + td + "\t > " + maxDamage + "?");
+                        if (damageInfo.damage > maxDamage)
+                        {
+                            Log.Warning("Koala BLOCK " + damageInfo.damage + " to " + maxDamage + " ! ! for " + victimBody.name);
+                            EffectManager.SpawnEffect(HealthComponent.AssetReferences.bearEffectPrefab, new EffectData
                             {
-                                //Log.Debug("Koala Taken Damage for " + cb.GetUserName() + " with " + hc.fullCombinedHealth + "\t health");
-                                //Log.Debug("Max Percent: " + ((hyperbolicPercent / 100 * grabCount) + 1) + " of " + hc.fullCombinedHealth);
-                                // max Damage
-                                float mD = hc.fullCombinedHealth / (hyperbolicPercent / 100 * gC + 1);
-                                //Util.ConvertAmplificationPercentageIntoReductionNormalized(hyperbolicPercent / 100 );
-                                if (mD < minDamage)
-                                {
-                                    mD = minDamage;
-                                }
-                                //Log.Debug("Is " + td + "\t > " + maxDamage + "?");
-                                if (td > mD)
-                                {
-                                    Log.Warning("Koala BLOCK ! ! for " + cb.name);
-                                    EffectManager.SpawnEffect(HealthComponent.AssetReferences.bearEffectPrefab, new EffectData
-                                    {
-                                        origin = di.position,
-                                        rotation = Util.QuaternionSafeLookRotation((di.force != Vector3.zero) ? di.force : UnityEngine.Random.onUnitSphere),
-                                        //color = new Color(10, 64, 95) // Koala Skin Colors Deson't Do Anything
-                                    }, true);
-                                    return mD;
-                                }
-                            }
+                                origin = damageInfo.position,
+                                rotation = Util.QuaternionSafeLookRotation((damageInfo.force != Vector3.zero) ? damageInfo.force : UnityEngine.Random.onUnitSphere),
+                                //color = new Color(10, 64, 95) // Koala Skin Colors Deson't Do Anything
+                            }, true);
+                            damageInfo.damage = maxDamage;
                         }
                     }
-                    return td;
-                });
-
-                _ = c.Emit(OpCodes.Stloc, num14); // Store Total Damage
-                //
-                //}
-                //else
-                //{
-                //    Log.Warning("Koala cannot find 'for (int k = 0; k < num15; k++){}'");
-                //}
-            }
-            else
-            {
-                Log.Warning("Koala cannot find '(num12 > 0f && this.barrier > 0f)'");
-            }
+                }
+            };
+            //Log.Warning("-JYPrint Koala Hooks END");
         }
     }
 }

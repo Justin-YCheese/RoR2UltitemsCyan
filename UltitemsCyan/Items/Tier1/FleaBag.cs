@@ -11,6 +11,7 @@ namespace UltitemsCyan.Items.Tier1
 {
 
     // TODO: Make better sound and visuals
+    // Play_env_roach_scatter
     public class FleaBag : ItemBase
     {
         public static ItemDef item;
@@ -138,7 +139,6 @@ namespace UltitemsCyan.Items.Tier1
                             //Log.Warning("Dropping flea from " + victim.name);
                             //RoR2.BuffPickup.Instantiate(item);
                             _ = Util.PlaySound("Play_hermitCrab_idle_VO", victim.gameObject);
-                            _ = Util.PlaySound("Play_hermitCrab_idle_VO", victim.gameObject);
                             SpawnOrb(victim.transform.position, victim.transform.rotation, TeamComponent.GetObjectTeam(inflictor.gameObject), grabCount);
                         }
                     }
@@ -238,6 +238,7 @@ namespace UltitemsCyan.Items.Tier1
                         body.AddTimedBuff(buffDef, duration, amount);
                     }
                     //EffectManager.SpawnEffect(pickupEffect, new EffectData { origin = transform.position }, true);
+                    _ = Util.PlaySound("Play_env_light_flicker", body.gameObject);
                     Destroy(baseObject);
                 }
             }

@@ -19,6 +19,7 @@ namespace UltitemsCyan.Items.Tier3
             const string itemName = "Corroding Vault";
             if (!CheckItemEnabledConfig(itemName, "Red", configs))
             {
+                Log.Warning("-JYPrint Hello?!?! ************ Vault");
                 return;
             }
             item = CreateItemDef(
@@ -56,6 +57,7 @@ namespace UltitemsCyan.Items.Tier3
                 {
                     // Get number of vaults
                     int grabCount = master.inventory.GetItemCountEffective(item.itemIndex);
+                    bool useTempVault = master.inventory.GetItemCountTemp(item.itemIndex) > 0;
                     if (grabCount > 0)
                     {
                         // Prioritize consuming temporary Vaults before permanent ones
@@ -85,9 +87,16 @@ namespace UltitemsCyan.Items.Tier3
                             for (int i = 0; i < quantityInVault; i++)
                             {
                                 int randItemPos = rng.RangeInt(0, length);
-
                                 ItemIndex foundItem = PickupCatalog.GetPickupDef(allWhiteItems[randItemPos]).itemIndex;
-                                master.inventory.GiveItemPermanent(foundItem); //TODO should this match vault's state?
+
+                                if (useTempVault)
+                                {
+                                    master.inventory.GiveItemTemp(foundItem); //TODO should this match vault's state?
+                                }
+                                else
+                                {
+                                    master.inventory.GiveItemPermanent(foundItem); //TODO should this match vault's state?
+                                }
 
                                 GenericPickupController.SendPickupMessage(master, new UniquePickup(allWhiteItems[randItemPos]));
 
@@ -102,8 +111,6 @@ namespace UltitemsCyan.Items.Tier3
                                 }
                             }
                         }
-
-                        
                     }
                 }
             }

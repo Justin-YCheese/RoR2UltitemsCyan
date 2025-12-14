@@ -63,22 +63,21 @@ namespace UltitemsCyan.Items.Tier2
         private void Inventory_GiveItemChanneled(On.RoR2.Inventory.orig_GiveItemChanneled orig, Inventory self, ItemIndex itemIndex, int countToAdd)
         {
             orig(self, itemIndex, countToAdd);
-            Log.Debug("Check Permanent Birthday Candles");
+            //Log.Debug("Check Permanent Birthday Candles");
             CheckBirthday(self, itemIndex, countToAdd);
         }
 
         private void Inventory_GiveItemTemp(On.RoR2.Inventory.orig_GiveItemTemp orig, Inventory self, ItemIndex itemIndex, float countToAdd)
         {
             orig(self, itemIndex, countToAdd);
-            // TODO when is this function used?
-            Log.Warning("Ultitems, I don't know what calls this if picking up a tempary item doesn't");
+            //Log.Warning("Ultitems, I don't know what calls this if picking up a tempary item doesn't");
             CheckBirthday(self, itemIndex, Mathf.CeilToInt(countToAdd));
         }
 
         private void Inventory_GiveItemPermanent_ItemIndex_int(On.RoR2.Inventory.orig_GiveItemPermanent_ItemIndex_int orig, Inventory self, ItemIndex itemIndex, int countToAdd)
         {
             orig(self, itemIndex, countToAdd);
-            Log.Debug("Check Permanent Birthday Candles");
+            //Log.Debug("Check Permanent Birthday Candles");
             CheckBirthday(self, itemIndex, countToAdd);
         }
 
@@ -96,7 +95,7 @@ namespace UltitemsCyan.Items.Tier2
             {
                 if (self.inventory.GetItemCountEffective(item) <= 0)
                 {
-                    Log.Debug(" Remove Birthdays");
+                    //Log.Debug(" Remove Birthdays");
                     self.SetBuffCount(BirthdayBuff.buff.buffIndex, 0);
                 }
             }
@@ -114,37 +113,6 @@ namespace UltitemsCyan.Items.Tier2
                 {
                     //Log.Debug("Birthday Candles On Body Start Global for " + self.GetUserName() + " | Candles: " + grabCount);
                     ApplyBirthday(self, grabCount, grabCount);
-                }
-            }
-        }
-        private void Inventory_GiveItem_ItemIndex_int(On.RoR2.Inventory.orig_GiveItem_ItemIndex_int orig, Inventory self, ItemIndex itemIndex, int countToAdd)
-        {
-            Log.Debug("Into orig Birthday Candles");
-
-            // * * * SAVE Error ?
-            if (!ItemCatalog.GetItemDef(itemIndex))
-            {
-                Log.Debug("Birthday found impossible item? Index: " + itemIndex);
-            }
-            orig(self, itemIndex, countToAdd);
-            Log.Debug("Out orig Birthday Candles");
-            
-            //Log.Debug("Sprite::: height - " + itemSprite.rect.m_Height + " width - " + itemSprite.rect.width + " bounds - " + itemSprite.bounds.ToString() + " border - " + itemSprite.border.ToString());
-            //Log.Debug("itemTexture::: name - " + itemTexture.name + " string - " + itemTexture.ToString());
-
-            // If item picked up is Birthday Candles and there is a character Body
-
-            if (self && itemIndex == item.itemIndex)
-            {
-                //Log.Debug("Give Birthday Candles");
-                // Log.Debug("Count Birthday Candles on Pickup: " + count);
-
-                CharacterBody player = CharacterBody.readOnlyInstancesList.ToList().Find((body) => body.inventory == self);
-
-                // If you don't have any Rotten Bones
-                if (player && player.inventory && player.inventory.GetItemCountEffective(Void.RottenBones.item) <= 0)
-                {
-                    ApplyBirthday(player, countToAdd, self.GetItemCountEffective(item.itemIndex));
                 }
             }
         }

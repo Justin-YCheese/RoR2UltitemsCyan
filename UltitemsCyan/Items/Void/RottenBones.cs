@@ -51,7 +51,7 @@ namespace UltitemsCyan.Items.Void
             // Add Behavior to player (expectially if the full time intervals have passed)
             if (NetworkServer.active && self && self.inventory)
             {
-                Log.Warning(" ::----:: Got Bones in me too");
+                //Log.Warning(" ::----:: Got Bones in me too");
                 _ = self.AddItemBehavior<RottenBonesVoidBehavior>(self.inventory.GetItemCountEffective(item));
             }
         }
@@ -61,7 +61,7 @@ namespace UltitemsCyan.Items.Void
             // Add Behavior to player (expectially if the full time intervals have passed)
             if (self && self.inventory)
             {
-                Log.Warning(" ::----:: Found Bones?");
+                //Log.Warning(" ::----:: Found Bones?");
                 if (self.inventory.GetItemCountEffective(item) > 0)
                 {
                     Log.Warning("Give Rotting Bones");
@@ -69,13 +69,13 @@ namespace UltitemsCyan.Items.Void
                     if (Run.instance.time < Ultitems.stageStartTime + rotTimeInterval * rotsPerItem)
                     {
                         RottenBonesVoidBehavior behavior = self.AddItemBehavior<RottenBonesVoidBehavior>(self.inventory.GetItemCountEffective(item));
-                        Log.Debug("New Bone? Intervals Passed! " + behavior.IntervalsPassed);
+                        //Log.Debug("New Bone? Intervals Passed! " + behavior.IntervalsPassed);
                         ApplyRot(self, behavior.IntervalsPassed);
                     }
                     else
                     {
                         // Apply max rot
-                        Log.Debug("Pass rot Time Interval Item Pickup");
+                        //Log.Debug("Pass rot Time Interval Item Pickup");
                         ApplyRot(self, rotsPerItem);
                     }
                 }

@@ -6,8 +6,7 @@
 - Add jump buffer timer to Frisbee (because it's being janky, Test with Hunter's Harpoon)
 
 	When Testing:
-- Test Zorse with Shurikans and Railgunner scope
-- YIELDSIGN with extra equipment red item
+- temp Corroding Vault priority
 
 
 - Rotten Bones works when time is frozen...
@@ -35,6 +34,7 @@
 - zip
 	- by compressing content of thunderstore folder not the folder itself
 - Has the tags: Mods | Items | Survivors of the Void | Seekers of the Storm Update | Alloyed Collective
+- Push git changes
 
 	DLC Notes:
 - An item transforamtion can fail if there are not enough items for min transformation, or if the inventory is diabled
@@ -43,7 +43,7 @@
 	Removed for now...
 - Deluged Pail
 	- They changed something about inventory count so I'll investigate later
-- Removed TAKEDAMAGEPROCESS IL code insertion
+- FIXED | Removed TAKEDAMAGEPROCESS IL code insertion
     - Grapevine
     - Silver Thread
     - Koala Sticker
@@ -53,12 +53,18 @@
 - FIXED | HMT & Zorse Pill
 	- HMT Doesn't apply any fire despite 100% chance with DoT status effects...
 	- And I don't think the void version can easily compile without base item
+- Pig's Spork
+	- I don't know...
 - Oboslute
 	- It is just overall funky and I don't know if it fully works
 	- Uses transforms and I don't know if Shrine of Order was changed too with temp items
 
 
 	Fixing for DLC:
+
+- Use Too Many Items Delegate System for Taking Damage functions
+	- Will be alot better for when the damage funciton updates, and better compatibility with other mods
+	- Test if it works in multiplayer first
 
 - What is the item tag AllowedForUseAsCraftingIngredient?
 	- There's a crafting mechanic now that I'll add items to

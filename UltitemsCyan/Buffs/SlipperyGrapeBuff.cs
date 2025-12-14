@@ -24,90 +24,30 @@ namespace UltitemsCyan.Buffs
 
         protected void Hooks()
         {
-            IL.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess;
-        }
-
-        private void HealthComponent_TakeDamageProcess(ILContext il)
-        {
-            ILCursor c = new(il); // Make new ILContext
-
-            //Log.Debug(" $ $ $ $ $ $ $ $ $ $ $ $ $ $ * * * Find IL: work? 2");
-
-            // Inject code just before body armor
-            // Go just before: if (!CS$<>8__locals1.damageInfo.rejected && this.body.HasBuff(JunkContent.Buffs.BodyArmor))
-            //     which is equal to the following instructions
-            if (c.TryGotoNext(MoveType.Before,
-                //x => x.MatchLdloc(0),
-                //x => x.MatchLdfld("RoR2.HealthComponent/<>c__DisplayClass108_0", "damageInfo"),
-                //x => x.MatchLdfld<DamageInfo>("rejected"),
-                //x => x.MatchBrtrue(out ILLabel label),
-                x => x.MatchLdarg(0),
-                x => x.MatchLdfld("RoR2.HealthComponent", "body"),
-                x => x.MatchLdsfld("RoR2.JunkContent/Buffs", "BodyArmor"))
-            && c.TryGotoPrev(MoveType.Before,
-                x => x.MatchLdloc(0)))
+            //IL.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess;
+            GenericGameEvents.BeforeTakeDamage += (damageInfo, attackerInfo, victimInfo) =>
             {
-                //RoR2.JunkContent.Buffs;
-
-                //Log.Debug(c);
-
-                c.Index++;
-
-
-                //Log.Debug(c);
-
-                _ = c.Emit(OpCodes.Ldarg, 0);   // Load Health Component
-                _ = c.Emit(OpCodes.Ldarg, 1);   // Load Damage Info
-
-                /// Run custom code
-                _ = c.EmitDelegate<Action<HealthComponent, DamageInfo>>((hc, di) =>
+                //Log.Warning(" ///// ///// Slippery Grapes Block?");
+                if (damageInfo.rejected == false && damageInfo.damageColorIndex != DamageColorIndex.DelayedDamage)
                 {
-                    //Log.Warning(" ///// ///// Slippery Grapes Block?");
-                    if (di.rejected == false)
+                    CharacterBody victimBody = victimInfo.body;
+                    // If you have buffs and rolled the block
+                    if (victimBody && victimBody.GetBuffCount(buff) > 0 && Util.CheckRoll(grapeBlockChance, 0))
                     {
-                        CharacterBody cb = hc.body;
-                        if (cb)
+                        victimBody.RemoveBuff(buff);
+                        damageInfo.rejected = true;
+
+                        EffectManager.SpawnEffect(HealthComponent.AssetReferences.bearEffectPrefab, new EffectData
                         {
-                            int grapes = cb.GetBuffCount(buff);     // TODO optimize with one random number generator, find location
-                            //Log.Debug("Slip Grape 2");
-                            for (int i = 0; i < grapes; i++)    // Ecential While loop but max 'grapes' times
-                            {
-                                //Log.Debug(" - " + i);
-                                cb.RemoveBuff(buff);
-                                //Log.Debug("Got some Grapes!");
-                                if (Util.CheckRoll(grapeBlockChance, 0))
-                                {
-                                    //Log.Debug("Slip Grape Avoidance!");
-                                    di.rejected = true;     // Can set value here because it's a reference. Cannot do the same for primative types?
-
-                                    //EffectManager.SpawnEffect(HealthComponent.AssetReferences.damageRejectedPrefab, new EffectData
-                                    //{
-                                    //    origin = di.position
-                                    //}, true);
-
-                                    EffectManager.SpawnEffect(HealthComponent.AssetReferences.bearEffectPrefab, new EffectData
-                                    {
-                                        origin = di.position,
-                                        rotation = Util.QuaternionSafeLookRotation((di.force != Vector3.zero) ? di.force : UnityEngine.Random.onUnitSphere),
-                                        //color = new Color(9, 153, 61), // Grape Colors  Deson't Do Anything
-                                        //scale = 50f
-                                    }, true);
-                                    return;
-                                }
-                            }
-                        }
+                            origin = damageInfo.position,
+                            rotation = Util.QuaternionSafeLookRotation((damageInfo.force != Vector3.zero) ? damageInfo.force : UnityEngine.Random.onUnitSphere),
+                            //color = new Color(9, 153, 61), // Grape Colors  Deson't Do Anything
+                            //scale = 50f
+                        }, true);
+                        return;
                     }
-                    //return false;
-                    //*/
-                });
-                //*/
-
-                //Log.Debug(il.ToString());
-            }
-            else
-            {
-                Log.Warning("Slippery Grape cannot find line");
-            }
+                }
+            };
         }
 
         /*/

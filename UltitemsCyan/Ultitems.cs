@@ -80,7 +80,7 @@ namespace UltitemsCyan
         public const string PluginName = "UltitemsCyan";
         public const string PluginVersion = "0.13.3";
 
-        public const string PluginSuffix = "Alloyed! No Birthdays I promise...";
+        public const string PluginSuffix = "Alloyed! No Birthdays I promise... What is Happening?";
 
         private static ConfigFile UltitemsConfig { get; set; }
 
@@ -113,7 +113,11 @@ namespace UltitemsCyan
             //ConfigInit();
             UltitemsConfig = new ConfigFile(Paths.ConfigPath + "\\Ultitems_ConfigFile.cfg", true);
 
+            // Init My Assets Class
             UltAssets.Init();
+
+            // Init Generic Game Events for taking damage items
+            GenericGameEvents.Init();
 
             // *** *** Add buffs to the game
             List<BuffBase> ultitemBuffs = [];
@@ -128,7 +132,7 @@ namespace UltitemsCyan
             ultitemBuffs.Add(new OverclockedBuff());
             ultitemBuffs.Add(new RottingBuff()); //ALLOYED
 
-            //ultitemBuffs.Add(new SlipperyGrapeBuff()); // % TAKEDAMAGEPROCESS
+            ultitemBuffs.Add(new SlipperyGrapeBuff()); // % TAKEDAMAGEPROCESS
 
             ////// ultitemBuffs.Add(new PeelBuff());
             ultitemBuffs.Add(new QuarkGravityBuff());
@@ -150,14 +154,12 @@ namespace UltitemsCyan
             ultitemItems.Add(new CorrodingVaultConsumed());
             ultitemItems.Add(new InhabitedCoffinConsumed());
             ultitemItems.Add(new SuesMandiblesConsumed());
-            //ultitemItems.Add(new SilverThreadConsumed()); // % TAKEDAMAGEPROCESS
-            ultitemItems.Add(new GreySolvent());
+            ultitemItems.Add(new SilverThreadConsumed()); // % TAKEDAMAGEPROCESS
+            //ultitemItems.Add(new GreySolvent()); // With Obsolute
 
             // *** White
             ultitemItems.Add(new CremeBrulee());
-
-            //ultitemItems.Add(new KoalaSticker()); // % TAKEDAMAGEPROCESS
-
+            ultitemItems.Add(new KoalaSticker()); // % TAKEDAMAGEPROCESS // Should be affter grape buff
             ultitemItems.Add(new ToyRobot());
             ultitemItems.Add(new FleaBag());
             ultitemItems.Add(new Frisbee());
@@ -172,8 +174,8 @@ namespace UltitemsCyan
 
             // *** Red
             ultitemItems.Add(new CorrodingVault()); // Has Consumed Item
-            //ultitemItems.Add(new Grapevine()); // % TAKEDAMAGEPROCESS
-            ultitemItems.Add(new PigsSpork()); // HealthComponent_UpdateLastHitTime
+            ultitemItems.Add(new Grapevine()); // % TAKEDAMAGEPROCESS
+            //ultitemItems.Add(new PigsSpork()); // HealthComponent_UpdateLastHitTime
             ultitemItems.Add(new RockyTaffy());
             ultitemItems.Add(new SuesMandibles()); // Has Consumed Item
             ultitemItems.Add(new ViralEssence());
@@ -183,7 +185,7 @@ namespace UltitemsCyan
             ultitemItems.Add(new UltravioletBulb());
             ////// ultitemItems.Add(new PowerChip());
 
-            //ultitemItems.Add(new SilverThread()); // % TAKEDAMAGEPROCESS // Has Consumed Item
+            ultitemItems.Add(new SilverThread()); // % TAKEDAMAGEPROCESS // Has Consumed Item
 
             //ultitemItems.Add(new DelugedPail()); //ALLOYED
 
