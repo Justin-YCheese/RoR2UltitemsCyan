@@ -26,7 +26,7 @@ namespace UltitemsCyan.Equipment
                 "POTOFREGOLITH",
                 itemName,
                 "<style=cDeath>Take damage</style> on use.",
-                "Take <style=cIsHealth>4% or 20% of your health</style> as <style=cIsDamage>damage</style>. Only deals <style=cIsHealth>4%</style> while at low health.",
+                "Take <style=cIsHealth>2% or 20% of your health</style> as <style=cIsDamage>damage</style>. Only deals <style=cIsHealth>2%</style> while at low health.",
                 "The dust is as sharp as a knife",
                 cooldown,
                 true,

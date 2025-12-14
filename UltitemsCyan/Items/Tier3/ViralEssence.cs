@@ -32,7 +32,7 @@ namespace UltitemsCyan.Items.Tier3
                 ItemTier.Tier3,
                 UltAssets.ViralSmogSprite,
                 UltAssets.ViralSmogPrefab,
-                [ItemTag.Utility]
+                [ItemTag.CanBeTemporary, ItemTag.Utility]
             );
         }
 

@@ -56,12 +56,12 @@ namespace UltitemsCyan.Items.Tier2
                 "TINYIGLOO",
                 itemName,
                 "Increase healing per zones occupied. Healing increases zone size.",
-                "While in a zone, <style=cIsHealing>heal 30%</style> <style=cStack>(+10% per stack)</style> more plus half as much for each <style=cIsDamage>additional zone</style> occupied. Healing will <style=cIsDamage>increases the size</style> of the zone for <style=cIsHealing>50%</style> of the amount <style=cIsHealing>healed</style>. Increase max size by <style=cIsDamage>60%</style> <style=cStack>(+30% per stack)</style>.",
+                "While in a zone, <style=cIsHealing>heal 30%</style> <style=cStack>(+10% per stack)</style> more plus half as much for each <style=cIsDamage>additional zone</style> occupied. Healing will <style=cIsDamage>increases the size</style> of the zone for <style=cIsHealing>50%</style> of the amount <style=cIsHealing>healed</style>. Maximum zone size is <style=cIsDamage>160%</style> <style=cStack>(+30% per stack)</style>.",
                 "It's like a snowball effect but for zones. Get it? But there already existed a snow globe item, so I went for something similar",
                 ItemTier.Tier2,
                 UltAssets.TinyIglooSprite,
                 UltAssets.TinyIglooPrefab,
-                [ItemTag.Healing, ItemTag.Utility, ItemTag.AIBlacklist, ItemTag.HoldoutZoneRelated]
+                [ItemTag.CanBeTemporary, ItemTag.Healing, ItemTag.Utility, ItemTag.AIBlacklist, ItemTag.HoldoutZoneRelated]
             );
         }
 

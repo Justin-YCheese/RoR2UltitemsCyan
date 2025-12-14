@@ -78,9 +78,9 @@ namespace UltitemsCyan
         public const string PluginGUID = PluginAuthor + "." + PluginName;
         public const string PluginAuthor = "SporkySpig";
         public const string PluginName = "UltitemsCyan";
-        public const string PluginVersion = "0.13.2";
+        public const string PluginVersion = "0.13.3";
 
-        public const string PluginSuffix = "Alloyed! These temp items are tough to handle...";
+        public const string PluginSuffix = "Alloyed! No Birthdays I promise...";
 
         private static ConfigFile UltitemsConfig { get; set; }
 
@@ -117,7 +117,7 @@ namespace UltitemsCyan
 
             // *** *** Add buffs to the game
             List<BuffBase> ultitemBuffs = [];
-            //ultitemBuffs.Add(new BirthdayBuff()); //ALLOYED
+            ultitemBuffs.Add(new BirthdayBuff()); //ALLOYED
             ultitemBuffs.Add(new CrysotopeFlyingBuff());
             ultitemBuffs.Add(new EyeAwakeBuff());
             ultitemBuffs.Add(new EyeDrowsyBuff());
@@ -126,7 +126,7 @@ namespace UltitemsCyan
             ultitemBuffs.Add(new DownloadedBuff());
             ultitemBuffs.Add(new FrisbeeGlidingBuff());
             ultitemBuffs.Add(new OverclockedBuff());
-            //ultitemBuffs.Add(new RottingBuff()); //ALLOYED
+            ultitemBuffs.Add(new RottingBuff()); //ALLOYED
 
             //ultitemBuffs.Add(new SlipperyGrapeBuff()); // % TAKEDAMAGEPROCESS
 
@@ -136,7 +136,7 @@ namespace UltitemsCyan
             ultitemBuffs.Add(new SporkBleedBuff());
             ultitemBuffs.Add(new TaffyChewBuff());
             ultitemBuffs.Add(new TickCritBuff());
-            //ultitemBuffs.Add(new ZorseStarvingBuff()); //ALLOYED
+            ultitemBuffs.Add(new ZorseStarvingBuff()); //ALLOYED
 
             foreach (BuffBase newBuff in ultitemBuffs)
             {
@@ -163,9 +163,9 @@ namespace UltitemsCyan
             ultitemItems.Add(new Frisbee());
 
             // *** Green
-            //ultitemItems.Add(new BirthdayCandles()); //ALLOYED
+            ultitemItems.Add(new BirthdayCandles()); //ALLOYED
             // moved Last Priority // ultitemItems.Add(new DegreeScissors());
-            //ultitemItems.Add(new HMT()); //ALLOYED
+            ultitemItems.Add(new HMT()); //ALLOYED
             ultitemItems.Add(new OverclockedGPU());
             ultitemItems.Add(new TinyIgloo()); // % ILContext
             ultitemItems.Add(new XenonAmpoule());
@@ -204,12 +204,12 @@ namespace UltitemsCyan
             // *** Void Items
             ultitemItems.Add(new Crysotope());
             ultitemItems.Add(new DriedHam());
-            //ultitemItems.Add(new RottenBones()); //ALLOYED
+            ultitemItems.Add(new RottenBones()); //ALLOYED
             ////// ultitemItems.Add(new QuantumPeel());
             ultitemItems.Add(new DownloadedRAM());
             ultitemItems.Add(new JealousFoe());
             ultitemItems.Add(new InhabitedCoffin()); // Has Consumed Item
-            //ultitemItems.Add(new ZorsePill()); //ALLOYED
+            ultitemItems.Add(new ZorsePill()); //ALLOYED
 
             // Last Priority
             ultitemItems.Add(new DegreeScissors()); // After Vault and Coffin to grab consumed items

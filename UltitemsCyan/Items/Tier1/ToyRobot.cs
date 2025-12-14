@@ -29,12 +29,12 @@ namespace UltitemsCyan.Items.Tier1
                 "TOYROBOT",
                 itemName,
                 "Grab pickups from further away. Gain temporary barrier from pickups.",
-                "Pull in pickups from <style=cIsUtility>20m</style> <style=cStack>(+10m per stack)</style> away. Gain <style=cIsHealing>6</style> <style=cStack>(+6 per stack)</style> <style=cIsHealing>temporary barrier</style> from pickups.",
+                "Pull in pickups from <style=cIsUtility>20m</style> <style=cStack>(+10m per stack)</style> away. Gain <style=cIsHealing>8</style> <style=cStack>(+8 per stack)</style> <style=cIsHealing>temporary barrier</style> from pickups.",
                 "They march to you like a song carriers their steps. More robots have a weaker pull",
                 ItemTier.Tier1,
                 UltAssets.ToyRobotSprite,
                 UltAssets.ToyRobotPrefab,
-                [ItemTag.Utility, ItemTag.Healing]
+                [ItemTag.CanBeTemporary, ItemTag.Utility, ItemTag.Healing]
             );
         }
 

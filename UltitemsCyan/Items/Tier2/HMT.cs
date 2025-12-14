@@ -34,7 +34,7 @@ namespace UltitemsCyan.Items.Tier2
                 ItemTier.Tier2,
                 UltAssets.HMTSprite,
                 UltAssets.HMTPrefab,
-                [ItemTag.Damage]
+                [ItemTag.CanBeTemporary, ItemTag.Damage]
             );
         }
 
@@ -43,8 +43,10 @@ namespace UltitemsCyan.Items.Tier2
             On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
             On.RoR2.GlobalEventManager.OnHitEnemy += GlobalEventManager_OnHitEnemy;
             //On.RoR2.CharacterBody.AddBuff_BuffIndex += CharacterBody_AddBuff_BuffIndex;
-            On.RoR2.CharacterBody.AddTimedBuff_BuffDef_float += CharacterBody_AddTimedBuff;
-            On.RoR2.DotController.InflictDot_GameObject_GameObject_DotIndex_float_float_Nullable1 += DotController_InflictDot_GameObject;
+            //On.RoR2.CharacterBody.AddTimedBuff_BuffDef_float += CharacterBody_AddTimedBuff;
+            On.RoR2.CharacterBody.AddTimedBuff_BuffDef_float += CharacterBody_AddTimedBuff_BuffDef_float;
+            //On.RoR2.DotController.InflictDot_GameObject_GameObject_DotIndex_float_float_Nullable1 += DotController_InflictDot_GameObject;
+            On.RoR2.DotController.InflictDot_refInflictDotInfo += DotController_InflictDot_refInflictDotInfo;
         }
 
         private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
@@ -79,8 +81,7 @@ namespace UltitemsCyan.Items.Tier2
             //Log.Debug(" ! HMT Off Hit...");
         }
 
-
-        private void CharacterBody_AddTimedBuff(On.RoR2.CharacterBody.orig_AddTimedBuff_BuffDef_float orig, CharacterBody self, BuffDef buffDef, float duration)
+        private void CharacterBody_AddTimedBuff_BuffDef_float(On.RoR2.CharacterBody.orig_AddTimedBuff_BuffDef_float orig, CharacterBody self, BuffDef buffDef, float duration)
         {
             orig(self, buffDef, duration);
             // Use external variables to see if was from either TakeDamage or OnHitEnemy and not something else
@@ -102,29 +103,36 @@ namespace UltitemsCyan.Items.Tier2
         }
 
         // When Inflicting something other than Burn
-        private void DotController_InflictDot_GameObject(On.RoR2.DotController.orig_InflictDot_GameObject_GameObject_DotIndex_float_float_Nullable1 orig, GameObject victimObject, GameObject attackerObject, DotController.DotIndex dotIndex, float duration, float damageMultiplier, uint? maxStacksFromAttacker)
+
+        //private void DotController_InflictDot_GameObject(On.RoR2.DotController.orig_InflictDot_GameObject_GameObject_DotIndex_float_float_Nullable1 orig, GameObject victimObject, GameObject attackerObject, DotController.DotIndex dotIndex, float duration, float damageMultiplier, uint? maxStacksFromAttacker)
+        private void DotController_InflictDot_refInflictDotInfo(On.RoR2.DotController.orig_InflictDot_refInflictDotInfo orig, ref InflictDotInfo inflictDotInfo)
         {
-            orig(victimObject, attackerObject, dotIndex, duration, damageMultiplier, maxStacksFromAttacker);
+            orig(ref inflictDotInfo);
             //Log.Debug(" * * * DotController HMT Inflicting burn?");
-            if (victimObject && attackerObject
-                && dotIndex != DotController.DotIndex.Burn && dotIndex != DotController.DotIndex.Helfire && dotIndex != DotController.DotIndex.StrongerBurn
+            //Log.Debug(" * * * If statement: " + (inflictDotInfo.victimObject && inflictDotInfo.attackerObject)
+            //    + " | " + (inflictDotInfo.dotIndex != DotController.DotIndex.Burn && inflictDotInfo.dotIndex != DotController.DotIndex.Helfire && inflictDotInfo.dotIndex != DotController.DotIndex.StrongerBurn)
+            //    + " | " + NetworkServer.active);
+            if (inflictDotInfo.victimObject && inflictDotInfo.attackerObject
+                && inflictDotInfo.dotIndex != DotController.DotIndex.Burn
+                && inflictDotInfo.dotIndex != DotController.DotIndex.Helfire
+                && inflictDotInfo.dotIndex != DotController.DotIndex.StrongerBurn
                      && NetworkServer.active)
             {
-                CharacterBody body = attackerObject.GetComponent<CharacterBody>();
+                CharacterBody body = inflictDotInfo.attackerObject.GetComponent<CharacterBody>();
                 int grabCount = body.inventory.GetItemCountEffective(item);
                 // Have item and got chance
-                Log.Debug("HMT check roll: " + igniteChance * grabCount + "% chance");
+                //Log.Debug("HMT check roll: " + igniteChance * grabCount + "% chance");
                 if (grabCount > 0 && Util.CheckRoll(igniteChance * grabCount, body.master.luck))
                 {
                     // Inflict Burn!
-                    InflictBurn(victimObject, attackerObject, body.inventory, grabCount);
+                    InflictBurn(inflictDotInfo.victimObject, inflictDotInfo.attackerObject, body.inventory, grabCount);
                 }
             }
         }
 
         private void InflictBurn(GameObject victimObject, GameObject attackerObject, Inventory inventory, int grabCount)
         {
-            Log.Debug("Hot Burns! HMT");
+            //Log.Debug("Hot Burns! HMT");
             InflictDotInfo inflictDotInfo = new()
             {
                 victimObject = victimObject,
@@ -133,6 +141,7 @@ namespace UltitemsCyan.Items.Tier2
                 dotIndex = DotController.DotIndex.Burn,
                 duration = baseBurnDuration + durationPerItem * (grabCount - 1),
                 damageMultiplier = 1,
+                hitHurtBox = null,
                 maxStacksFromAttacker = null
             };
             StrengthenBurnUtils.CheckDotForUpgrade(inventory, ref inflictDotInfo);

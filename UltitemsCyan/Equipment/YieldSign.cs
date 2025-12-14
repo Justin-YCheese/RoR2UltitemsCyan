@@ -8,8 +8,7 @@ namespace UltitemsCyan.Equipment
 {
     // Can't affect character motor or give buffs with equipment
 
-
-    // TODO: check if Item classes needs to be public
+    // TODO: the array that used to store your various equipment has changed from equipmentStateSlots[slot] to _equipmentStateSlots[slot][set].
     public class YieldSign : EquipmentBase
     {
         // Inflict Slowdown on self?
@@ -47,7 +46,7 @@ namespace UltitemsCyan.Equipment
                 "YIELDSIGN",
                 itemName,
                 "Alternate between multiplying speed and canceling it. Hit nearby enemies each time.",
-                "Alternate between multiplying current speed by 300% and zeroing it. Stun nearby enemies for 300% damage.",
+                "Alternate between multiplying current <style=cIsUtility>speed by 300%</style> and <style=cIsUtility>canceling</style> it. Stun nearby enemies for <style=cIsDamage>300% damage</style>.",
                 "Stop and go, the best of both worlds right?",
                 cooldown,
                 false,
@@ -142,6 +141,7 @@ namespace UltitemsCyan.Equipment
 
         public static void YieldAttack(CharacterBody body)
         {
+            // No more cleanse Body? CleanseSystem.CleanseBody
             body.characterMotor.disableAirControlUntilCollision = false;
             body.characterMotor.Motor.ForceUnground();
 

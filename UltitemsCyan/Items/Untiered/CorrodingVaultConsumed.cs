@@ -20,7 +20,7 @@ namespace UltitemsCyan.Items.Untiered
                 ItemTier.NoTier,
                 UltAssets.CorrodingVaultConsumedSprite,
                 UltAssets.CorrodingVaultConsumedPrefab,
-                [ItemTag.Utility, ItemTag.OnStageBeginEffect, ItemTag.AIBlacklist]
+                [ItemTag.CanBeTemporary, ItemTag.Utility, ItemTag.OnStageBeginEffect, ItemTag.AIBlacklist]
             );
         }
 

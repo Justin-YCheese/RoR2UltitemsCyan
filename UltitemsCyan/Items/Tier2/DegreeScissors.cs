@@ -11,6 +11,7 @@ namespace UltitemsCyan.Items.Tier2
 {
 
     // TODO: check if Item classes needs to be public
+    // TODO: Use ItemDef's 'isConsumed' to check if an item is a consumed variant
     public class DegreeScissors : ItemBase
     {
         public static ItemDef item;
@@ -33,7 +34,7 @@ namespace UltitemsCyan.Items.Tier2
                 ItemTier.Tier2,
                 UltAssets.DegreeScissorsSprite,
                 UltAssets.DegreeScissorsPrefab,
-                [ItemTag.Utility, ItemTag.OnStageBeginEffect, ItemTag.AIBlacklist]
+                [ItemTag.CanBeTemporary, ItemTag.Utility, ItemTag.OnStageBeginEffect, ItemTag.AIBlacklist]
             );
         }
 

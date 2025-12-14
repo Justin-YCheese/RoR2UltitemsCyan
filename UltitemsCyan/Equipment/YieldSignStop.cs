@@ -20,7 +20,7 @@ namespace UltitemsCyan.Equipment
                 "YIELDSIGNSTOP",
                 itemName,
                 "Alternate between multiplying speed and canceling it. Hit nearby enemies each time.",
-                "Alternate between multipling speed by 400%, or canceling speed. Damage nearby enemies for 300% damage.",
+                "Alternate between multipling speed by 300%, or canceling speed. Damage nearby enemies for 300% damage.",
                 "Just Stop",
                 cooldown,
                 false,

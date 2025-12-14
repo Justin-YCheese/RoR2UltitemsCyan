@@ -36,7 +36,7 @@ namespace UltitemsCyan.Items.Tier1
                 ItemTier.Tier1,
                 UltAssets.FrisbeeSprite,
                 UltAssets.FrisbeePrefab,
-                [ItemTag.Utility]
+                [ItemTag.CanBeTemporary, ItemTag.Utility]
             );
         }
 

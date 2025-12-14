@@ -37,7 +37,7 @@ namespace UltitemsCyan.Items.Tier3
                 ItemTier.Tier3,
                 UltAssets.GrapevineSprite,
                 UltAssets.GrapevinePrefab,
-                [ItemTag.Damage]
+                [ItemTag.CanBeTemporary, ItemTag.Damage]
             );
         }
 

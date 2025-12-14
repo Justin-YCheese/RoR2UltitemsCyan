@@ -32,12 +32,12 @@ namespace UltitemsCyan.Items.Tier1
                 "KOALASTICKER",
                 itemName,
                 "Reduce the maximum damage you can take.",
-                "Only lose a maxinum of <style=cIsHealing>90%</style> <style=cStack>(-12% per stack)</style> of your <style=cIsHealing>health</style> from a hit. Cannot be reduced below <style=cIsHealing>5</style>.",
+                "Only lose a maximum of <style=cIsHealing>90%</style> <style=cStack>(-12% per stack)</style> of your <style=cIsHealing>health</style> from a hit. Does not reduce below <style=cIsHealing>5 health</style>.",
                 "Like the bear but more consistant...   and more cute",
                 ItemTier.Tier1,
                 UltAssets.KoalaStickerSprite,
                 UltAssets.KoalaStickerPrefab,
-                [ItemTag.Utility]
+                [ItemTag.CanBeTemporary, ItemTag.Utility]
             );
         }
 

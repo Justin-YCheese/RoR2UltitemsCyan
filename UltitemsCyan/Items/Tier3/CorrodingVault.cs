@@ -30,7 +30,7 @@ namespace UltitemsCyan.Items.Tier3
                 ItemTier.Tier3,
                 UltAssets.CorrodingVaultSprite,
                 UltAssets.CorrodingVaultPrefab,
-                [ItemTag.Utility, ItemTag.OnStageBeginEffect, ItemTag.AIBlacklist]
+                [ItemTag.CanBeTemporary, ItemTag.Utility, ItemTag.OnStageBeginEffect, ItemTag.AIBlacklist]
             );
         }
 

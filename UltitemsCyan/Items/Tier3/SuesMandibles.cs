@@ -28,7 +28,7 @@ namespace UltitemsCyan.Items.Tier3
                 ItemTier.Tier3,
                 UltAssets.SuesMandiblesSprite,
                 UltAssets.SuesMandiblesPrefab,
-                [ItemTag.Utility, ItemTag.ExtractorUnitBlacklist]
+                [ItemTag.CanBeTemporary, ItemTag.Utility, ItemTag.ExtractorUnitBlacklist]
             );
         }
 

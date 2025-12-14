@@ -24,6 +24,7 @@ namespace UltitemsCyan.Items
             GameObject prefab,
             ItemTag[] tags,
             ItemDef transformItem = null)
+            // TODO Add IsConsumed
         {
             ItemDef item = ScriptableObject.CreateInstance<ItemDef>();
 
@@ -37,7 +38,8 @@ namespace UltitemsCyan.Items
             item.pickupToken = tokenPrefix + "_PICK";
             item.descriptionToken = tokenPrefix + "_DESC";
             item.loreToken = tokenPrefix + "_LORE";
-
+            //item.requiredExpansion = ExpansionDef.;
+            //item.isConsumed
 
             // tier
             ItemTierDef itd = ScriptableObject.CreateInstance<ItemTierDef>();

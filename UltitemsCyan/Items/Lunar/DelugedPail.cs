@@ -44,7 +44,7 @@ namespace UltitemsCyan.Items.Lunar
                 ItemTier.Lunar,
                 UltAssets.SandPailSprite,
                 UltAssets.SandPailPrefab,
-                [ItemTag.Utility] // TODO add temporary item blacklist to all lunars
+                [ItemTag.Utility]
             );
         }
 
@@ -178,6 +178,61 @@ namespace UltitemsCyan.Items.Lunar
                 }
             }
         }//*/
+
+        /*/ In Inventory
+        public void ShrineRestackInventory([NotNull] Xoroshiro128Plus rng)
+		{
+			if (!NetworkServer.active)
+			{
+				Debug.LogWarning("[Server] function 'System.Void RoR2.Inventory::ShrineRestackInventory(Xoroshiro128Plus)' called on client");
+				return;
+			}
+			List<ItemIndex> list;
+			using (CollectionPool<ItemIndex, List<ItemIndex>>.RentCollection(out list))
+			{
+				List<ItemIndex> list2;
+				using (CollectionPool<ItemIndex, List<ItemIndex>>.RentCollection(out list2))
+				{
+					bool flag = false;
+					foreach (ItemTierDef itemTierDef in ItemTierCatalog.allItemTierDefs)
+					{
+						if (itemTierDef.canRestack)
+						{
+							int num = 0;
+							float num2 = 0f;
+							list.Clear();
+							list2.Clear();
+							this.effectiveItemStacks.GetNonZeroIndices(list2);
+							foreach (ItemIndex itemIndex in list2)
+							{
+								this.effectiveItemStacks.GetStackValue(itemIndex);
+								ItemDef itemDef = ItemCatalog.GetItemDef(itemIndex);
+								if (itemTierDef.tier == itemDef.tier && itemDef.DoesNotContainTag(ItemTag.ObjectiveRelated) && itemDef.DoesNotContainTag(ItemTag.PowerShape))
+								{
+									num += this.GetItemCountPermanent(itemIndex);
+									num2 += (float)this.GetItemCountTemp(itemIndex);
+									list.Add(itemIndex);
+									this.ResetItemPermanent(itemIndex);
+									this.ResetItemTemp(itemIndex);
+								}
+							}
+							if (list.Count > 0)
+							{
+								ItemIndex itemIndex2 = rng.NextElementUniform<ItemIndex>(list);
+								this.GiveItemPermanent(itemIndex2, num);
+								this.GiveItemTemp(itemIndex2, num2);
+								flag = true;
+							}
+						}
+					}
+					if (flag)
+					{
+						base.SetDirtyBit(8U);
+					}
+				}
+			}
+		}
+        //*/
 
         public void SporkRestackInventory(Inventory inventory, Xoroshiro128Plus rng)
         {

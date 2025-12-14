@@ -30,12 +30,12 @@ namespace UltitemsCyan.Items.Tier2
                 "OVERCLOCKEDGPU",
                 itemName,
                 "Increase attack speed on kill. Stacks 10 times. Resets upon getting hurt.",
-                "Killing an enemy increases <style=cIsDamage>attack speed</style> by <style=cIsDamage>3.5%</style>. Maximum cap of <style=cIsDamage>10</style> <style=cStack>(+10% per stack)</style> stacks. Lose stacks upon getting hit.",
+                "Killing an enemy increases <style=cIsDamage>attack speed</style> by <style=cIsDamage>3.5%</style>. Maximum cap of <style=cIsDamage>10</style> <style=cStack>(+10 per stack)</style> stacks. Lose stacks upon getting hit.",
                 "GPU GPU",
                 ItemTier.Tier2,
                 UltAssets.OverclockedGPUSprite,
                 UltAssets.OverclockedGPUPrefab,
-                [ItemTag.Damage, ItemTag.OnKillEffect]
+                [ItemTag.CanBeTemporary, ItemTag.Damage, ItemTag.OnKillEffect]
             );
         }
 

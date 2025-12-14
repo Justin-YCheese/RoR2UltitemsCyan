@@ -21,7 +21,10 @@ namespace UltitemsCyan.Equipment
      * 
      */
 
-    // TODO: check if Item classes needs to be public
+    // dropPickup has no setter anymore; use currentPickup in general
+    // generatedDrops -> generatedPickups
+    // ShopTerminalBehavior
+    // Various changes in the droptable classes: BasicPickUpDropTable, FreeChestDropTable, etc
     public class Obsolute : EquipmentBase
     {
         public static EquipmentDef equipment;

@@ -39,7 +39,7 @@ namespace UltitemsCyan.Items.Tier3
                 ItemTier.Tier3,
                 UltAssets.PigsSporkSprite,
                 UltAssets.PigsSporkPrefab,
-                [ItemTag.Damage, ItemTag.Healing, ItemTag.LowHealth]
+                [ItemTag.CanBeTemporary, ItemTag.Damage, ItemTag.Healing, ItemTag.LowHealth]
             );
         }
 

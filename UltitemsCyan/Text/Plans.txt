@@ -6,6 +6,10 @@
 - Add jump buffer timer to Frisbee (because it's being janky, Test with Hunter's Harpoon)
 
 	When Testing:
+- Test Zorse with Shurikans and Railgunner scope
+- YIELDSIGN with extra equipment red item
+
+
 - Rotten Bones works when time is frozen...
 	- Because using Run.instance.time
 - Check that Mythrixs can apply starve
@@ -43,30 +47,32 @@
     - Grapevine
     - Silver Thread
     - Koala Sticker
-- Bithday Candle & Rotten Bones
+- FIXED | Bithday Candle & Rotten Bones 
 	- Doesn't give buff on pickup for some reason...
 	- But it does on stage start
-- HMT & Zorse Pill
-	- HMT Doesn't apply any fire despite 100% chance...
+- FIXED | HMT & Zorse Pill
+	- HMT Doesn't apply any fire despite 100% chance with DoT status effects...
 	- And I don't think the void version can easily compile without base item
 - Oboslute
 	- It is just overall funky and I don't know if it fully works
-	- Uses transforms and I don't know if Shrine of Order was changed too
+	- Uses transforms and I don't know if Shrine of Order was changed too with temp items
 
 
 	Fixing for DLC:
 
 - What is the item tag AllowedForUseAsCraftingIngredient?
+	- There's a crafting mechanic now that I'll add items to
 - What is the item tag ExtractorUnitBlacklist?
-	- I know what it probably is, but also check everything else with extractor units
+	- This doesn't prevent items from being taken, but prevents them from being channeled
+
 
 - Use WithPickupIndex instead of .itemindex property for unique pickups
 	- public readonly UniquePickup WithPickupIndex(PickupIndex pickupIndex)
 
 - What is inventory.inventoryDisabled? and this.allowWhenDisabled?
-	- if (inventory.inventoryDisabled && !this.allowWhenDisabled) | In inventory dll
+	- Some attacks disable the inventory and the allowWhenDisabled bypasses this
 
-- Zorse Pill Does not include Head shot damage from railgunner
+
 
 - Find each GetItemCount() use and change to either 
 - RemoveItem obsolete, use RemoveItemPermanent or RemoveItemTemp or RemoveItemChanneled
@@ -91,11 +97,14 @@ The Temporary List
 	- Pointlss as nothing takes temporary scraps?
 
 
-
-
-
 	For Future Consideration:
 
+- Toy Robot does pull in junk even for non drifter players
+- Zores Pill doesn't work on weak spots?
+	- Zorse Pill Does not include Head shot damage from railgunner
+- Scorpian doesn't apply fire for HMT?
+- Could make birthday candle remove longest candle when an item is lost
+- Check how Kenetic Shield detects dropped shield
 - See if Lowhealth tag can be added to Pot of Regolith
 - For now Rocky Taffy doesn't freeze barrier when there's no shield
 	- so I increased barrier...
@@ -104,6 +113,7 @@ The Temporary List
 	- Same for InhabitedCoffin
 - For now a temp scissors will function with scrap. But it will always return permanant scrap, and will always try removeing only permanant scissors.
 
+- Zorse Doesn't work with surikens (the surikens don't apply Zorse)
 
 - Zorse not Network Effect? (or even work?)
     - Does affect appear in multiplayer?

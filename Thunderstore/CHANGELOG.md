@@ -1,5 +1,13 @@
 ## 0.13.2
 
+
+- All items can be temparary! Again...
+    - hadn't realized they needed an item tag...
+- Rotten Bones
+    - Reduced time required for buff from 3 -> 2.5 mins
+
+## 0.13.2
+
 - Now I actually removed Birthday Candles...
 
 ## 0.13.1

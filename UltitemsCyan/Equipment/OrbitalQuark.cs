@@ -8,9 +8,9 @@ using UnityEngine.Networking;
 
 namespace UltitemsCyan.Equipment
 {
-    // TODO: Make visible for all players
-    // Check other mods which spawn things (who's spawning it? how does everyone see it?)
-    // Maybe I'm missing a component for the spawned Quartz Ward
+    // Alloyed: CharacterMotor Changed signature for ModifyGravity
+    // There's a ModifyGravity?
+
     public class OrbitalQuark : EquipmentBase
     {
         public static EquipmentDef equipment;

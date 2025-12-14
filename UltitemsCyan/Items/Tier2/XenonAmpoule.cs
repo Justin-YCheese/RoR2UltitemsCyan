@@ -72,7 +72,7 @@ namespace UltitemsCyan.Items.Tier2
                 ItemTier.Tier2,
                 UltAssets.XenonAmpouleSprite,
                 UltAssets.XenonAmpoulePrefab,
-                [ItemTag.Damage, ItemTag.EquipmentRelated]
+                [ItemTag.CanBeTemporary, ItemTag.Damage, ItemTag.EquipmentRelated]
             );
         }
 

@@ -45,7 +45,7 @@ namespace UltitemsCyan.Items.Tier1
                 ItemTier.Tier1,
                 UltAssets.FleaBagSprite,
                 UltAssets.FleaBagPrefab,
-                [ItemTag.Damage]
+                [ItemTag.CanBeTemporary, ItemTag.Damage]
             );
         }
 

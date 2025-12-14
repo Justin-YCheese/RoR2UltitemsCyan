@@ -41,7 +41,7 @@ namespace UltitemsCyan.Items.Void
             // On kill gain stack
             On.RoR2.GlobalEventManager.OnCharacterDeath += GlobalEventManager_OnCharacterDeath;
             // On Jumping remove stack
-            On.EntityStates.GenericCharacterMain.ProcessJump += GenericCharacterMain_ProcessJump;
+            //On.EntityStates.GenericCharacterMain.ProcessJump += GenericCharacterMain_ProcessJump;
             // Touch ground reset buff
         }
 
@@ -66,9 +66,9 @@ namespace UltitemsCyan.Items.Void
             orig(self, damageReport);
         }
 
-        private void GenericCharacterMain_ProcessJump(On.EntityStates.GenericCharacterMain.orig_ProcessJump orig, EntityStates.GenericCharacterMain self)
-        {
-            throw new System.NotImplementedException();
-        }
+        //private void GenericCharacterMain_ProcessJump(On.EntityStates.GenericCharacterMain.orig_ProcessJump orig, EntityStates.GenericCharacterMain self)
+        //{
+        //    throw new System.NotImplementedException();
+        //}
     }
 }

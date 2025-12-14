@@ -6,7 +6,7 @@ using UltitemsCyan.Items.Tier2;
 using UnityEngine;
 using BepInEx.Configuration;
 
-using static RoR2.DotController;
+//using static RoR2.DotController;
 
 //using static RoR2.GenericPickupController;
 
@@ -62,26 +62,26 @@ namespace UltitemsCyan.Items.Void
             On.RoR2.HealthComponent.SendDamageDealt += HealthComponent_SendDamageDealt;
         }
 
-        private void HealthComponent_SendDamageDealt(On.RoR2.HealthComponent.orig_SendDamageDealt orig, DamageReport dR)
+        private void HealthComponent_SendDamageDealt(On.RoR2.HealthComponent.orig_SendDamageDealt orig, DamageReport damageReport)
         {
             //Log.Debug(" / / / / / Zorse start");
-            orig(dR);
+            orig(damageReport);
             //Log.Debug(" / / / / / Zorse mid");
             try
             {
-                GameObject victimObject = dR.victimBody.gameObject;
+                GameObject victimObject = damageReport.victimBody.gameObject;
                 // If the victum has an inventory
                 // and damage isn't rejected?
-                if (victimObject && dR.attackerBody && dR.attackerBody.inventory &&
-                    !dR.damageInfo.rejected && dR.damageInfo.damageType != DamageType.DoT &&
-                    dR.damageDealt > 0)
+                if (victimObject && damageReport.attackerBody && damageReport.attackerBody.inventory &&
+                    !damageReport.damageInfo.rejected && damageReport.damageInfo.damageType != DamageType.DoT &&
+                    damageReport.damageDealt > 0)
                 {
                     //Log.Debug(" / / / / / Zorse 1");
-                    CharacterBody inflictor = dR.attackerBody;
+                    CharacterBody inflictor = damageReport.attackerBody;
                     int grabCount = inflictor.inventory.GetItemCountEffective(item);
                     if (grabCount > 0)
                     {
-                        //Log.Debug("  ...Starving enemy with reports...");
+                        Log.Debug("  ...Starving enemy with reports...");
                         // If you have fewer than the max number of downloads, then grant buff
 
                         //float damageMultiplier = (basePercentHealth + (percentHealthPerStack * (grabCount - 1))) / 100f;
@@ -105,12 +105,13 @@ namespace UltitemsCyan.Items.Void
                             /*damageMultiplier = dR.damageDealt / dR.damageInfo.damage
                                                * (dR.damageDealt / inflictor.damage)
                                                * grabCount * percentPerStack / 100f,*/
-                            damageMultiplier = dR.damageInfo.damage / inflictor.damage
-                                               * (dR.damageInfo.crit ? 2 : 1)
+                            damageMultiplier = damageReport.damageInfo.damage / inflictor.damage
+                                               * (damageReport.damageInfo.crit ? 2 : 1)
                                                * grabCount * percentPerStack / 100f,
+                            hitHurtBox = null, // TODO change to something real?
                             maxStacksFromAttacker = null
                         };
-                        InflictDot(ref inflictDotInfo);
+                        DotController.InflictDot(ref inflictDotInfo);
                         //EffectManager.SimpleEffect(biteEffect, victim.transform.position, Quaternion.identity, true);
                         //EffectManager.SimpleEffect(biteEffect, victim.transform.position, Quaternion.identity, true);
                         //victim.GetComponent<CharacterBody>().AddTimedBuff();

@@ -15,7 +15,7 @@ namespace UltitemsCyan.Items.Void
 
         public const int rotsPerItem = 3;
         public const float rottingBuffMultiplier = 15;
-        public const float rotTimeInterval = 180; // 3 minutes
+        public const float rotTimeInterval = 150; // 2.5 minutes
 
         public override void Init(ConfigFile configs)
         {
@@ -51,6 +51,7 @@ namespace UltitemsCyan.Items.Void
             // Add Behavior to player (expectially if the full time intervals have passed)
             if (NetworkServer.active && self && self.inventory)
             {
+                Log.Warning(" ::----:: Got Bones in me too");
                 _ = self.AddItemBehavior<RottenBonesVoidBehavior>(self.inventory.GetItemCountEffective(item));
             }
         }
@@ -60,20 +61,21 @@ namespace UltitemsCyan.Items.Void
             // Add Behavior to player (expectially if the full time intervals have passed)
             if (self && self.inventory)
             {
+                Log.Warning(" ::----:: Found Bones?");
                 if (self.inventory.GetItemCountEffective(item) > 0)
                 {
-                    //Log.Warning("Give Rotting Bones");
+                    Log.Warning("Give Rotting Bones");
                     // If within time intervals give item behavior
                     if (Run.instance.time < Ultitems.stageStartTime + rotTimeInterval * rotsPerItem)
                     {
                         RottenBonesVoidBehavior behavior = self.AddItemBehavior<RottenBonesVoidBehavior>(self.inventory.GetItemCountEffective(item));
-                        //Log.Debug("New Bone? Intervals Passed! " + behavior.IntervalsPassed);
+                        Log.Debug("New Bone? Intervals Passed! " + behavior.IntervalsPassed);
                         ApplyRot(self, behavior.IntervalsPassed);
                     }
                     else
                     {
                         // Apply max rot
-                        //Log.Debug("Pass rot Time Interval Item Pickup");
+                        Log.Debug("Pass rot Time Interval Item Pickup");
                         ApplyRot(self, rotsPerItem);
                     }
                 }

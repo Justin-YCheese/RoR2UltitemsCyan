@@ -35,7 +35,7 @@ namespace UltitemsCyan.Items.Tier3
                 ItemTier.Tier3,
                 UltAssets.RockyTaffySprite,
                 UltAssets.RockyTaffyPrefab,
-                [ItemTag.Utility, ItemTag.Healing]
+                [ItemTag.CanBeTemporary, ItemTag.Utility, ItemTag.Healing]
             );
         }
 
