@@ -27,7 +27,7 @@ There is a config file to enable or disable specific items.
 | ![Imgur](https://i.imgur.com/70oQsj7.png) | Rocky Taffy         | Gain a recharging shield. Buff gives a stable barrier without your shield. Buff gained with full shield.                |       Red       |
 | ![Imgur](https://i.imgur.com/ClXO89c.png) | Dream Fuel          | Increase speed at full health... **BUT get rooted when hit.**                                                           |      Lunar      |
 | ![Imgur](https://i.imgur.com/ASsZX2z.png) | Silver Thread       | Chance to gain additional items... **BUT chance of losing items or dying upon being attacked**. Upon death, this item will be consumed. |      Lunar      |
-| ![Imgur](https://i.imgur.com/OM2CjLT.png) | Deluged Pail (removed)        | Gain stats for each item held... **BUT picking up an item triggers a restack.**                                         |      Lunar      |
+| ![Imgur](https://i.imgur.com/OM2CjLT.png) | Deluged Pail        | Gain stats for each item held... **BUT picking up an item triggers a restack.**                                         |      Lunar      |
 | ![Imgur](https://i.imgur.com/wYLzvng.png) | Ultraviolet Bulb    | Chance to instantly reset a skill after it's used... **BUT triples all cooldown**                                       |      Lunar      |
 | ![Imgur](https://i.imgur.com/XnoYzTk.png) | Crysotope           | Rise after jumping. Hold jump to continue flying. **Corrupts all Frisbees**.                                            |    Void White   |
 | ![Imgur](https://i.imgur.com/5fZqteh.png) | Dried Ham           | Heal when hitting enemies below 35% health. **Corrupts all Crème Brûlées**.                                             |    Void White   |

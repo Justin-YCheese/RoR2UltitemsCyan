@@ -78,9 +78,9 @@ namespace UltitemsCyan
         public const string PluginGUID = PluginAuthor + "." + PluginName;
         public const string PluginAuthor = "SporkySpig";
         public const string PluginName = "UltitemsCyan";
-        public const string PluginVersion = "0.13.3";
+        public const string PluginVersion = "0.13.4";
 
-        public const string PluginSuffix = "Alloyed! No Birthdays I promise... What is Happening?";
+        public const string PluginSuffix = "Deluged Logs...";
 
         private static ConfigFile UltitemsConfig { get; set; }
 
@@ -187,7 +187,7 @@ namespace UltitemsCyan
 
             ultitemItems.Add(new SilverThread()); // % TAKEDAMAGEPROCESS // Has Consumed Item
 
-            //ultitemItems.Add(new DelugedPail()); //ALLOYED
+            ultitemItems.Add(new DelugedPail()); //ALLOYED
 
             // *** Equipments
             ultitemItems.Add(new IceCubes());

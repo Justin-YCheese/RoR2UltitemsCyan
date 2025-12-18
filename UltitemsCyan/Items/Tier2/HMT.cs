@@ -85,7 +85,7 @@ namespace UltitemsCyan.Items.Tier2
         {
             orig(self, buffDef, duration);
             // Use external variables to see if was from either TakeDamage or OnHitEnemy and not something else
-            if (self && onHitAttacker && buffDef.isDebuff)
+            if (self && onHitAttacker && buffDef && buffDef.isDebuff)
             {
                 //Log.Debug("Yes ! onhitAttacker !");
                 CharacterBody inflictor = onHitAttacker.GetComponent<CharacterBody>();

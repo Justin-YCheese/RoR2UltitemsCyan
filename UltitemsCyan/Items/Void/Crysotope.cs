@@ -82,7 +82,7 @@ namespace UltitemsCyan.Items.Void
                     {
                         //   *   *   *   ADD EFFECT   *   *   *   //
 
-                        Log.Debug("Crysotope Jump ? ? ? adding buff for " + (baseDuration + durationPerStack * (grabCount - 1)) + " seconds");
+                        //Log.Debug("Crysotope Jump ? ? ? adding buff for " + (baseDuration + durationPerStack * (grabCount - 1)) + " seconds");
                         //self.characterBody.AddTimedBuffAuthority(FrisbeeFlyingBuff.buff.buffIndex, baseDuration + (durationPerStack * (grabCount - 1)));
 
                         CrysotopeBehavior behavior = self.characterBody.GetComponent<CrysotopeBehavior>();
@@ -90,7 +90,7 @@ namespace UltitemsCyan.Items.Void
                         behavior.UpdateStopwatch(Run.instance.time);
                         body.SetBuffCount(CrysotopeFlyingBuff.buff.buffIndex, 1);
 
-                        Log.Debug("Has Timed def Buff? " + self.HasBuff(CrysotopeFlyingBuff.buff));
+                        //Log.Debug("Has Timed def Buff? " + self.HasBuff(CrysotopeFlyingBuff.buff));
                     }
                 }
             }

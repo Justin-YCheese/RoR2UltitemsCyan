@@ -129,12 +129,12 @@ namespace UltitemsCyan.Equipment
 
                         if (thisRun.isRunStopwatchPaused)
                         {
-                            Log.Debug("In time paused");
+                            //Log.Debug("In time paused");
                             equipment.cooldown = shortCooldown;
                         }
                         else
                         {
-                            Log.Debug("Outside time paused");
+                            //Log.Debug("Outside time paused");
                             equipment.cooldown = cooldown;
                         }
 
@@ -157,22 +157,22 @@ namespace UltitemsCyan.Equipment
                         _ = thisRun.availableItems.Remove(lastItem.itemIndex);
                         CheckEmptyTierList(lastItem); // also check if empty, if so then add solute to item tier
                         dissolvedList.Add(lastItem.itemIndex);
-                        Log.Debug(" &&& &&& Refresh Items ");
+                        //Log.Debug(" &&& &&& Refresh Items ");
 
                         //thisRun.BuildDropTable();
 
-                        Log.Debug(" &&& &&& Refresh Items end ");
+                        //Log.Debug(" &&& &&& Refresh Items end ");
 
-                        Log.Debug(PickupCatalog.itemIndexToPickupIndex[(int)DreamFuel.item.itemIndex] + " is in? "
-                            + thisRun.availableLunarCombinedDropList.Contains(PickupCatalog.itemIndexToPickupIndex[(int)DreamFuel.item.itemIndex]));
+                        //Log.Debug(PickupCatalog.itemIndexToPickupIndex[(int)DreamFuel.item.itemIndex] + " is in? "
+                        //    + thisRun.availableLunarCombinedDropList.Contains(PickupCatalog.itemIndexToPickupIndex[(int)DreamFuel.item.itemIndex]));
 
                         thisRun.RefreshLunarCombinedDropList(); // Might need to be ran on next frame instead
 
-                        Log.Debug(PickupCatalog.itemIndexToPickupIndex[(int)DreamFuel.item.itemIndex] + " is in? "
-                            + thisRun.availableLunarCombinedDropList.Contains(PickupCatalog.itemIndexToPickupIndex[(int)DreamFuel.item.itemIndex]));
+                        //Log.Debug(PickupCatalog.itemIndexToPickupIndex[(int)DreamFuel.item.itemIndex] + " is in? "
+                        //    + thisRun.availableLunarCombinedDropList.Contains(PickupCatalog.itemIndexToPickupIndex[(int)DreamFuel.item.itemIndex]));
 
                         // Refresh chest and lunar pools
-                        Log.Warning("Refresing ALL ! ! !");
+                        //Log.Warning("Refresing ALL ! ! !");
                         /*foreach (PickupDropTable dropTable in PickupDropTable.instancesList)
                         {
                             Log.Debug(" . " + dropTable.GetType().ToString() + " | " + dropTable.GetPickupCount());
@@ -255,7 +255,7 @@ namespace UltitemsCyan.Equipment
             // Using currentPickup instead of dropPickup
             if (dissolvedList.Count > 0 && dissolvedList.Contains(PickupCatalog.GetPickupDef(self.currentPickup.pickupIndex).itemIndex))
             {
-                Log.Debug(" // Chest Universal has a dissolved item: " + PickupCatalog.GetPickupDef(self.currentPickup.pickupIndex).nameToken);
+                //Log.Debug(" // Chest Universal has a dissolved item: " + PickupCatalog.GetPickupDef(self.currentPickup.pickupIndex).nameToken);
                 // When rerolled will use updated avaialbe items list
                 self.Roll();
                 //Log.Debug("Is still dissolved?.. " + PickupCatalog.GetPickupDef(self.dropPickup).nameToken + " | " + dissolvedList.Contains(PickupCatalog.GetPickupDef(self.dropPickup).itemIndex));

@@ -155,10 +155,10 @@ namespace UltitemsCyan.Items.Tier2
                 //Log.Warning(master.name + " has no consumed items: Scissors cuts itself");
                 // Remove a scissors (Garenteed to have at least scissors)
                 
-                Log.Debug("Out of garbage for scissors");
+                //Log.Debug("Out of garbage for scissors");
                 if (master.inventory.GetItemCountPermanent(item.itemIndex) > 0)
                 {
-                    Log.Debug("But can scrap a permananet Scissor!");
+                    //Log.Debug("But can scrap a permananet Scissor!");
                     master.inventory.RemoveItemPermanent(item);
                     // Give 2 white scraps
                     master.inventory.GiveItemPermanent(ItemCatalog.FindItemIndex("ScrapWhite"), scrapsPerConsumed);

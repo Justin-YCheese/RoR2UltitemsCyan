@@ -44,9 +44,9 @@ namespace UltitemsCyan.Items
         private void ChestBehavior_ItemDrop(On.RoR2.ChestBehavior.orig_ItemDrop orig, ChestBehavior self)
         {
             //self.tier1Chance = .8f for regular chest
-            Log.Warning("Tier 1 Chance: " + self.tier1Chance);
+            //Log.Warning("Tier 1 Chance: " + self.tier1Chance);
             //self.dropTransform = Transform.
-            Log.Debug("Player Controller: " + self.playerControllerId);
+            //Log.Debug("Player Controller: " + self.playerControllerId);
 
             //Log.Debug("Rolled Pickup: " + self.HasRolledPickup());
             //Log.Debug("" + self.)

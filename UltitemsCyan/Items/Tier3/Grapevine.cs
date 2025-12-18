@@ -64,7 +64,7 @@ namespace UltitemsCyan.Items.Tier3
                     if (Util.CheckRoll(baseGrapeDropChance, killer.master.luck))
                     {
                         //Log.Warning("Dropping grape from " + victim.name);
-                        Util.PlaySound("Play_clayGrenadier_impact", victim.gameObject);
+                        _ = Util.PlaySound("Play_clayGrenadier_impact", victim.gameObject);
                         SpawnOrb(victim.transform.position, victim.transform.rotation, TeamComponent.GetObjectTeam(killer.gameObject), grabCount);
                     }
                 }
@@ -126,7 +126,7 @@ namespace UltitemsCyan.Items.Tier3
                 //    body.AddBuff(buffDef);
                 //}
                 int addBuffs = Min(amount, maxGrapes - body.GetBuffCount(buffDef));
-                Log.Debug("Grape On Trigger Happened! amount: " + addBuffs);
+                //Log.Debug("Grape On Trigger Happened! amount: " + addBuffs);
                 for (int i = 0; i < addBuffs; i++)
                 {
                     body.AddBuff(buffDef);

@@ -78,7 +78,7 @@ namespace UltitemsCyan.Items.Void
                         }.TryTransform(master.inventory, out tryTransformResult))
                         {
                             // If item succesfully transformed
-                            Log.Debug(" Exiting my Coffin! ");
+                            //Log.Debug(" Exiting my Coffin! ");
 
                             // All Void Items
                             List<PickupIndex>[] allVoidDropList = [

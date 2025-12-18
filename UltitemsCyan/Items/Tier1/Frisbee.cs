@@ -76,12 +76,12 @@ namespace UltitemsCyan.Items.Tier1
                     // True | False | True | rigidbody
 
                     //Log.Debug("characterMotor, jumpInput, body: " + self.hasCharacterMotor + " | " + self.jumpInputReceived + " | " + self.characterBody);
-                    Log.Debug("Jumps: " + self.characterMotor.jumpCount + " < " + self.characterBody.maxJumpCount);
+                    //Log.Debug("Jumps: " + self.characterMotor.jumpCount + " < " + self.characterBody.maxJumpCount);
                     if (self.characterMotor.jumpCount < self.characterBody.maxJumpCount)
                     {
                         //   *   *   *   ADD EFFECT   *   *   *   //
 
-                        Log.Debug("Frisbee Jump ? ? ? adding buff for " + (baseDuration + durationPerStack * (grabCount - 1)) + " seconds");
+                        //Log.Debug("Frisbee Jump ? ? ? adding buff for " + (baseDuration + durationPerStack * (grabCount - 1)) + " seconds");
                         //self.characterBody.AddTimedBuffAuthority(FrisbeeFlyingBuff.buff.buffIndex, baseDuration + (durationPerStack * (grabCount - 1)));
 
                         FrisbeeBehavior behavior = self.characterBody.GetComponent<FrisbeeBehavior>();
@@ -89,7 +89,7 @@ namespace UltitemsCyan.Items.Tier1
                         behavior.UpdateStopwatch(Run.instance.time);
                         body.SetBuffCount(FrisbeeGlidingBuff.buff.buffIndex, 1); // TODO Change to add buff?
 
-                        Log.Debug("Has Timed def Buff? " + self.HasBuff(FrisbeeGlidingBuff.buff));
+                        //Log.Debug("Has Timed def Buff? " + self.HasBuff(FrisbeeGlidingBuff.buff));
                     }
                 }
             }
@@ -122,7 +122,7 @@ namespace UltitemsCyan.Items.Tier1
                     // If not already the same value
                     if (_canHaveBuff != value)
                     {
-                        Log.Debug("Frisbee!!! grounded? " + !motor.isGrounded + " jumping? " + body.inputBank.jump.down);
+                        //Log.Debug("Frisbee!!! grounded? " + !motor.isGrounded + " jumping? " + body.inputBank.jump.down);
 
                         /*/
                         if (value)
@@ -144,7 +144,7 @@ namespace UltitemsCyan.Items.Tier1
 
                         if (!_canHaveBuff)
                         {
-                            Log.Warning("Frisbee!!! Can't have buff, removing buff");
+                            //Log.Warning("Frisbee!!! Can't have buff, removing buff");
                             body.SetBuffCount(FrisbeeGlidingBuff.buff.buffIndex, 0);
                         }
                     }

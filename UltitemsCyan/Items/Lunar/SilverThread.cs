@@ -63,8 +63,7 @@ namespace UltitemsCyan.Items.Lunar
             // Increase cauldron and 3D printer cost
             On.RoR2.PurchaseInteraction.OnInteractionBegin += PurchaseInteraction_OnInteractionBegin;
             // Increase scrapper cost
-            //On.RoR2.ScrapperController.BeginScrapping_UniquePickup += ScrapperController_BeginScrapping_UniquePickup;
-            //On.RoR2.ScrapperController.BeginScrapping += ScrapperController_BeginScrapping; // Old Scrapper Method
+            On.RoR2.ScrapperController.BeginScrapping_UniquePickup += ScrapperController_BeginScrapping_UniquePickup;
             // Remove Item on Death
             On.RoR2.CharacterBody.OnDeathStart += CharacterBody_OnDeathStart;
         }
@@ -76,27 +75,21 @@ namespace UltitemsCyan.Items.Lunar
         // Return true if Silver Thread should give an additional item
         private bool CheckSilverThreadRoll(Inventory inventory, ItemIndex itemIndex)
         {
-            Log.Debug(" ??? ??? SilverThread Checking Rolls");
-            if (itemIndex == 0 || !ItemCatalog.GetItemDef(itemIndex))
+            //Log.Debug(" ??? ??? SilverThread Checking Rolls");
+            int grabCount = MaxStack(inventory);
+            if (grabCount <= 0 || itemIndex == 0 || !ItemCatalog.GetItemDef(itemIndex))
             {
-                Log.Debug("SilverThread found either none or impossible item? Index: " + itemIndex);
+                //Log.Debug("SilverThread found either none or impossible item? Index: " + itemIndex);
             }
-            else if (NetworkServer.active && inventory && ItemCatalog.GetItemDef(itemIndex).tier != ItemTier.NoTier && itemIndex != item.itemIndex)
+            else if (NetworkServer.active && ItemCatalog.GetItemDef(itemIndex).tier != ItemTier.NoTier && itemIndex != item.itemIndex)
             {
-                // Precaution incase something causes an infinity loop of items
-                //inSilverAlready = true;
-                //Log.Debug("Do you have silver?");
-                int grabCount = MaxStack(inventory);
-                if (grabCount > 0)
+                //Log.Debug("yes I do");
+                //Log.Debug("Thread Chance: " + (baseThreadChance + stackThreadChance * (grabCount - 1)));
+                if (Util.CheckRoll(baseThreadChance + stackThreadChance * (grabCount - 1)))
                 {
-                    //Log.Debug("yes I do");
-                    Log.Debug("Thread Chance: " + (baseThreadChance + stackThreadChance * (grabCount - 1)));
-                    if (Util.CheckRoll(baseThreadChance + stackThreadChance * (grabCount - 1)))
-                    {
-                        Log.Debug("Extra silver: " + ItemCatalog.GetItemDef(itemIndex).name);
-                        // TODO add effect
-                        return true;
-                    }
+                    //Log.Debug("Extra silver: " + ItemCatalog.GetItemDef(itemIndex).name);
+                    // TODO add effect
+                    return true;
                 }
             }
             return false;
@@ -104,8 +97,8 @@ namespace UltitemsCyan.Items.Lunar
 
         private void Inventory_GiveItemTemp(On.RoR2.Inventory.orig_GiveItemTemp orig, Inventory self, ItemIndex itemIndex, float countToAdd)
         {
-            Log.Debug("SilverThread got Temporary Item");
-            if (countToAdd == 1f && CheckSilverThreadRoll(self, itemIndex))
+            //Log.Debug("SilverThread got Temporary Item");
+            if (countToAdd == 1f && self && CheckSilverThreadRoll(self, itemIndex))
             {
                 orig(self, itemIndex, countToAdd + 1f);
             }
@@ -117,8 +110,8 @@ namespace UltitemsCyan.Items.Lunar
 
         private void Inventory_GiveItemPermanent_ItemIndex_int(On.RoR2.Inventory.orig_GiveItemPermanent_ItemIndex_int orig, Inventory self, ItemIndex itemIndex, int countToAdd)
         {
-            Log.Debug("SilverThread got Permanent Permanent Item");
-            if (countToAdd == 1 && CheckSilverThreadRoll(self, itemIndex))
+            //Log.Debug("SilverThread got Permanent Permanent Item");
+            if (countToAdd == 1 && self && CheckSilverThreadRoll(self, itemIndex))
             {
                 orig(self, itemIndex, countToAdd + 1);
             }
@@ -142,13 +135,13 @@ namespace UltitemsCyan.Items.Lunar
                 int grabCount = MaxStack(victimBody.master.inventory);
                 if (grabCount > 0)
                 {
-                    Log.Debug(victimBody.GetUserName() + " takes " + damageReport.damageDealt + "\t silver thread damage with " + victimBody.healthComponent.fullCombinedHealth + "\t health");
+                    //Log.Debug(victimBody.GetUserName() + " takes " + damageReport.damageDealt + "\t silver thread damage with " + victimBody.healthComponent.fullCombinedHealth + "\t health");
                     float deathChance = damageReport.damageDealt / victimBody.healthComponent.fullCombinedHealth * 100f * grabCount;
                     if (deathChance > 100f)
                     {
                         deathChance = 100f;
                     }
-                    Log.Debug("Chance of Snapping: " + deathChance);
+                    //Log.Debug("Chance of Snapping: " + deathChance);
                     if (Util.CheckRoll(deathChance))
                     {
                         SnapBody(victimBody, attackerBody);
@@ -177,9 +170,9 @@ namespace UltitemsCyan.Items.Lunar
                 List<ItemIndex> itemList = body.inventory.itemAcquisitionOrder;
                 ItemDef lastItem = ItemCatalog.GetItemDef(itemList[^1]);
                 // Remove full stack including Permanent, Temp, and Channeled
-                body.inventory.RemoveItemPermanent(lastItem.itemIndex, body.inventory.GetItemCountPermanent(lastItem));
-                body.inventory.RemoveItemTemp(lastItem.itemIndex, body.inventory.GetItemCountTemp(lastItem));
-                body.inventory.RemoveItemChanneled(lastItem.itemIndex, body.inventory.GetItemCountChanneled(lastItem));
+                body.inventory.ResetItemPermanent(lastItem.itemIndex);
+                body.inventory.ResetItemTemp(lastItem.itemIndex);
+                //body.inventory.RemoveItemChanneled(lastItem.itemIndex, body.inventory.GetItemCountChanneled(lastItem));
                 // Give a Silver Threads for the stack broken
                 body.inventory.GiveItemPermanent(SilverThreadConsumed.item.itemIndex);
                 CharacterMasterNotificationQueue.SendTransformNotification(
@@ -207,7 +200,7 @@ namespace UltitemsCyan.Items.Lunar
                 int grabCount = self.master.inventory.GetItemCountEffective(item);
                 if (grabCount > 0)
                 {
-                    Log.Debug("Removing Silver threads from " + self.GetUserName()); //-JYPrint
+                    //Log.Debug("Removing Silver threads from " + self.GetUserName()); //-JYPrint
                     _ = new Inventory.ItemTransformation
                     {
                         originalItemIndex = item.itemIndex, // Silver Thread
@@ -234,7 +227,7 @@ namespace UltitemsCyan.Items.Lunar
                     CostTypeIndex.LunarItemOrEquipment
                     )
                 {
-                    Log.Warning("Silver Purchase check");
+                    //Log.Debug("Silver Purchase check");
                     CharacterBody player = activator.GetComponent<CharacterBody>();
                     if (player.master.inventory.GetItemCountEffective(item) > 0)
                     {
@@ -265,60 +258,86 @@ namespace UltitemsCyan.Items.Lunar
             if (NetworkServer.active && self)
             {
                 CharacterBody player = self.interactor.GetComponent<CharacterBody>();
-                if (player && player.master.inventory)
+                if (player && player.master.inventory && player.master.inventory.GetItemCountEffective(item) > 0)
                 {
-                    if (player.master.inventory.GetItemCountEffective(item) > 0)
+                    Log.Debug("Silver Scrapping custom function");
+                    // body has a silver thread in their inventory
+                    runOrig = false;
+
+                    PickupDef pickupDef = PickupCatalog.GetPickupDef(pickupToTake.pickupIndex);
+                    if (pickupDef == null) { return; }
+
+                    ItemDef itemDef = ItemCatalog.GetItemDef((pickupDef != null) ? pickupDef.itemIndex : ItemIndex.None);
+                    if (!itemDef) { return; }
+
+                    PickupDef scrapPickupDef = PickupCatalog.GetPickupDef(PickupCatalog.FindScrapIndexForItemTier(itemDef.tier));
+                    ItemIndex scrapItemIndex = (scrapPickupDef != null) ? scrapPickupDef.itemIndex : ItemIndex.None;
+
+                    if (!self.interactor.TryGetComponent(out CharacterBody characterBody)) { return; }
+                    Inventory inventory = characterBody.inventory;
+                    if (!inventory) { return; }
+
+                    // Get Item Count
+                    // Scrap Limit is so that the item only scraps a multiple of the cost multiplier
+                    int silverScrapLimit;
+                    if (pickupToTake.isTempItem)
                     {
-                        //Log.Debug("Silver Scrapping custom function");
-                        // body has a silver thread in their inventory
-                        runOrig = false;
+                        int count = Mathf.FloorToInt(player.master.inventory.GetItemCountTemp(itemDef.itemIndex));
+                        silverScrapLimit = count - count % costMultiplier;
+                    }
+                    else
+                    {
+                        int count = player.master.inventory.GetItemCountPermanent(itemDef.itemIndex);
+                        silverScrapLimit = count - count % costMultiplier;
+                    }
 
-                        //self.itemsEaten = 0; // TODO REPLACE
-                        PickupDef pickupDef = PickupCatalog.GetPickupDef(pickupToTake.pickupIndex);
-                        if (pickupDef != null && self.interactor)
+                    Log.Debug(" Silver Scrap Limit: " + silverScrapLimit);
+
+                    if (silverScrapLimit < costMultiplier)
+                    {
+                        return;
+                    }
+
+                    Inventory.ItemTransformation.TryTransformResult tryTransformResult;
+                    if (new Inventory.ItemTransformation
+                    {
+                        allowWhenDisabled = false,
+                        forbidPermanentItems = pickupToTake.isTempItem,
+                        forbidTempItems = !pickupToTake.isTempItem,
+                        minToTransform = costMultiplier,
+                        maxToTransform = silverScrapLimit,
+                        originalItemIndex = itemDef.itemIndex,
+                        newItemIndex = ItemIndex.None,
+                        transformationType = ItemTransformationTypeIndex.None
+                    }.TryTransform(inventory, out tryTransformResult))
+                    {
+                        //Log.Debug(" stackValues before: " + tryTransformResult.takenItem.stackValues.permanentStacks + " | " + tryTransformResult.takenItem.stackValues.temporaryStacksValue);
+                        tryTransformResult.takenItem.stackValues.permanentStacks /= costMultiplier;
+                        tryTransformResult.takenItem.stackValues.temporaryStacksValue /= costMultiplier;
+                        //Log.Debug(" stackValues after: " + tryTransformResult.takenItem.stackValues.permanentStacks + " | " + tryTransformResult.takenItem.stackValues.temporaryStacksValue);
+                        Inventory.ItemAndStackValues takenItem = tryTransformResult.takenItem;
+                        takenItem.itemIndex = scrapItemIndex;
+                        _ = takenItem.AddAsPickupsToList(self.pickupPrintQueue);
+                        if (characterBody)
                         {
-                            //self.lastScrappedItemIndex = pickupDef.itemIndex;
-                            int scrapCount = Mathf.Min(self.maxItemsToScrapAtATime * costMultiplier, player.inventory.GetItemCountPermanent(pickupDef.itemIndex));
-                            //Log.Debug("Scrap Count: " + scrapCount);
-                            //Log.Debug(player.master.inventory.GetItemCount((ItemIndex)intPickupIndex) + " =? " + player.inventory.GetItemCount(pickupDef.itemIndex));
-                            if (scrapCount < costMultiplier)
+                            for (int i = 0; i < tryTransformResult.totalTransformed; i++)
                             {
-                                // not enough items to convert item, don't return anything
-                                //Log.Debug("Silver Scrapper Consume poor items");
-                                //self.itemsEaten = -1; // TODO REPLACE
-                            }
-                            else
-                            {
-                                // return reduced amount
-
-                                // So basically the new scrappers know what item they are taking, and will return temporary items
-                                // if it used temorary scrap
-
-
-                                /*
-                                Log.Debug("scrapCount: " + scrapCount + " returnCount: " + scrapCount / costMultiplier);
-                                player.inventory.RemoveItemPermament(pickupDef.itemIndex, scrapCount);
-                                self.itemsEaten += scrapCount / costMultiplier; // TODO REPLACE
-                                for (int i = 0; i < scrapCount; i++)
-                                {
-                                    ScrapperController.CreateItemTakenOrb(player.corePosition, self.gameObject, pickupDef.itemIndex);
-                                }
-                                if (self.esm)
-                                {
-                                    self.esm.SetNextState(new EntityStates.Scrapper.WaitToBeginScrapping());
-                                }
-                                */
+                                ScrapperController.CreateItemTakenOrb(characterBody.corePosition, self.gameObject, tryTransformResult.takenItem.itemIndex);
                             }
                         }
+                    }
+                    if (self.esm)
+                    {
+                        self.esm.SetNextState(new EntityStates.Scrapper.WaitToBeginScrapping());
                     }
                 }
             }
             // If checks failed, run original function
             if (runOrig)
             {
-                Log.Debug("runOrig in SilverThread");
+                //Log.Debug("runOrig in SilverThread");
                 orig(self, pickupToTake);
-                Log.Debug("runOrig out SilverThread");
+                //Log.Debug("runOrig out SilverThread");
             }
         }
 

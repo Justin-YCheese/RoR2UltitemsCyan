@@ -32,7 +32,7 @@ namespace UltitemsCyan.Buffs
                 //double totalSpeed = Math.E;
                 //totalSpeed = 1 + (pLogiConstant * Math.Pow(totalSpeed, buffCount * -pLogiRate));
                 //totalSpeed = pLogiLimit / totalSpeed * grabCount / 100;
-                Log.Debug(" s s s @ s s s | Bouncing at " + jumpPowMult / 100 * buffCount);
+                //Log.Debug(" s s s @ s s s | Bouncing at " + jumpPowMult / 100 * buffCount);
                 args.jumpPowerMultAdd += jumpPowMult / 100 * buffCount;
             }
         }

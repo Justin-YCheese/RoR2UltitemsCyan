@@ -121,7 +121,7 @@ namespace UltitemsCyan.Items.Tier2
         {
             if (self && itemIndex == item.itemIndex)
             {
-                Log.Debug("Give Birthday Candles");
+                //Log.Debug("Give Birthday Candles");
                 // Log.Debug("Count Birthday Candles on Pickup: " + count);
 
                 CharacterBody player = CharacterBody.readOnlyInstancesList.ToList().Find((body) => body.inventory == self);

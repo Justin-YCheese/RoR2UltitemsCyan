@@ -61,8 +61,8 @@ namespace UltitemsCyan.Items.Tier1
                     int grabCount = victimBody.master.inventory.GetItemCountEffective(item);
                     if (grabCount > 0)
                     {
-                        Log.Debug("Koala Taken Damage for " + victimBody.GetUserName() + " with " + victimBody.healthComponent.fullCombinedHealth + "\t health");
-                        Log.Debug("Max Percent: " + 100 / (hyperbolicPercent / 100 * grabCount + 1) + " of " + victimBody.healthComponent.fullCombinedHealth);
+                        //Log.Debug("Koala Taken Damage for " + victimBody.GetUserName() + " with " + victimBody.healthComponent.fullCombinedHealth + "\t health");
+                        //Log.Debug("Max Percent: " + 100 / (hyperbolicPercent / 100 * grabCount + 1) + " of " + victimBody.healthComponent.fullCombinedHealth);
                         // max Damage
                         float maxDamage = victimBody.healthComponent.fullCombinedHealth / (hyperbolicPercent / 100 * grabCount + 1);
                         if (maxDamage < minDamage)

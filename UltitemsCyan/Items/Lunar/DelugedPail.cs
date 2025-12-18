@@ -6,6 +6,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Networking;
+using HG;
 
 namespace UltitemsCyan.Items.Lunar
 {
@@ -39,7 +40,7 @@ namespace UltitemsCyan.Items.Lunar
                 "DELUGEDPAIL",
                 itemName,
                 "Gain stats for each item held... <style=cDeath>BUT picking up an item triggers a restack.</style>",
-                "Gain <style=cIsDamage>2.5% attack</style> per common, <style=cIsHealing>0.05 regen</style> per <style=cIsHealing>uncommon</style>, <style=cIsUtility>10% speed</style> per legendary</style>, <style=cIsDamage>10% crit</style> per <style=cIsDamage>boss</style> item, and <style=cIsUtility>1% jump height</style> per <style=cIsUtility>lunar</style> <style=cStack>(+20% of each stat per stack)</style>. Trigger a <style=cDeath>restack</style> when picking up items.",
+                "Gain <style=cIsDamage>2.5% attack</style> per common, <style=cIsHealing>0.05 regen</style> per <style=cIsHealing>uncommon</style>, <style=cIsUtility>10% speed</style> per legendary</style>, <style=cIsDamage>10% crit</style> per <style=cIsDamage>boss</style> item, and <style=cIsUtility>1% jump height</style> per <style=cIsUtility>lunar</style> <style=cStack>(+20% of each stat per stack)</style>. Trigger a <style=cDeath>restack</style> for non lunar items.",
                 "It's a tuning fork? no it's just a sand pail. The sand in the pail shifts with a sound which hums through it. Like a melody of waves, or to be less romantic, like a restless static.",
                 ItemTier.Lunar,
                 UltAssets.SandPailSprite,
@@ -52,28 +53,65 @@ namespace UltitemsCyan.Items.Lunar
         protected override void Hooks()
         {
             //On.RoR2.CharacterBody.OnInventoryChanged += CharacterBody_OnInventoryChanged;
+
+            // Calculate Stats
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
-            On.RoR2.Inventory.GiveItem_ItemIndex_int += Inventory_GiveItem_ItemIndex_int;
+
+            // Trigger Restack of picking up an item
+            On.RoR2.Inventory.GiveItemPermanent_ItemIndex_int += Inventory_GiveItemPermanent_ItemIndex_int;
+            On.RoR2.Inventory.GiveItemTemp += Inventory_GiveItemTemp;
+            //On.RoR2.Inventory.GiveItem_ItemIndex_int += Inventory_GiveItem_ItemIndex_int;
         }
 
-        /*/
-        private void CharacterBody_OnInventoryChanged(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self)
+        private void CheckPailRestack(Inventory inventory, ItemIndex itemIndex)
         {
-            orig(self);
-            if (!inSonorousAlready)
+            if (NetworkServer.active && !inDelugedAlready && inventory && inventory.GetItemCountEffective(item) > 0) // Hopefully fix multiple triggers and visual bug?
             {
-                if (self && self.inventory && self.inventory.GetItemCount(item) > 0)
+                ItemDef iDef = ItemCatalog.GetItemDef(itemIndex);
+                ItemTierDef iTierDef = ItemTierCatalog.GetItemTierDef(iDef.tier);
+                // Validate check, and pass if not lunar unless is pail
+                if (iDef && iTierDef && iTierDef.canRestack && (iTierDef.tier != ItemTier.Lunar || iDef == item)) // Valid Check (check iDef and iTierDef)
                 {
-                    inSonorousAlready = true;
-                    Log.Warning("Spork the inventory");
-                    //SporkRestackInventory(player.inventory, new Xoroshiro128Plus(Run.instance.stageRng.nextUlong));
-                    //self.inventory.ShrineRestackInventory(new Xoroshiro128Plus(Run.instance.stageRng.nextUlong));
-                    SporkRestackInventory(self.inventory, self.transform.position, new Xoroshiro128Plus(Run.instance.stageRng.nextUlong));
-                    Log.Debug("Effect Spork!");
-                    inSonorousAlready = false;
+                    inDelugedAlready = true;
+                    CharacterBody player = CharacterBody.readOnlyInstancesList.ToList().Find((body) => body.inventory == inventory);
+                    if (player)
+                    {
+                        //Log.Warning("Spork the inventory");
+                        SporkRestackInventory(inventory, new Xoroshiro128Plus(Run.instance.stageRng.nextUlong));
+                        // Effect after restock
+                        EffectManager.SpawnEffect(ShrineUseEffect, new EffectData
+                        {
+                            origin = player.transform.position,
+                            rotation = Quaternion.identity,
+                            scale = 0.5f,
+                            color = new Color(0.2392f, 0.8196f, 0.917647f) // Cyan Lunar color
+                        }, true);
+                        /*
+                        EffectManager.SpawnEffect(LegacyResourcesAPI.Load<GameObject>("Prefabs/Effects/ShrineUseEffect"), new EffectData
+                        {
+                            origin = base.transform.position,
+                            rotation = Quaternion.identity,
+                            scale = 1f,
+                            color = new Color(1f, 0.23f, 0.6337214f)
+                        }, true);
+                        //*/
+                    }
+                    inDelugedAlready = false;
                 }
             }
-        }//*/
+        }
+
+        private void Inventory_GiveItemTemp(On.RoR2.Inventory.orig_GiveItemTemp orig, Inventory self, ItemIndex itemIndex, float countToAdd)
+        {
+            orig(self, itemIndex, countToAdd);
+            CheckPailRestack(self, itemIndex);
+        }
+
+        private void Inventory_GiveItemPermanent_ItemIndex_int(On.RoR2.Inventory.orig_GiveItemPermanent_ItemIndex_int orig, Inventory self, ItemIndex itemIndex, int countToAdd)
+        {
+            orig(self, itemIndex, countToAdd);
+            CheckPailRestack(self, itemIndex);
+        }
 
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
@@ -97,10 +135,10 @@ namespace UltitemsCyan.Items.Lunar
                     // Jump Power, Shield, Cooldowns
                     int[] statTiers = new int[6]; // 0:Misc  1:Damage  2:Healing  3:Speed  4:Crits  5:Jump Height
 
-                    ItemIndex itemIndex = 0;
-                    ItemIndex itemCount = (ItemIndex)ItemCatalog.itemCount;
+                    List<ItemIndex> playerItems = inventory.itemAcquisitionOrder;
+
                     // Go Through All Items
-                    while (itemIndex < itemCount)
+                    foreach (ItemIndex itemIndex in playerItems)
                     {
                         int tier = 0; // Misc
                         ItemTier itemTier = ItemCatalog.GetItemDef(itemIndex).tier;
@@ -125,16 +163,14 @@ namespace UltitemsCyan.Items.Lunar
                             tier = 5; // Crits
                         }
                         statTiers[tier] += inventory.GetItemCountEffective(itemIndex);
-                        // Check next Item
-                        itemIndex++;
                     }
                     float statMultiplier = 1f + (grabCount - 1) * stackPercent / 100f;
                     //Log.Debug("stat Multiplier: " + statMultiplier);
                     args.jumpPowerMultAdd += statTiers[1] * jumpPerLunar / 100f * statMultiplier;
-                    //Log.Debug("Pail Damage is: " + sender.baseDamage + " + " + (statTiers[1] * attackPerWhite * statMultiplier) + "%");
+                    //Log.Debug("Pail Damage is: " + sender.baseDamage + " + " + statTiers[2] * attackPerWhite * statMultiplier + "%");
                     args.damageMultAdd += statTiers[2] * attackPerWhite / 100f * statMultiplier;
                     // Regen increases per level
-                    //Log.Debug("Pail Regen is: " + sender.baseRegen + " + " + (statTiers[2] * (regenPerGreen + (regenPerGreen / 5 * sender.level)) * statMultiplier));
+                    //Log.Debug("Pail Regen is: " + sender.baseRegen + " + " + statTiers[3] * (regenPerGreen + regenPerGreen / 5 * sender.level) * statMultiplier);
                     args.regenMultAdd += statTiers[3] * regenPerGreen * (1f + 0.2f * sender.level) * statMultiplier;
                     args.moveSpeedMultAdd += statTiers[4] * speedPerRed / 100f * statMultiplier;
                     args.critAdd += statTiers[5] * critPerBoss * statMultiplier;
@@ -146,10 +182,6 @@ namespace UltitemsCyan.Items.Lunar
         private void Inventory_GiveItem_ItemIndex_int(On.RoR2.Inventory.orig_GiveItem_ItemIndex_int orig, Inventory self, ItemIndex itemIndex, int count)
         {
             //Log.Debug("orig IN Sonorous Pail");
-            if (!ItemCatalog.GetItemDef(itemIndex))
-            {
-                Log.Debug("Deluged found impossible item? Index: " + itemIndex);
-            }
             orig(self, itemIndex, count);
             //Log.Debug("orig OUT Sonorous Pail");
             if (NetworkServer.active && !inDelugedAlready && self) // Hopefully fix multiple triggers and visual bug?
@@ -173,66 +205,20 @@ namespace UltitemsCyan.Items.Lunar
                             scale = 0.5f,
                             color = new Color(0.2392f, 0.8196f, 0.917647f) // Cyan Lunar color
                         }, true);
+                        /*
+                        EffectManager.SpawnEffect(LegacyResourcesAPI.Load<GameObject>("Prefabs/Effects/ShrineUseEffect"), new EffectData
+                        {
+                            origin = base.transform.position,
+                            rotation = Quaternion.identity,
+                            scale = 1f,
+                            color = new Color(1f, 0.23f, 0.6337214f)
+                        }, true);
+                        //*/
                     }
                     inDelugedAlready = false;
                 }
             }
-        }//*/
-
-        /*/ In Inventory
-        public void ShrineRestackInventory([NotNull] Xoroshiro128Plus rng)
-		{
-			if (!NetworkServer.active)
-			{
-				Debug.LogWarning("[Server] function 'System.Void RoR2.Inventory::ShrineRestackInventory(Xoroshiro128Plus)' called on client");
-				return;
-			}
-			List<ItemIndex> list;
-			using (CollectionPool<ItemIndex, List<ItemIndex>>.RentCollection(out list))
-			{
-				List<ItemIndex> list2;
-				using (CollectionPool<ItemIndex, List<ItemIndex>>.RentCollection(out list2))
-				{
-					bool flag = false;
-					foreach (ItemTierDef itemTierDef in ItemTierCatalog.allItemTierDefs)
-					{
-						if (itemTierDef.canRestack)
-						{
-							int num = 0;
-							float num2 = 0f;
-							list.Clear();
-							list2.Clear();
-							this.effectiveItemStacks.GetNonZeroIndices(list2);
-							foreach (ItemIndex itemIndex in list2)
-							{
-								this.effectiveItemStacks.GetStackValue(itemIndex);
-								ItemDef itemDef = ItemCatalog.GetItemDef(itemIndex);
-								if (itemTierDef.tier == itemDef.tier && itemDef.DoesNotContainTag(ItemTag.ObjectiveRelated) && itemDef.DoesNotContainTag(ItemTag.PowerShape))
-								{
-									num += this.GetItemCountPermanent(itemIndex);
-									num2 += (float)this.GetItemCountTemp(itemIndex);
-									list.Add(itemIndex);
-									this.ResetItemPermanent(itemIndex);
-									this.ResetItemTemp(itemIndex);
-								}
-							}
-							if (list.Count > 0)
-							{
-								ItemIndex itemIndex2 = rng.NextElementUniform<ItemIndex>(list);
-								this.GiveItemPermanent(itemIndex2, num);
-								this.GiveItemTemp(itemIndex2, num2);
-								flag = true;
-							}
-						}
-					}
-					if (flag)
-					{
-						base.SetDirtyBit(8U);
-					}
-				}
-			}
-		}
-        //*/
+        }
 
         public void SporkRestackInventory(Inventory inventory, Xoroshiro128Plus rng)
         {
@@ -242,117 +228,59 @@ namespace UltitemsCyan.Items.Lunar
                 Debug.LogWarning("[Server] function 'System.Void RoR2.Inventory::ShrineRestackInventory(Xoroshiro128Plus)' called on client");
                 return;
             }
-            List<ItemIndex> list = [];
-            bool flag = false;
-            foreach (ItemTierDef itemTierDef in ItemTierCatalog.allItemTierDefs)
+            using (CollectionPool<ItemIndex, List<ItemIndex>>.RentCollection(out List<ItemIndex> restackList))
             {
-                // In each tier
-                //Log.Debug("Which Shelf?: " + itemTierDef.tier);
-                if (itemTierDef.canRestack && itemTierDef.tier != ItemTier.Lunar)
+                using (CollectionPool<ItemIndex, List<ItemIndex>>.RentCollection(out List<ItemIndex> playerItems))
                 {
-                    // Record what items exist and how many items in total
-                    int num = 0;
-                    list.Clear();
-                    
-                    // TODO Perhaps use try transform instead?
-
-                    /*/
-                    for (int i = 0; i < inventory.itemStacks.Length; i++)
+                    bool flag = false;
+                    foreach (ItemTierDef itemTierDef in ItemTierCatalog.allItemTierDefs)
                     {
-                        if (inventory.itemStacks[i] > 0) // TODO REPLACE
+                        if (itemTierDef.canRestack)
                         {
-                            ItemIndex itemIndex = (ItemIndex)i;
-                            //ItemDef itemDef = ItemCatalog.GetItemDef(itemIndex);
-                            if (itemTierDef.tier == ItemCatalog.GetItemDef(itemIndex).tier)
+                            int countPerm = 0;
+                            float countTemp = 0f;
+                            restackList.Clear();
+                            playerItems.Clear();
+                            inventory.effectiveItemStacks.GetNonZeroIndices(playerItems);
+                            foreach (ItemIndex itemIndex in playerItems)
                             {
-                                // Add to total items
-                                num += inventory.itemStacks[i]; // TODO REPLACE
-                                // Add to list
-                                list.Add(itemIndex);
-                                // Remove from inventory
-                                //inventory.itemAcquisitionOrder.Remove(itemIndex);
+                                inventory.effectiveItemStacks.GetStackValue(itemIndex);
+                                ItemDef itemDef = ItemCatalog.GetItemDef(itemIndex);
+                                if (itemTierDef.tier == itemDef.tier && itemDef.DoesNotContainTag(ItemTag.ObjectiveRelated) && itemDef.DoesNotContainTag(ItemTag.PowerShape))
+                                {
+                                    countPerm += inventory.GetItemCountPermanent(itemIndex);
+                                    countTemp += inventory.GetItemCountTemp(itemIndex);
+                                    restackList.Add(itemIndex);
+                                    //inventory.ResetItemPermanent(itemIndex);
+                                    //inventory.ResetItemTemp(itemIndex);
+                                }
+                            }
+                            if (restackList.Count > 0)
+                            {
+                                ItemIndex keptItem = rng.NextElementUniform(restackList);
+
+                                // Adjust count of kept item
+                                inventory.GiveItemPermanent(keptItem, countPerm - inventory.GetItemCountPermanent(keptItem));
+                                inventory.GiveItemTemp(keptItem, countTemp - inventory.GetItemCountTemp(keptItem));
+
+                                // Remove all other items
+                                _ = restackList.Remove(keptItem);
+                                foreach (ItemIndex index in restackList)
+                                {
+                                    //inventory.itemAcquisitionOrder.Remove(index);
+                                    inventory.ResetItemPermanent(index);
+                                    inventory.ResetItemTemp(index);
+                                }
+                                flag = true;
                             }
                         }
                     }
-                    //*/
-
-                    if (list.Count > 0)
+                    if (flag)
                     {
-                        // Adjust count of ket item
-                        ItemIndex keptItem = rng.NextElementUniform(list);
-                        SetItemCount(inventory, keptItem, num);
-                        _ = list.Remove(keptItem);
-                        // Remove all other items
-                        foreach (ItemIndex index in list)
-                        {
-                            //inventory.itemAcquisitionOrder.Remove(index);
-                            SetItemCount(inventory, index, 0);
-#pragma warning disable CS0618 // Type or member is obsolete
-                            inventory.ResetItem(index);
-#pragma warning restore CS0618 // Type or member is obsolete
-                        }
-
-                        flag = true;
+                        inventory.SetDirtyBit(8U);
                     }
                 }
             }
-            if (flag)
-            {
-                inventory.SetDirtyBit(8U);
-            }
-        }
-
-        private void SetItemCount(Inventory inventory, ItemIndex item, int count)
-        {
-            //var currentCount = inventory.GetItemCount(item);
-#pragma warning disable CS0618 // Type or member is obsolete
-            inventory.GiveItem(item, count - inventory.GetItemCount(item));
-#pragma warning restore CS0618 // Type or member is obsolete
         }
     }
 }
-
-/*
-public void ShrineRestackInventory([NotNull] Xoroshiro128Plus rng)
-{
-	if (!NetworkServer.active)
-	{
-		Debug.LogWarning("[Server] function 'System.Void RoR2.Inventory::ShrineRestackInventory(Xoroshiro128Plus)' called on client");
-		return;
-	}
-	List<ItemIndex> list = new List<ItemIndex>();
-	bool flag = false;
-	foreach (ItemTierDef itemTierDef in ItemTierCatalog.allItemTierDefs)
-	{
-		if (itemTierDef.canRestack)
-		{
-			int num = 0;
-			list.Clear();
-			for (int i = 0; i < this.itemStacks.Length; i++)
-			{
-				if (this.itemStacks[i] > 0)
-				{
-					ItemIndex itemIndex = (ItemIndex)i;
-					ItemDef itemDef = ItemCatalog.GetItemDef(itemIndex);
-					if (itemTierDef.tier == itemDef.tier)
-					{
-						num += this.itemStacks[i];
-						list.Add(itemIndex);
-						this.itemAcquisitionOrder.Remove(itemIndex);
-						this.ResetItem(itemIndex);
-					}
-				}
-			}
-			if (list.Count > 0)
-			{
-				this.GiveItem(rng.NextElementUniform<ItemIndex>(list), num);
-				flag = true;
-			}
-		}
-	}
-	if (flag)
-	{
-		base.SetDirtyBit(8U);
-	}
-}
-*/

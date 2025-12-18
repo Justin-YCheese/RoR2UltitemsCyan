@@ -72,7 +72,7 @@ namespace UltitemsCyan.Items.Tier3
                         }.TryTransform(master.inventory, out tryTransformResult))
                         {
                             // If item succesfully transformed
-                            Log.Debug(" Corroding my Vault! ");
+                            //Log.Debug(" Corroding my Vault! ");
 
                             //tryTransformResult.givenItem
 

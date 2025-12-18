@@ -50,7 +50,7 @@ namespace UltitemsCyan.Equipment
                 //UnityEngine.Random.Range(basePercentDamage, maxPercentDamage);
 
                 float percentDamage = maxPercentDamage;
-                Log.Debug("Pot isHealthLow?" + activator.healthComponent.isHealthLow);
+                //Log.Debug("Pot isHealthLow?" + activator.healthComponent.isHealthLow);
                 if (activator.healthComponent.isHealthLow || Util.CheckRoll(baseDamageChance, activator.master.luck))
                 {
                     percentDamage = basePercentDamage;

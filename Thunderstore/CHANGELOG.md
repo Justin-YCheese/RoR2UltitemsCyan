@@ -1,5 +1,13 @@
 ## 0.13.3
 
+- Fixed and Readded
+    - Deluged Pail
+- Silver Thread
+    - Now applies cost multiplier to scrappers (I didn't fix this when I readded it)
+- Removed a few debug logs
+
+## 0.13.3
+
 - All items can be temparary! Again...
     - hadn't realized they needed an item tag...
 - Fixed and Readding
