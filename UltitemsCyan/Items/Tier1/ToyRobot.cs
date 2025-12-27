@@ -1,7 +1,9 @@
 ﻿using BepInEx.Configuration;
 using Rewired.Utils;
 using RoR2;
+using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 
 namespace UltitemsCyan.Items.Tier1
@@ -13,8 +15,8 @@ namespace UltitemsCyan.Items.Tier1
         public static ItemDef item;
 
         private const float pickupRange = 10f;
-        private const float minPickupChance = 10f;
-        private const float ratioPickupChance = 80f;
+        private const float minPickupChance = 8f;
+        private const float ratioPickupChance = 72f;
 
         private const float barrierGained = 8f;
 
@@ -47,6 +49,8 @@ namespace UltitemsCyan.Items.Tier1
             On.RoR2.MoneyPickup.OnTriggerStay += MoneyPickup_OnTriggerStay;
             On.RoR2.BuffPickup.OnTriggerStay += BuffPickup_OnTriggerStay;
             On.RoR2.AmmoPickup.OnTriggerStay += AmmoPickup_OnTriggerStay;
+            //On.RoR2.JunkPickup.OnTriggerStay += 
+            //On.RoR2.
             // ToyRobot Behaviour
             On.RoR2.CharacterBody.OnInventoryChanged += CharacterBody_OnInventoryChanged;
         }
@@ -55,30 +59,35 @@ namespace UltitemsCyan.Items.Tier1
         private void HealthPickup_OnTriggerStay(On.RoR2.HealthPickup.orig_OnTriggerStay orig, HealthPickup self, Collider other)
         {
             orig(self, other);
+            Log.Debug(" ---- || ---- Toy Pickup for HealthPickup");
             CheckBarrier(other);
         }
 
         private void ElusiveAntlersPickup_OnTriggerStay(On.RoR2.ElusiveAntlersPickup.orig_OnTriggerStay orig, ElusiveAntlersPickup self, Collider other)
         {
             orig(self, other);
+            Log.Debug(" ---- || ---- Toy Pickup for ElusiveAntlersPickup");
             CheckBarrier(other);
         }
 
         private void MoneyPickup_OnTriggerStay(On.RoR2.MoneyPickup.orig_OnTriggerStay orig, MoneyPickup self, Collider other)
         {
             orig(self, other);
+            Log.Debug(" ---- || ---- Toy Pickup for MoneyPickup");
             CheckBarrier(other);
         }
 
         private void BuffPickup_OnTriggerStay(On.RoR2.BuffPickup.orig_OnTriggerStay orig, BuffPickup self, Collider other)
         {
             orig(self, other);
+            Log.Debug(" ---- || ---- Toy Pickup for BuffPickup");
             CheckBarrier(other);
         }
 
         private void AmmoPickup_OnTriggerStay(On.RoR2.AmmoPickup.orig_OnTriggerStay orig, AmmoPickup self, Collider other)
         {
             orig(self, other);
+            Log.Debug(" ---- || ---- Toy Pickup for AmmoPickup");
             CheckBarrier(other);
         }
 
@@ -128,23 +137,20 @@ namespace UltitemsCyan.Items.Tier1
                 {
                     // Get Gravitate Pickup if it has one
                     GravitatePickup gravitatePickup = pickUp.gameObject.GetComponent<GravitatePickup>();
+
                     if (gravitatePickup && gravitatePickup.gravitateTarget == null && gravitatePickup.teamFilter.teamIndex == body.teamComponent.teamIndex)
                     {
+                        Log.Debug(" ---- || ---- Toy Pickup: Found " + pickUp.gameObject.name);
                         // If it does not have a gravitation target, then pull in
                         // Chance to pickup, so that one player doesn't pickup all stuff
                         // Log.Warning("Toy Pickup for " + body.GetUserName() + "\t is " + (minPickupChance + (ratioPickupChance / stack)));
                         if (Util.CheckRoll(minPickupChance + ratioPickupChance / stack))
                         {
-                            //Log.Debug("     Got");
+                            //GravitatePickup gravitatePickup = pickUp.gameObject.GetComponent<RoR2.JunkPickup>();
+                            // If a junk pickup and the player is a drifter then pull, otherwise ignore
+                            //if (pickupIndex == PickupCatalog.FindPickupIndex(DLC3Content.Items.Junk.itemIndex) &&
+                            //    (body.bodyFlags & CharacterBody.BodyFlags.CollectJunk) != CharacterBody.BodyFlags.None)
 
-                            /*/
-                            EffectManager.SpawnEffect(LegacyResourcesAPI.Load<GameObject>("Prefabs/Effects/ShrineUseEffect"), new EffectData
-                            {
-                                origin = pickUp.transform.position,
-                                rotation = Quaternion.identity,
-                                scale = 0.5f,
-                                color = new Color(0.2392f, 0.8196f, 0.917647f) // Cyan Lunar color
-                            }, true);//*/
                             gravitatePickup.gravitateTarget = body.transform;
                         }
 

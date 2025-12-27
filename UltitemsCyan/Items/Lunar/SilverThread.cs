@@ -200,7 +200,6 @@ namespace UltitemsCyan.Items.Lunar
                 int grabCount = self.master.inventory.GetItemCountEffective(item);
                 if (grabCount > 0)
                 {
-                    //Log.Debug("Removing Silver threads from " + self.GetUserName()); //-JYPrint
                     _ = new Inventory.ItemTransformation
                     {
                         originalItemIndex = item.itemIndex, // Silver Thread

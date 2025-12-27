@@ -23,8 +23,8 @@ namespace UltitemsCyan.Items
             Sprite sprite,
             GameObject prefab,
             ItemTag[] tags,
-            ItemDef transformItem = null)
-            // TODO Add IsConsumed
+            ItemDef transformItem = null,
+            bool isConsumed = false)
         {
             ItemDef item = ScriptableObject.CreateInstance<ItemDef>();
 
@@ -39,7 +39,7 @@ namespace UltitemsCyan.Items
             item.descriptionToken = tokenPrefix + "_DESC";
             item.loreToken = tokenPrefix + "_LORE";
             //item.requiredExpansion = ExpansionDef.;
-            //item.isConsumed
+            item.isConsumed = isConsumed;
 
             // tier
             ItemTierDef itd = ScriptableObject.CreateInstance<ItemTierDef>();

@@ -20,7 +20,9 @@ namespace UltitemsCyan.Items.Untiered
                 ItemTier.NoTier,
                 UltAssets.InhabitedCoffinConsumedSprite,
                 UltAssets.InhabitedCoffinConsumedPrefab,
-                [ItemTag.CanBeTemporary, ItemTag.Utility, ItemTag.OnStageBeginEffect, ItemTag.AIBlacklist]
+                [ItemTag.CanBeTemporary, ItemTag.Utility, ItemTag.OnStageBeginEffect, ItemTag.AIBlacklist],
+                null,
+                true
             );
         }
 

@@ -24,8 +24,8 @@ namespace UltitemsCyan.Equipment
 
         public const float stopMultiplier = -.3f;
         public const float stopHorizontalMultiplier = 1.5f;
-        public const float stopMaxMultiplier = 0.8f;
         public const float stopMinMultiplier = 0.4f;
+        public const float stopMaxMultiplier = 0.8f;
 
         private const float yieldDamage = 3f; //300%
         private const float hitForce = 2500f;

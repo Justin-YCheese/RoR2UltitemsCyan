@@ -17,13 +17,12 @@ namespace UltitemsCyan.Items.Tier1
     {
         public static ItemDef item;
         private const float hyperbolicPercent = 11f;
-        private const float minDamage = 5f;
+        private const float minDamage = 8f;
         // 1 - 1 / (percent * n + 1)
 
 
         public override void Init(ConfigFile configs)
         {
-            Log.Warning("-JYPrint Hello?!?! 1");
             const string itemName = "Koala Sticker";
             if (!CheckItemEnabledConfig(itemName, "White", configs))
             {
@@ -33,20 +32,18 @@ namespace UltitemsCyan.Items.Tier1
                 "KOALASTICKER",
                 itemName,
                 "Reduce the maximum damage you can take.",
-                "Only lose a maximum of <style=cIsHealing>90%</style> <style=cStack>(-12% per stack)</style> of your <style=cIsHealing>health</style> from a hit. Does not reduce below <style=cIsHealing>5 health</style>.",
+                "Only lose a maximum of <style=cIsHealing>90%</style> <style=cStack>(-11% per stack)</style> of your <style=cIsHealing>health</style> from a hit. Does not reduce below <style=cIsHealing>8 health</style>.",
                 "Like the bear but more consistant...   and more cute",
                 ItemTier.Tier1,
                 UltAssets.KoalaStickerSprite,
                 UltAssets.KoalaStickerPrefab,
                 [ItemTag.CanBeTemporary, ItemTag.Utility]
             );
-            Log.Warning("-JYPrint Hello?!?! 1.5");
         }
 
 
         protected override void Hooks()
         {
-            //Log.Warning("-JYPrint Koala Hooks Start");
             //IL.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess;
             //IOnTakeDamageServerReceiver.OnTakeDamageServer +=  ??? Use delegates like Too Many Items Mod
             GenericGameEvents.BeforeTakeDamage += (damageInfo, attackerInfo, victimInfo) =>
@@ -84,7 +81,6 @@ namespace UltitemsCyan.Items.Tier1
                     }
                 }
             };
-            //Log.Warning("-JYPrint Koala Hooks END");
         }
     }
 }

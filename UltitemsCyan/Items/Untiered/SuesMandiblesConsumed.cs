@@ -20,7 +20,9 @@ namespace UltitemsCyan.Items.Untiered
                 ItemTier.NoTier,
                 UltAssets.SuesMandiblesConsumedSprite,
                 UltAssets.SuesMandiblesConsumedPrefab,
-                [ItemTag.CanBeTemporary, ItemTag.Utility, ItemTag.LowHealth, ItemTag.AIBlacklist]
+                [ItemTag.CanBeTemporary, ItemTag.Utility, ItemTag.LowHealth, ItemTag.AIBlacklist],
+                null,
+                true
             );
         }
 

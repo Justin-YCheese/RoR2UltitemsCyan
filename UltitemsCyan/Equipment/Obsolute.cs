@@ -6,7 +6,6 @@ using UltitemsCyan.Items.Lunar;
 using BepInEx.Configuration;
 using RoR2.Orbs;
 using UnityEngine;
-using UltitemsCyan.Buffs;
 
 namespace UltitemsCyan.Equipment
 {
@@ -18,6 +17,11 @@ namespace UltitemsCyan.Equipment
      *      removing from available items will only effect command
      * If you dissolve void items, then Larva won't corrupt thoes pairs upon dying
      * Prayer Beads do give stats upon being dissolved
+     * 
+     * 
+     * What if intead of immeidantly deleting it, that stack of items becomes temporary, so they are put on a timer...
+     * Or ite gives gray solute of the items then also gives a random temporary item in the same tier?
+     * 
      * 
      */
 
@@ -36,7 +40,7 @@ namespace UltitemsCyan.Equipment
         private const float goldRatio = 0.8f;
         // Base money gained when deleting items
         private const float smallChestCost = 25f; // White and Lunar
-        private const float largeChestCost = 50f; // Green
+        private const float largeChestCost = 50f; // Green and Food
         private const float legendaryChestCost = 400f; // Red
         private const float voidCostMultiplier = 1.5f; // Void variant multiplier
 
@@ -54,7 +58,7 @@ namespace UltitemsCyan.Equipment
                 "OBSOLUTE",
                 itemName,
                 "<style=cDeath>Erase</style> your last item from existence and gain some gold.",
-                "<style=cDeath>Erase</style> the last item in your inventory from the run. It will no longer appear, and any instances of the items will <style=cDeath>dissolve</style>. Gain <style=cIsUtility>gold</style> corrisponding to item dissolved. Cannot dissolve scraped or boss items.",
+                "<style=cDeath>Erase</style> the last item in your inventory from the run. It will no longer appear, and any instances of the items will <style=cDeath>dissolve</style>. Gain <style=cIsUtility>gold</style> corrisponding to item dissolved. Cannot dissolve scraped, key, or boss items.",
                 "Everything returns to grey",
                 cooldown,
                 true,
@@ -75,7 +79,9 @@ namespace UltitemsCyan.Equipment
             On.RoR2.EquipmentSlot.PerformEquipmentAction += EquipmentSlot_PerformEquipmentAction;
             // * * * Maintain removal
             // When getting a dissolved item
-            On.RoR2.Inventory.GiveItem_ItemIndex_int += Inventory_GiveItem_ItemIndex_int;
+            //On.RoR2.Inventory.GiveItem_ItemIndex_int += Inventory_GiveItem_ItemIndex_int;
+            On.RoR2.Inventory.GiveItemPermanent_ItemIndex_int += Inventory_GiveItemPermanent_ItemIndex_int; ;
+            On.RoR2.Inventory.GiveItemTemp += Inventory_GiveItemTemp;
             // When a chest tries dropping a dissolved item
             On.RoR2.ChestBehavior.ItemDrop += ChestBehavior_ItemDrop;
             On.RoR2.OptionChestBehavior.ItemDrop += OptionChestBehavior_ItemDrop;
@@ -100,7 +106,6 @@ namespace UltitemsCyan.Equipment
         {
             //Log.Debug("Universal Dissolved cleared");
             dissolvedList.Clear();
-
             orig(self);
         }
 
@@ -148,14 +153,26 @@ namespace UltitemsCyan.Equipment
                             DissolveItem(body, lastItem);
                         }
 
-                        Log.Warning(PickupCatalog.itemIndexToPickupIndex[(int)DreamFuel.item.itemIndex] + " is in? "
-                            + thisRun.availableLunarCombinedDropList.Contains(PickupCatalog.itemIndexToPickupIndex[(int)DreamFuel.item.itemIndex]));
+                        int printTestItem = (int)DreamFuel.item.itemIndex;
 
                         // * * * Remove item from pools
                         thisRun.DisableItemDrop(lastItem.itemIndex);
                         //Run.instance.DisablePickupDrop(PickupCatalog.itemIndexToPickupIndex[(int)lastItem.itemIndex]);
                         _ = thisRun.availableItems.Remove(lastItem.itemIndex);
                         CheckEmptyTierList(lastItem); // also check if empty, if so then add solute to item tier
+
+                        // PRINT TEST
+                        Log.Debug(PickupCatalog.itemIndexToPickupIndex[printTestItem] + " is in? "
+                            + thisRun.availableLunarCombinedDropList.Contains(PickupCatalog.itemIndexToPickupIndex[printTestItem])
+                            + " and " + thisRun.availableLunarItemDropList.Contains(PickupCatalog.itemIndexToPickupIndex[printTestItem]));
+
+                        thisRun.RefreshLunarCombinedDropList(); // Might need to be ran on next frame instead
+
+                        // PRINT TEST
+                        Log.Debug(PickupCatalog.itemIndexToPickupIndex[printTestItem] + " is in? "
+                            + thisRun.availableLunarCombinedDropList.Contains(PickupCatalog.itemIndexToPickupIndex[printTestItem])
+                            + " and " + thisRun.availableLunarItemDropList.Contains(PickupCatalog.itemIndexToPickupIndex[printTestItem]));
+
                         dissolvedList.Add(lastItem.itemIndex);
                         //Log.Debug(" &&& &&& Refresh Items ");
 
@@ -163,13 +180,6 @@ namespace UltitemsCyan.Equipment
 
                         //Log.Debug(" &&& &&& Refresh Items end ");
 
-                        //Log.Debug(PickupCatalog.itemIndexToPickupIndex[(int)DreamFuel.item.itemIndex] + " is in? "
-                        //    + thisRun.availableLunarCombinedDropList.Contains(PickupCatalog.itemIndexToPickupIndex[(int)DreamFuel.item.itemIndex]));
-
-                        thisRun.RefreshLunarCombinedDropList(); // Might need to be ran on next frame instead
-
-                        //Log.Debug(PickupCatalog.itemIndexToPickupIndex[(int)DreamFuel.item.itemIndex] + " is in? "
-                        //    + thisRun.availableLunarCombinedDropList.Contains(PickupCatalog.itemIndexToPickupIndex[(int)DreamFuel.item.itemIndex]));
 
                         // Refresh chest and lunar pools
                         //Log.Warning("Refresing ALL ! ! !");
@@ -234,19 +244,26 @@ namespace UltitemsCyan.Equipment
             }
         }
 
-        private void Inventory_GiveItem_ItemIndex_int(On.RoR2.Inventory.orig_GiveItem_ItemIndex_int orig, Inventory self, ItemIndex itemIndex, int count)
+        private void Inventory_GiveItemPermanent_ItemIndex_int(On.RoR2.Inventory.orig_GiveItemPermanent_ItemIndex_int orig, Inventory self, ItemIndex itemIndex, int countToAdd)
         {
-            //Log.Debug("Test Solute for item index " + itemIndex);
             if (dissolvedList.Contains(itemIndex) && self)
             {
                 Log.Debug("Grabbed a disolved item...");
                 _ = Util.PlaySound("Play_minimushroom_spore_shoot", self.gameObject);
                 itemIndex = GreySolvent.item.itemIndex;
-
             }
-            //Log.Warning(" ] ] ] ] ] ORIG into the Universal");
-            orig(self, itemIndex, count);
-            //Log.Warning("  [ [ [ ORIG out to the Universal");
+            orig(self, itemIndex, countToAdd);
+        }
+
+        private void Inventory_GiveItemTemp(On.RoR2.Inventory.orig_GiveItemTemp orig, Inventory self, ItemIndex itemIndex, float countToAdd)
+        {
+            if (dissolvedList.Contains(itemIndex) && self)
+            {
+                Log.Debug("Grabbed a disolved item...");
+                _ = Util.PlaySound("Play_minimushroom_spore_shoot", self.gameObject);
+                itemIndex = GreySolvent.item.itemIndex;
+            }
+            orig(self, itemIndex, countToAdd);
         }
 
         private void ChestBehavior_ItemDrop(On.RoR2.ChestBehavior.orig_ItemDrop orig, ChestBehavior self)
@@ -328,6 +345,10 @@ namespace UltitemsCyan.Equipment
 
         private void DissolveItem(CharacterMaster body, ItemDef item)
         {
+            if (!body)
+            {
+                return;
+            }
             Inventory inventory = body.inventory;
             if (inventory)
             {
@@ -335,7 +356,6 @@ namespace UltitemsCyan.Equipment
                 int grabCount = inventory.GetItemCountEffective(item);
                 if (grabCount > 0)
                 {
-                    //Log.Debug("Dissolving item into grey mush...");
                     Inventory.ItemTransformation.TryTransformResult tryTransformResult;
                     if (new Inventory.ItemTransformation
                     {
@@ -346,10 +366,9 @@ namespace UltitemsCyan.Equipment
                     }.TryTransform(inventory, out tryTransformResult))
                     {
                         // If item succesfully transformed
-                        Log.Warning(" New Obsolute Transformation ");
                         if (body.GetBody())
                         {
-                            RefundGoldForItem(body.GetBody(), grabCount, item.tier);
+                            RefundGoldForItem(body.GetBody(), tryTransformResult.totalTransformed, item.tier);
                         }
                     }
                 }
@@ -377,6 +396,7 @@ namespace UltitemsCyan.Equipment
                     chestCost *= smallChestCost;
                     break;
                 case ItemTier.Tier2:
+                case ItemTier.FoodTier:
                     chestCost *= largeChestCost;
                     break;
                 case ItemTier.Tier3:
@@ -389,7 +409,7 @@ namespace UltitemsCyan.Equipment
                 default:
                     break;
             }
-            
+
             GoldOrb goldOrb = new()
             {
                 origin = characterBody.corePosition,
@@ -427,6 +447,9 @@ namespace UltitemsCyan.Equipment
                     break;
                 case ItemTier.VoidTier3:
                     list = Run.instance.availableVoidTier3DropList;
+                    break;
+                case ItemTier.FoodTier:
+                    list = Run.instance.availableFoodTierDropList;
                     break;
                 case ItemTier.Boss:
                 case ItemTier.VoidBoss:

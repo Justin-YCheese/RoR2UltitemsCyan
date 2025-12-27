@@ -22,7 +22,9 @@ namespace UltitemsCyan.Items.Untiered
                 ItemTier.NoTier,
                 UltAssets.UniversalSolventSprite,
                 UltAssets.UniversalSolventPrefab,
-                [ItemTag.CanBeTemporary, ItemTag.Utility, ItemTag.AIBlacklist]
+                [ItemTag.CanBeTemporary, ItemTag.Utility, ItemTag.AIBlacklist],
+                null,
+                true
             );
         }
 

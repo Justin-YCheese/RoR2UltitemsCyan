@@ -14,7 +14,10 @@ namespace UltitemsCyan.Items.Tier3
     public class RockyTaffy : ItemBase
     {
         public static ItemDef item;
-        private const float shieldPercent = 32f;
+        private const float shieldPercent = 30f;
+
+        // Without shield total barrier decay
+        //private const float taffyBarrierDecay = 20f;
 
         public static GameObject CaptainBodyArmorBlockEffect = Addressables.LoadAssetAsync<GameObject>("RoR2/Junk/Captain/CaptainBodyArmorBlockEffect.prefab").WaitForCompletion();
 
@@ -29,7 +32,7 @@ namespace UltitemsCyan.Items.Tier3
                 "ROCKYTAFFY",
                 itemName,
                 "Gain a recharging shield. Buff gives a stable barrier without your shield. Buff gained with full shield.",
-                "Gain a <style=cIsHealing>shield</style> equal to <style=cIsHealing>32%</style> <style=cStack>(+32% per stack)</style> of your maximum health. On losing your shield with the buff, gain a <style=cIsHealing>stable barrier</style> for 100% of your <style=cIsHealing>max shield</style>. No barrier decay without a shield and regain buff with a full shield.",
+                "Gain a <style=cIsHealing>shield</style> equal to <style=cIsHealing>30%</style> <style=cStack>(+30% per stack)</style> of your maximum health. On losing your shield with the buff, gain a <style=cIsHealing>stable barrier</style> for 100% of your <style=cIsHealing>max shield</style>. No barrier decay without a shield and regain buff with a full shield.",
                 "This vault is sturdy, but over time the rust will just crack it open. Oh wait this is the wrong description...\n" +
                 "Give me a second...\n\num...\n\nSomething about laughing but harder so for shields? I don't know...",
                 ItemTier.Tier3,
@@ -46,7 +49,6 @@ namespace UltitemsCyan.Items.Tier3
             // Grant Barrier when losing shield
             On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
             // No Barrier Decay without shield
-            //On.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
             On.RoR2.HealthComponent.GetBarrierDecayRate += HealthComponent_GetBarrierDecayRate;
             // Add Recalculate Stats on shield lost / gained
             On.RoR2.CharacterBody.OnInventoryChanged += CharacterBody_OnInventoryChanged;
@@ -60,7 +62,7 @@ namespace UltitemsCyan.Items.Tier3
             if (self.body.inventory.GetItemCountEffective(item) > 0 && self.shield <= 0)
             {
                 // Then don't lose barrier
-                return 0;
+                return orig(self) * 0f;
             }
             return orig(self);
         }
@@ -76,16 +78,16 @@ namespace UltitemsCyan.Items.Tier3
                     //Log.Debug("Taffy On the rocks | Health: " + sender.healthComponent.fullHealth);
                     args.baseShieldAdd += sender.healthComponent.fullHealth * (shieldPercent / 100f * grabCount);
 
-                    if (sender.healthComponent.shield <= 0)
-                    {
-                        Log.Debug("Freezing my taffy's barrier");
-                        args.shouldFreezeBarrier = true;
-                    }
-                    else
-                    {
-                        Log.Debug("Unfreeze my taffy's barrier");
-                        args.shouldFreezeBarrier = false;
-                    }
+                    //if (sender.healthComponent.shield <= 0)
+                    //{
+                    //    //Log.Debug("Freezing my taffy's barrier");
+                    //    args.shouldFreezeBarrier = true;
+                    //}
+                    //else
+                    //{
+                    //    //Log.Debug("Unfreeze my taffy's barrier");
+                    //    args.shouldFreezeBarrier = false;
+                    //}
                 }
             }
         }
@@ -126,38 +128,6 @@ namespace UltitemsCyan.Items.Tier3
             {
                 orig(self, damageInfo);
             }
-        }
-
-        // Remove Barrier Decay with no shield (Changeing barrier decay in On function doesn't seem to work)
-        private void CharacterBody_RecalculateStats(On.RoR2.CharacterBody.orig_RecalculateStats orig, CharacterBody self)
-        {
-            orig(self);
-
-            // bool runOrig = true;
-            if (self && self.inventory)
-            {
-                int grabCount = self.inventory.GetItemCountEffective(item);
-                if (grabCount > 0)
-                {
-                    //runOrig = false;
-                    //self.maxShield += self.healthComponent.fullHealth * (shieldPercent / 100f * grabCount);
-
-                    // Shield Decay
-                    if (self.healthComponent.shield <= 0)
-                    {
-                        self.barrierDecayRate = 0;
-                    }
-                    //Log.Debug("After Barrier Decay: " + self.barrierDecayRate);
-                    //Log.Debug("v Shield new: " + args.shieldMultAdd);
-                    //args.baseShieldAdd += sender.healthComponent.fullHealth * (shieldPercent / 100f * grabCount);
-                    //self.moveSpeed = 0;
-                }
-            }
-
-            //if (runOrig)
-            //{
-            //    orig(self);
-            //}
         }
 
         // Add Recalculate Stats on shield lost / gained

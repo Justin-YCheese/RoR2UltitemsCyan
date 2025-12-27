@@ -26,7 +26,6 @@ namespace UltitemsCyan.Items.Tier3
 
         public override void Init(ConfigFile configs)
         {
-            Log.Warning("-JYPrint Hello?!?! 3");
             const string itemName = "Grapevine";
             if (!CheckItemEnabledConfig(itemName, "Red", configs))
             {
@@ -36,7 +35,7 @@ namespace UltitemsCyan.Items.Tier3
                 "GRAPEVINE",
                 itemName,
                 "Chance on kill to drop grapes that block damage.",
-                "<style=cIsHealing>40%</style> chance on kill to grow <style=cIsHealing>1</style> <style=cStack>(+1 per stack)</style> grape. <style=cIsHealing>70%</style> to <style=cIsHealing>block</style> incoming damage per grape. Block chance is <style=cIsUtility>unaffected by luck</style>.",
+                "<style=cIsHealing>40%</style> chance on kill to grow <style=cIsHealing>1</style> <style=cStack>(+1 per stack)</style> grape. <style=cIsHealing>70%</style> to <style=cIsHealing>block</style> incoming damage. Block chance is <style=cIsUtility>unaffected by luck</style>.",
                 "If you close your eyes, you can pretend their eyeballs",
                 ItemTier.Tier3,
                 UltAssets.GrapevineSprite,

@@ -1,4 +1,17 @@
-## 0.13.3
+## 0.13.5
+
+- Fixed various inaccurate item tool tips
+- Fixed and Readding
+    - Obsolute
+    - Pig's Spork
+- 1000 Degree Scissors
+    - Now uses isConsumed, thus nolonger melting tonic afflictions
+    - And better compatability with other mods
+- Koala Sticker min damage nerfed from 5 -> 8
+- Corroding Vault give 10 to 15 items instead of just 15
+- Rocky Taffy Shield 32% -> 30%
+
+## 0.13.4
 
 - Fixed and Readded
     - Deluged Pail

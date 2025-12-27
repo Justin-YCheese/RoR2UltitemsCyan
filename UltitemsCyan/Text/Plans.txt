@@ -6,8 +6,10 @@
 - Add jump buffer timer to Frisbee (because it's being janky, Test with Hunter's Harpoon)
 
 	When Testing:
+- Getting hit by elite with dream fuel and ben's rain coat
+	- (Block root or block fire?)
 - temp Corroding Vault priority
-
+- Corroding vault quantity
 
 - Rotten Bones works when time is frozen...
 	- Because using Run.instance.time
@@ -41,70 +43,15 @@
 
 
 	Removed for now...
-- Deluged Pail
-	- They changed something about inventory count so I'll investigate later
-- FIXED | Removed TAKEDAMAGEPROCESS IL code insertion
-    - Grapevine
-    - Silver Thread
-    - Koala Sticker
-- FIXED | Bithday Candle & Rotten Bones 
-	- Doesn't give buff on pickup for some reason...
-	- But it does on stage start
-- FIXED | HMT & Zorse Pill
-	- HMT Doesn't apply any fire despite 100% chance with DoT status effects...
-	- And I don't think the void version can easily compile without base item
-- Pig's Spork
-	- I don't know...
 - Oboslute
 	- It is just overall funky and I don't know if it fully works
 	- Uses transforms and I don't know if Shrine of Order was changed too with temp items
 
-
-	Fixing for DLC:
-
-- Use Too Many Items Delegate System for Taking Damage functions
-	- Will be alot better for when the damage funciton updates, and better compatibility with other mods
-	- Test if it works in multiplayer first
-
-- What is the item tag AllowedForUseAsCraftingIngredient?
-	- There's a crafting mechanic now that I'll add items to
-- What is the item tag ExtractorUnitBlacklist?
-	- This doesn't prevent items from being taken, but prevents them from being channeled
-
-
-- Use WithPickupIndex instead of .itemindex property for unique pickups
-	- public readonly UniquePickup WithPickupIndex(PickupIndex pickupIndex)
-
-- What is inventory.inventoryDisabled? and this.allowWhenDisabled?
-	- Some attacks disable the inventory and the allowWhenDisabled bypasses this
-
-
-
-- Find each GetItemCount() use and change to either 
-- RemoveItem obsolete, use RemoveItemPermanent or RemoveItemTemp or RemoveItemChanneled
-- Try using item transform function
-	- It is used for when items break. Items Checked:
-		Silver Thread
-	- When items are scrapped?
-
-// TODO doublecheck this orders temporary items as well
-// TODO add temporary item blacklist to all lunars
-// TODO check if channeled items can be removed
-// TODO Change to use Reference
-// TODO check if temporary items will mess with this count for scissors
-
-The Temporary List
-- Check temporary Birthday Candles
-	- Should be fine but who knows?
-- Temporary Vault and Scissors
-	- How do they work between stages? should the things they grant be temp?
-	- For vault ues for Scissors no
-- Temporary Scissors turns into temporary scraps when consumed?
-	- Pointlss as nothing takes temporary scraps?
-
-
 	For Future Consideration:
 
+- Obsolute. If an item is in a tri terminal and erased, it should be replaced with grey solvent
+- Toy Robot pulls in junk even if your not a drifter
+	- But JunkPickup hasn't been added as a class to RoR2 files
 - Toy Robot does pull in junk even for non drifter players
 - Zores Pill doesn't work on weak spots?
 	- Zorse Pill Does not include Head shot damage from railgunner

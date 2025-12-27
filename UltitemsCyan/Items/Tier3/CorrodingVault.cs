@@ -11,7 +11,9 @@ namespace UltitemsCyan.Items.Tier3
     public class CorrodingVault : ItemBase
     {
         public static ItemDef item;
-        private const int quantityInVault = 15;
+        //private const int quantityInVault = 15;
+        private const int minQuantityInVault = 10;
+        private const int maxQuantityInVault = 15;
         //private const int bonusInVault = 0;
 
         public override void Init(ConfigFile configs)
@@ -19,14 +21,13 @@ namespace UltitemsCyan.Items.Tier3
             const string itemName = "Corroding Vault";
             if (!CheckItemEnabledConfig(itemName, "Red", configs))
             {
-                Log.Warning("-JYPrint Hello?!?! ************ Vault");
                 return;
             }
             item = CreateItemDef(
                 "CORRODINGVAULT",
                 itemName,
                 "Breaks at the start of the next stage. Contains white items.",
-                "At the start of each stage, this item will <style=cIsUtility>break</style> and gives <style=cIsUtility>15</style> unique white items",
+                "At the start of each stage, this item will <style=cIsUtility>break</style> and gives <style=cIsUtility>10</style> to <style=cIsUtility>15</style> unique white items",
                 "This vault is sturdy, but over time the rust will just crack it open",
                 ItemTier.Tier3,
                 UltAssets.CorrodingVaultSprite,
@@ -82,6 +83,10 @@ namespace UltitemsCyan.Items.Tier3
                             int length = allWhiteItems.Length;
 
                             Xoroshiro128Plus rng = new(Run.instance.stageRng.nextUlong);
+
+                            int quantityInVault = rng.RangeInt(minQuantityInVault, maxQuantityInVault + 1);
+
+                            Log.Debug("Vault giving " + quantityInVault + " items...");
 
                             // Give 15 different white items
                             for (int i = 0; i < quantityInVault; i++)

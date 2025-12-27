@@ -94,9 +94,9 @@ namespace UltitemsCyan.Items.Tier2
                 ItemDef definition = ItemCatalog.GetItemDef(index);
                 // If item is untiered, can be removed, and not hidden
                 // Don't need to check for regenerating scrap because it is restored before this check
-                if (definition.tier.Equals(ItemTier.NoTier) && !definition.hidden) //definition.name.ToUpper().Contains("CONSUMED") // Checking for "consumed"
+                if (definition.isConsumed && !definition.hidden) //definition.name.ToUpper().Contains("CONSUMED") // Checking for "consumed"
                 {
-                    //Log.Debug("Adding consumed item " + definition.name);
+                    Log.Debug("Adding consumed item " + definition.name);
                     consumedItems.Add(definition);
                 }
             }

@@ -155,7 +155,7 @@ namespace UltitemsCyan
             ultitemItems.Add(new InhabitedCoffinConsumed());
             ultitemItems.Add(new SuesMandiblesConsumed());
             ultitemItems.Add(new SilverThreadConsumed()); // % TAKEDAMAGEPROCESS
-            //ultitemItems.Add(new GreySolvent()); // With Obsolute
+            ultitemItems.Add(new GreySolvent()); // With Obsolute
 
             // *** White
             ultitemItems.Add(new CremeBrulee());
@@ -175,7 +175,7 @@ namespace UltitemsCyan
             // *** Red
             ultitemItems.Add(new CorrodingVault()); // Has Consumed Item
             ultitemItems.Add(new Grapevine()); // % TAKEDAMAGEPROCESS
-            //ultitemItems.Add(new PigsSpork()); // HealthComponent_UpdateLastHitTime
+            ultitemItems.Add(new PigsSpork()); // HealthComponent_UpdateLastHitTime
             ultitemItems.Add(new RockyTaffy());
             ultitemItems.Add(new SuesMandibles()); // Has Consumed Item
             ultitemItems.Add(new ViralEssence());
@@ -200,7 +200,7 @@ namespace UltitemsCyan
             ultitemItems.Add(new Macroseismograph());
             ultitemItems.Add(new MacroseismographConsumed());
             ultitemItems.Add(new PotOfRegolith());
-            //ultitemItems.Add(new Obsolute()); // Has Consumed Item (creates consumed items from other items)
+            ultitemItems.Add(new Obsolute()); // Has Consumed Item (creates consumed items from other items)
 
 
             // *** Void Items

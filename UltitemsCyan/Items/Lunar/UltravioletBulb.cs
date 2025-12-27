@@ -47,7 +47,7 @@ namespace UltitemsCyan.Items.Lunar
         protected void CharacterBody_OnSkillActivated(On.RoR2.CharacterBody.orig_OnSkillActivated orig, CharacterBody self, GenericSkill skill)
         {
             //Log.Warning("Faulty Bulb On Skill Activated...");
-            if (skill && skill.skillDef.baseRechargeInterval > 0 && self && self.inventory)
+            if (self && self.inventory && skill && skill.skillDef.baseRechargeInterval > 0)
             {
                 //Log.Debug("Cooldown remain: " + skill.cooldownRemaining + " Scale: " + skill.cooldownScale + " Base Interval: " + skill.skillDef.baseRechargeInterval + " Reset Cooldown?: " + skill.skillDef.resetCooldownTimerOnUse);
                 int grabCount = self.inventory.GetItemCountEffective(item.itemIndex); // Change Luck

@@ -33,8 +33,9 @@ namespace UltitemsCyan.Items.Tier3
             item = CreateItemDef(
                 "PIGSSPORK",
                 "Pig's Spork",
-                "Bleeds heal you. When at low health explode and gain 200% chance to bleed enemies.",
-                "Bleed damage <style=cIsHealing>heals</style> for <style=cIsHealing>3</style> <style=cStack>(+3 per stack)</style> <style=cIsHealing>health</style>. When taking damage to below <style=cIsHealth>25% health</style> <style=cIsHealth>hemorrhage</style> all enemies within <style=cIsDamage>32m</style> <style=cStack>(+32m per stack)</style> and gain <style=cIsDamage>200%</style> chance to <style=cIsDamage>bleed</style> for <style=cIsDamage>12s</style> <style=cStack>(+12 per stack)</style>.",
+                "Bleeds heal you. When hit at low health explode and gain 200% chance to bleed enemies.",
+                // Applying bleed will make the enemy splash bleed on adjacent enemies when you have the 200% bleed buff
+                "Bleed damage <style=cIsHealing>heals</style> for <style=cIsHealing>3</style> <style=cStack>(+3 per stack)</style> <style=cIsHealing>health</style>. Taking damage below <style=cIsHealth>25% health</style> will <style=cIsHealth>hemorrhage</style> all enemies within <style=cIsDamage>32m</style> <style=cStack>(+32m per stack)</style> and grant <style=cIsDamage>200%</style> chance to <style=cIsDamage>bleed</style> for <style=cIsDamage>12s</style> <style=cStack>(+12 per stack)</style>.",
                 "There once was a pet named porky\nA cute and chubby pig\n\nBut the farmer broke his fork\nAnd used the spoon to dig\n\nSo he made a Sporky Spig\n",
                 ItemTier.Tier3,
                 UltAssets.PigsSporkSprite,
