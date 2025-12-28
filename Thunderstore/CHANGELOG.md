@@ -4,6 +4,10 @@
 - Fixed and Readding
     - Obsolute
     - Pig's Spork
+- Reworked Pig's Spork
+    - No longer heals on bleed ticks
+    - Grants bleed chance per missing health
+    - When hit below 25% still explode but inflicting bleed now splashes
 - 1000 Degree Scissors
     - Now uses isConsumed, thus nolonger melting tonic afflictions
     - And better compatability with other mods

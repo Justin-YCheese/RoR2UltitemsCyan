@@ -1,12 +1,13 @@
 ﻿using RoR2;
 using UltitemsCyan.Items.Tier3;
+using UnityEngine;
 
 namespace UltitemsCyan.Buffs
 {
     public class SporkBleedBuff : BuffBase
     {
         public static BuffDef buff;
-        private const float bleedChance = PigsSpork.sporkBleedChance;
+        //private const float bleedChance = PigsSpork.sporkBleedChancePerItem;
 
         public override void Init()
         {
@@ -18,21 +19,25 @@ namespace UltitemsCyan.Buffs
         protected void Hooks()
         {
             //RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
-            On.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
+            //On.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
             //On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
         }
 
+        /*/
         private void CharacterBody_RecalculateStats(On.RoR2.CharacterBody.orig_RecalculateStats orig, CharacterBody self)
         {
             orig(self);
             if (self && self.HasBuff(buff))
             {
                 //Log.Debug("Orig Bleed Chance: " + self.bleedChance);
-                self.bleedChance += bleedChance;
+                int grabCount = self.inventory.GetItemCountEffective(PigsSpork.item);
+                float lostHealthPercent = Mathf.Max(self.healthComponent.combinedHealthFraction, 1f);
+                self.bleedChance += bleedChance * grabCount * lostHealthPercent;
                 //Log.Debug("New Bleed Chance: " + self.bleedChance);
                 //Debug.Log(sender.name + "Birthday modifier: " + (rottingBuffMultiplier / 100f * buffCount));
             }
         }
+        //*/
 
         /*/
         public static void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
