@@ -26,8 +26,7 @@ namespace UltitemsCyan.Items.Tier3
                 "VIRALESSENCE",
                 itemName,
                 "Increase speed per unique status effect.",
-                "Increases <style=cIsUtility>movement speed</style> by <style=cIsUtility>20%</style> <style=cStack>(+20% per stack)</style> per <style=cIsDamage>unique status</style> you have." +
-                    " Up to a maximum of <style=cIsUtility>6</style> <style=cStack>(+6 per stack)</style>.",
+                "Increases <style=cIsUtility>movement speed</style> by <style=cIsUtility>20%</style> <style=cStack>(+20% per stack)</style> per <style=cIsDamage>unique status</style> you have. Up to a maximum of <style=cIsUtility>6</style> <style=cStack>(+6 per stack)</style>.",
                 "Illness",
                 ItemTier.Tier3,
                 UltAssets.ViralSmogSprite,

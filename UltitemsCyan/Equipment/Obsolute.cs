@@ -58,7 +58,7 @@ namespace UltitemsCyan.Equipment
                 "OBSOLUTE",
                 itemName,
                 "<style=cDeath>Erase</style> your last item from existence and gain some gold.",
-                "<style=cDeath>Erase</style> the last item in your inventory from the run. It will no longer appear, and any instances of the items will <style=cDeath>dissolve</style>. Gain <style=cIsUtility>gold</style> corrisponding to item dissolved. Cannot dissolve scraped, key, or boss items.",
+                "<style=cDeath>Erase</style> the last item in your inventory from the run. It will no longer appear, and any instances of the items will <style=cDeath>dissolve</style>. Gain <style=cIsUtility>gold</style> corrisponding to items dissolved. Cannot dissolve scraped, key, or boss items.",
                 "Everything returns to grey",
                 cooldown,
                 true,

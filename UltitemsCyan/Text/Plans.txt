@@ -1,29 +1,21 @@
 ﻿
 	Ask my Friends Questions:
-- Rename Viral Smog to Viral Cure? Viral Eessence? Viral Lilac?
+
 
 	When Playing:
 - Add jump buffer timer to Frisbee (because it's being janky, Test with Hunter's Harpoon)
 
 	When Testing:
-- Getting hit by elite with dream fuel and ben's rain coat
-	- (Block root or block fire?)
-- temp Corroding Vault priority
-- Corroding vault quantity
-
-- Rotten Bones works when time is frozen...
-	- Because using Run.instance.time
 - Check that Mythrixs can apply starve
-- Test Obsolute in void fields and Newt shop Xenon Ampoule
-- Test Tiny Igloo with Turrets
 - Test All Items
 
 	My Item Add Order:
-- Resin Whirlpool
+
 - Worm Holes
 - Power Chips
 - Trebuchet
 - Jelly Jail
+- Resin Whirlpool
 
 	When updating mod check:
 - Bugs / Tests
@@ -41,48 +33,36 @@
 	DLC Notes:
 - An item transforamtion can fail if there are not enough items for min transformation, or if the inventory is diabled
 
-
-	Removed for now...
-- Oboslute
-	- It is just overall funky and I don't know if it fully works
-	- Uses transforms and I don't know if Shrine of Order was changed too with temp items
-
 	For Future Consideration:
 
+
+
 - Obsolute. If an item is in a tri terminal and erased, it should be replaced with grey solvent
+	- Lunar shop ignores most recently erased item
 - Toy Robot pulls in junk even if your not a drifter
 	- But JunkPickup hasn't been added as a class to RoR2 files
-- Toy Robot does pull in junk even for non drifter players
+	- Toy Robot does pull in junk even for non drifter players
 - Zores Pill doesn't work on weak spots?
 	- Zorse Pill Does not include Head shot damage from railgunner
 - Scorpian doesn't apply fire for HMT?
 - Could make birthday candle remove longest candle when an item is lost
-- Check how Kenetic Shield detects dropped shield
-- See if Lowhealth tag can be added to Pot of Regolith
-- For now Rocky Taffy doesn't freeze barrier when there's no shield
-	- so I increased barrier...
-- For now a tmep Corroding Vault gives 15 real items (mostly because that race of 80 seconds to beat the level is real?)
-	- Does the time only start when you pick up the item? or will it despawn
-	- Same for InhabitedCoffin
+
 - For now a temp scissors will function with scrap. But it will always return permanant scrap, and will always try removeing only permanant scissors.
 
 - Zorse Doesn't work with surikens (the surikens don't apply Zorse)
 
 - Zorse not Network Effect? (or even work?)
     - Does affect appear in multiplayer?
-- Permenant fire bug?
+
 - If jumping with Crysotope the frame of landing? then infinite buff? with frisbee too?
-- Crysotope and Frisbee are disabled when gaining certain buffs (i.e. hunter's harpoon)
+	- Crysotope and Frisbee are disabled when gaining certain buffs (i.e. hunter's harpoon)
 - If hit with flea bag greater than 200% double flea bag drop chance (now that crit is only x2)
 
-- Make Pot of Regolith give lots of armor for a second after use
-	- Or some other thing so it's like a parry in a way
 - Blast showers on bandit has visual glitch? Doesn't appear and put on special (perhaps because I switched equipment after using)
 - Make Tiny Igloo also increase size of
 	- gilded money zone
 		- (Works mechanicaly but dosen't change visually)
 	- Healing wards
-	- Count total igloos within specific zone? (so seperating stacks is okay?)
 
 - Make Macroseismograph launch all characters the same way
 	- Use Jellyfish explosion instead (and increase range) (or use both?)
@@ -93,20 +73,15 @@
 - See how many Jealous Foes does it takes to activate each on kill frenzy effect
 	- Berserker's Pauldron, Resonant Disc, Chronic Expansion
 - Add sound for losing Birthday Buff
-- Change Rocky Taffy to only give buff at Full Heath?
-
 
 - fix Rocky Taffy with Transcendence
 
 - Use heal fraction for percent heals
-- Change Koala to do nothing if player doesn't have one shot protection enabled? ()
+- Change Koala to do nothing if player doesn't have one shot protection enabled?
 
 - remove public static ExpansionDef sotvDLC;
 - Optimize SonorousPail by using indexing arrays
 - Add DLC required to void items (Void items can still be obtained with dlc disabled?)
-- Yield Sign can reduce your speed when using speed mode (because displacement greater than max speed)
-- change Yield Attack from will o' wisp to blast attack
-
 
 - What happens with pickups if you die after gravitating pickup?
 - Universal Solute
@@ -145,7 +120,6 @@
 	- Add Toy Robot radius, and other radius effects
 	- Birthday Candles
 		- Losing stacks
-- Zorse Pill has wrong sprit in read me
 - Change Fleabag and Grape orb color
 
 
@@ -187,13 +161,9 @@ Grapevine
 Viral Smog
 Rocky Taffy
 Pig's Spork
-- Pig's spork no longer heals from hemerage
-+ Wave is doubled in radius
 
 ** Equipment **
 Pot of Regolith
-+ Change mininum damage to 2%
-+ Make so only 2% damage when below 25% health?
 9 Ice Cubes
 
 ** Lunar **

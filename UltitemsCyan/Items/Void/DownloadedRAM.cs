@@ -36,7 +36,7 @@ namespace UltitemsCyan.Items.Void
                 "DOWNLOADEDRAM",
                 itemName,
                 "Chance on hit to temporarily increase damage. Dealing damage refreshes the timer. <style=cIsVoid>Corrupts all Overclocked GPUs</style>.",
-                "<style=cIsDamage>12%</style> chance on hit to increase damage by <style=cIsDamage>8%</style>. Maxinum cap of <style=cIsDamage>4</style> <style=cStack>(+4 per stack)</style>. Lose stacks 4 seconds after inflicting damage. <style=cIsVoid>Corrupts all Overclocked GPUs</style>.",
+                "<style=cIsDamage>12%</style> chance on hit to increase damage by <style=cIsDamage>8%</style>. Maxinum cap of <style=cIsDamage>4</style> <style=cStack>(+4 per stack)</style>. Lose stacks 4 seconds after not inflicting damage. <style=cIsVoid>Corrupts all Overclocked GPUs</style>.",
                 "Wow I can't belive it worked! I thought for sure it was a scam!",
                 ItemTier.VoidTier2,
                 UltAssets.DownloadedRAMSprite,

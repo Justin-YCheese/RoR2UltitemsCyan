@@ -1,6 +1,5 @@
 ﻿using RoR2;
 using UnityEngine;
-using System.Collections.Generic;
 using UltitemsCyan.Buffs;
 using BepInEx.Configuration;
 using UnityEngine.Networking;
@@ -93,7 +92,7 @@ namespace UltitemsCyan.Items.Tier3
 
                         body.SetDirtyBit(1U);
 
-                        Log.Debug("Spokr's Current Health: " + _currentHealth);
+                        //Log.Debug("Spokr's Current Health: " + _currentHealth);
 
                         //_ = Util.PlaySound("Play_affix_void_bug_spawn", gameObject);
                     }
@@ -131,7 +130,7 @@ namespace UltitemsCyan.Items.Tier3
                 {
                     float lostHealthPercent = Mathf.Clamp(1f - self.healthComponent.combinedHealthFraction, 0f, 1f);
                     self.bleedChance += sporkBleedChancePerItem * grabCount * lostHealthPercent;
-                    Log.Debug("New Bleed Chance: " + self.bleedChance);
+                    //Log.Debug("New Bleed Chance: " + self.bleedChance);
                 }
             }
         }

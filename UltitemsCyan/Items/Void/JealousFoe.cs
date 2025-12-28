@@ -44,7 +44,7 @@ namespace UltitemsCyan.Items.Void
                 "JEALOUSFOE",
                 itemName,
                 "Trigger On-Kill effects after grabbing pickups. <style=cIsVoid>Corrupts all Toy Robots</style>.",
-                "Gain stacks upon grabbing pickups</style>. Maximum cap of 3</style> (+3 per stack)</style>. Trigger an <style=cIsDamage>On-Kill</style> effect per stack every <style=cIsUtility>4s</style> (-30% per stack)</style>. Recharges every <style=cIsUtility>6</style> seconds. <style=cIsVoid>Corrupts all Toy Robots</style>.",
+                "Gain stacks upon grabbing pickups</style>. Maximum cap of 3</style> <style=cStack>(+3 per stack)</style>. Trigger an <style=cIsDamage>On-Kill</style> effect per stack every <style=cIsUtility>4s</style> <style=cStack>(-30% per stack)</style>. Recharges every <style=cIsUtility>6</style> seconds. <style=cIsVoid>Corrupts all Toy Robots</style>.",
                 //"<style=cIsDamage>5%</style> <style=cStack>(+5% per stack)</style> chance of triggering <style=cIsDamage>On-Kill</style> effects when <style=cIsDamage>grabbing pickups</style>. <style=cIsVoid>Corrupts all Toy Robots</style>.",
                 "Look at it Jubilat. It just jubilant like some jealous jello jelly.",
                 ItemTier.VoidTier1,

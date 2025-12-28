@@ -59,35 +59,35 @@ namespace UltitemsCyan.Items.Tier1
         private void HealthPickup_OnTriggerStay(On.RoR2.HealthPickup.orig_OnTriggerStay orig, HealthPickup self, Collider other)
         {
             orig(self, other);
-            Log.Debug(" ---- || ---- Toy Pickup for HealthPickup");
+            //Log.Debug(" ---- || ---- Toy Pickup for HealthPickup");
             CheckBarrier(other);
         }
 
         private void ElusiveAntlersPickup_OnTriggerStay(On.RoR2.ElusiveAntlersPickup.orig_OnTriggerStay orig, ElusiveAntlersPickup self, Collider other)
         {
             orig(self, other);
-            Log.Debug(" ---- || ---- Toy Pickup for ElusiveAntlersPickup");
+            //Log.Debug(" ---- || ---- Toy Pickup for ElusiveAntlersPickup");
             CheckBarrier(other);
         }
 
         private void MoneyPickup_OnTriggerStay(On.RoR2.MoneyPickup.orig_OnTriggerStay orig, MoneyPickup self, Collider other)
         {
             orig(self, other);
-            Log.Debug(" ---- || ---- Toy Pickup for MoneyPickup");
+            //Log.Debug(" ---- || ---- Toy Pickup for MoneyPickup");
             CheckBarrier(other);
         }
 
         private void BuffPickup_OnTriggerStay(On.RoR2.BuffPickup.orig_OnTriggerStay orig, BuffPickup self, Collider other)
         {
             orig(self, other);
-            Log.Debug(" ---- || ---- Toy Pickup for BuffPickup");
+            //Log.Debug(" ---- || ---- Toy Pickup for BuffPickup");
             CheckBarrier(other);
         }
 
         private void AmmoPickup_OnTriggerStay(On.RoR2.AmmoPickup.orig_OnTriggerStay orig, AmmoPickup self, Collider other)
         {
             orig(self, other);
-            Log.Debug(" ---- || ---- Toy Pickup for AmmoPickup");
+            //Log.Debug(" ---- || ---- Toy Pickup for AmmoPickup");
             CheckBarrier(other);
         }
 
@@ -140,7 +140,7 @@ namespace UltitemsCyan.Items.Tier1
 
                     if (gravitatePickup && gravitatePickup.gravitateTarget == null && gravitatePickup.teamFilter.teamIndex == body.teamComponent.teamIndex)
                     {
-                        Log.Debug(" ---- || ---- Toy Pickup: Found " + pickUp.gameObject.name);
+                        //Log.Debug(" ---- || ---- Toy Pickup: Found " + pickUp.gameObject.name);
                         // If it does not have a gravitation target, then pull in
                         // Chance to pickup, so that one player doesn't pickup all stuff
                         // Log.Warning("Toy Pickup for " + body.GetUserName() + "\t is " + (minPickupChance + (ratioPickupChance / stack)));
