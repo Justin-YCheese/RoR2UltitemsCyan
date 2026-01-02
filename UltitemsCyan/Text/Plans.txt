@@ -6,7 +6,9 @@
 - Add jump buffer timer to Frisbee (because it's being janky, Test with Hunter's Harpoon)
 
 	When Testing:
+- Test Worm Holes Multiplayer effects
 - Check that Mythrixs can apply starve
+
 - Test All Items
 
 	My Item Add Order:
@@ -30,12 +32,34 @@
 - Has the tags: Mods | Items | Survivors of the Void | Seekers of the Storm Update | Alloyed Collective
 - Push git changes
 
+
+
 	DLC Notes:
 - An item transforamtion can fail if there are not enough items for min transformation, or if the inventory is diabled
 
+
+
 	For Future Consideration:
 
+- With Worm Holes
+	- Move timer component to idleWorm (optimize and organize)
+	- Make worms use more shades as it goes back (too purple similar to Coffin)
+	- Seed isn't centered (needs to be lowered but It's not working)
 
+- Inhabited Coffin is an actually aproriate size
+	- How do I change the size for the other items?
+
+- Obsolute: In simulacrum you can erradicate items from the universe Must be similar to erasing
+	- With things called void suppressor
+	- Will turn any instances of that object into scrap
+	- But doesn't remove from command list
+	- But does persist through levels
+
+- Check damageInfo.procCoefficient > 0f for my proc items
+
+- Make Inhabbited Coffin roll chance of white, green, or red tier instead of all the same balance
+	- So that having too many red void won't offset the item alot
+	- Current spread is (8, 9, 3) so like a (42, 42, 16) spread?
 
 - Obsolute. If an item is in a tri terminal and erased, it should be replaced with grey solvent
 	- Lunar shop ignores most recently erased item

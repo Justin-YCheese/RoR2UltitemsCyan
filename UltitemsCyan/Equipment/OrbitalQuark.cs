@@ -11,6 +11,8 @@ namespace UltitemsCyan.Equipment
     // Alloyed: CharacterMotor Changed signature for ModifyGravity
     // There's a ModifyGravity?
 
+    // There's a public class SlowFallZone : MonoBehaviour ?
+
     public class OrbitalQuark : EquipmentBase
     {
         public static EquipmentDef equipment;
@@ -65,8 +67,7 @@ namespace UltitemsCyan.Equipment
                 OrbitalQuarkToken OrbitalToken = activator.gameObject.GetComponent<OrbitalQuarkToken>();
                 if (!OrbitalToken)
                 {
-                    _ = activator.gameObject.AddComponent<OrbitalQuarkToken>();
-                    OrbitalToken = activator.gameObject.GetComponent<OrbitalQuarkToken>();
+                    OrbitalToken = activator.gameObject.AddComponent<OrbitalQuarkToken>();
                 }
 
                 Vector3 position = activator.corePosition;

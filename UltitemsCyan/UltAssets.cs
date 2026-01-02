@@ -61,7 +61,7 @@ namespace UltitemsCyan
         public static Sprite ResinWhirlpoolSprite;
         public static Sprite RottenBonesSprite;
         //public static Sprite TungstenRodSprite;
-        //public static Sprite WormHolesSprite;
+        public static Sprite WormHolesSprite;
         public static Sprite ZorsePillSprite;
         public static GameObject DownloadedRAMPrefab;
         public static GameObject CrysotopePrefab;
@@ -71,7 +71,7 @@ namespace UltitemsCyan
         public static GameObject ResinWhirlpoolPrefab;
         public static GameObject RottenBonesPrefab;
         //public static GameObject TungstenRodPrefab;
-        //public static GameObject WormHolesPrefab;
+        public static GameObject WormHolesPrefab;
         public static GameObject ZorsePillPrefab;
 
         // Lunar
@@ -235,7 +235,7 @@ namespace UltitemsCyan
             ResinWhirlpoolSprite = mainBundle.LoadAsset<Sprite>("ResinWhirlpool.png");
             RottenBonesSprite = mainBundle.LoadAsset<Sprite>("RottenBones.png");
             //TungstenRodSprite = mainBundle.LoadAsset<Sprite>("TungstenRod.png");
-            //WormHolesSprite = mainBundle.LoadAsset<Sprite>("WormHoles.png");
+            WormHolesSprite = mainBundle.LoadAsset<Sprite>("WormHoles.png");
             ZorsePillSprite = mainBundle.LoadAsset<Sprite>("ZorsePill.png");
             CrysotopePrefab = mainBundle.LoadAsset<GameObject>("Chrysotope.prefab");
             DownloadedRAMPrefab = mainBundle.LoadAsset<GameObject>("DownloadedRAM.prefab");
@@ -245,7 +245,7 @@ namespace UltitemsCyan
             ResinWhirlpoolPrefab = mainBundle.LoadAsset<GameObject>("ResinWhirlpool.prefab");
             RottenBonesPrefab = mainBundle.LoadAsset<GameObject>("RottenBones.prefab");
             //TungstenRodPrefab = mainBundle.LoadAsset<GameObject>("TungstenRod.prefab");
-            //WormHolesPrefab = mainBundle.LoadAsset<GameObject>("WormHoles.prefab");
+            WormHolesPrefab = mainBundle.LoadAsset<GameObject>("WormHoles.prefab");
             ZorsePillPrefab = mainBundle.LoadAsset<GameObject>("ZorsePill.prefab");
 
             //CrysotopePrefab.transform.localScale = Vector3.up * localScale;

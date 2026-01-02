@@ -25,6 +25,8 @@ namespace UltitemsCyan.Equipment
      * 
      */
 
+    
+
     // dropPickup has no setter anymore; use currentPickup in general
     // generatedDrops -> generatedPickups
     // ShopTerminalBehavior

@@ -85,14 +85,14 @@ namespace UltitemsCyan.Items.Tier2
         // Add zone to global list
         private void HoldoutZoneController_Start(On.RoR2.HoldoutZoneController.orig_Start orig, HoldoutZoneController self)
         {
-            Log.Debug(" <><><><> Tiny Igloo Start Zone");
+            //Log.Debug(" <><><><> Tiny Igloo Start Zone");
             if (self.applyFocusConvergence) //If zone can get shrunk, it can grow too
             {
                 _ = self.gameObject.AddComponent<IglooHoldoutZoneController>();
             }
             else
             {
-                Log.Warning(" >      < No focus convergence?");
+                //Log.Warning(" >      < No focus convergence?");
             }
             orig(self);
         }
@@ -149,11 +149,11 @@ namespace UltitemsCyan.Items.Tier2
             ))
             {
 
-                Log.Debug(" * * * Start C Index: " + c.Index + " > " + c.ToString());
+                //Log.Debug(" * * * Start C Index: " + c.Index + " > " + c.ToString());
 
                 c.Index++;
 
-                Log.Debug(" * * *       C Index: " + c.Index + " > " + c.ToString());
+                //Log.Debug(" * * *       C Index: " + c.Index + " > " + c.ToString());
 
                 _ = c.Emit(OpCodes.Ldloc, 0);     // Load HealthComponent.HealMessage
                 // Run custom code

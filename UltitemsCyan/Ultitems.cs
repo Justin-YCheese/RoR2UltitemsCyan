@@ -80,7 +80,7 @@ namespace UltitemsCyan
         public const string PluginName = "UltitemsCyan";
         public const string PluginVersion = "0.13.5";
 
-        public const string PluginSuffix = "Sporked in the Fork";
+        public const string PluginSuffix = "Sporked the Worm?";
 
         private static ConfigFile UltitemsConfig { get; set; }
 
@@ -206,12 +206,15 @@ namespace UltitemsCyan
             // *** Void Items
             ultitemItems.Add(new Crysotope());
             ultitemItems.Add(new DriedHam());
-            ultitemItems.Add(new RottenBones()); //ALLOYED
-            ////// ultitemItems.Add(new QuantumPeel());
-            ultitemItems.Add(new DownloadedRAM());
             ultitemItems.Add(new JealousFoe());
-            ultitemItems.Add(new InhabitedCoffin()); // Has Consumed Item
+
+            ultitemItems.Add(new RottenBones()); //ALLOYED
+            ultitemItems.Add(new DownloadedRAM());
             ultitemItems.Add(new ZorsePill()); //ALLOYED
+
+            ultitemItems.Add(new InhabitedCoffin()); // Has Consumed Item
+            ultitemItems.Add(new WormHoles());
+            ////// ultitemItems.Add(new QuantumPeel());
 
             // Last Priority
             ultitemItems.Add(new DegreeScissors()); // After Vault and Coffin to grab consumed items
