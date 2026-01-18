@@ -12,6 +12,7 @@ using UltitemsCyan.Items.Tier2;
 using UltitemsCyan.Items.Tier3;
 using UltitemsCyan.Items.Lunar;
 using UltitemsCyan.Items.Void;
+using UltitemsCyan.Items.Food;
 using UltitemsCyan.Items.Untiered;
 using UltitemsCyan.Equipment;
 using UltitemsCyan.Buffs;
@@ -29,7 +30,13 @@ using System.Linq;
 using BepInEx.Configuration;
 //using System;
 using UltitemsCyan.Items;
-using RoR2.ExpansionManagement;
+using RoR2.ContentManagement;
+//using RoR2.ExpansionManagement;
+using System;
+using System.Collections;
+
+//using RoR2.ContentManagement;
+//using RoR2.ExpansionManagement;
 
 namespace UltitemsCyan
 {
@@ -86,7 +93,10 @@ namespace UltitemsCyan
 
         public static List<ItemDef.Pair> CorruptionPairs = [];
         public static PluginInfo PInfo { get; private set; }
-        public static ExpansionDef sotvDLC;
+        //public static ExpansionDef sotvDLC;
+
+        public const int numRecipies = 1;
+        //public static CraftableDef[] CraftRecipies = new CraftableDef[numRecipies];
 
         public static Sprite mysterySprite = Addressables.LoadAssetAsync<Sprite>("RoR2/Base/Common/MiscIcons/texMysteryIcon.png").WaitForCompletion();
         public static GameObject mysteryPrefab = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Mystery/PickupMystery.prefab").WaitForCompletion();
@@ -103,6 +113,9 @@ namespace UltitemsCyan
         // config file
         private static ConfigFile cfgFile;
         //*/
+
+     
+
 
         public void Awake()
         {
@@ -216,6 +229,9 @@ namespace UltitemsCyan
             ultitemItems.Add(new WormHoles());
             ////// ultitemItems.Add(new QuantumPeel());
 
+            // *** Food Items
+            ultitemItems.Add(new Permaglaze());
+
             // Last Priority
             ultitemItems.Add(new DegreeScissors()); // After Vault and Coffin to grab consumed items
 
@@ -232,13 +248,82 @@ namespace UltitemsCyan
                         itemDef2 = newItem.GetItemDef,
                     });
                 }
+                //TODO move food item initilization here?
             }
 
             // Add Hooks
             Stage.onStageStartGlobal += Stage_onStageStartGlobal;
             On.RoR2.Items.ContagiousItemManager.Init += ContagiousItemManager_Init;
+            //On.RoR2.CraftableCatalog.Init += CraftableCatalog_Init;
+
+            // CRAFTING
+
+            // Create Blank array of Crafting recipies
+            for (int i = 0; i < numRecipies; i++)
+            {
+                CraftableDef c = ScriptableObject.CreateInstance<CraftableDef>();
+                c.name = "Recipe #" + (i + 1);
+                MyUltRecipes.Recipies.Add(c);
+                Debug.Log("Added blank recipe " + c.name);
+            }
+
+            new MyUltRecipes().Initialise();
+
+            // Add recipies when ready
+            PickupCatalog.availability.CallWhenAvailable(FillRecipes);
 
             Log.Warning("Ultitems Cyan Done: " + PluginVersion + " <- " + PluginSuffix);
+        }
+
+        private void DefineRecipes()
+        {
+            Log.Warning(":: ~~ Define Recipes ~~ ::");
+
+            //ifrits distinction
+            //FillRecipes(CraftRecipies[0], 1, ["","",""]);
+        }
+
+        private void FillRecipes() //CraftableDef craftable, int amount, string[] recipesComponents
+        {
+            Debug.Log("check filling...");
+
+            CraftableDef craftable = MyUltRecipes.Recipies[0];
+
+            //null check
+            UnityEngine.Object firstPickupIngrediant = EquipmentCatalog.GetEquipmentDef(IceCubes.equipment.equipmentIndex);
+            UnityEngine.Object secondPickupIngrediant = ItemCatalog.GetItemDef(RockyTaffy.item.itemIndex);
+            UnityEngine.Object pickupResult = ItemCatalog.GetItemDef(Permaglaze.item.itemIndex);
+
+            if (!firstPickupIngrediant || !secondPickupIngrediant || !pickupResult)
+            {
+                Debug.Log(" Missing def:");
+                craftable.recipes = [];
+                craftable.pickup = null;
+                return;
+            }
+
+            Recipe[] array = new Recipe[1];
+            Recipe recipe = new()
+            { //make the recipe
+                amountToDrop = 1,
+                ingredients = [
+                    new RecipeIngredient {
+                        pickup = firstPickupIngrediant
+                    },
+                    new RecipeIngredient {
+                        pickup = secondPickupIngrediant
+                    }
+                ]
+            };
+
+            //assign the recipe to the craftable def
+            craftable.pickup = pickupResult;
+            array[0] = recipe;
+            craftable.recipes = [
+                recipe
+            ];
+
+            Debug.Log("Added recipe for Permaglaze");
         }
 
         private void Stage_onStageStartGlobal(Stage obj)
@@ -247,7 +332,6 @@ namespace UltitemsCyan
             //Log.Warning("Ultitem Starts at: " + stageStartTime);
         }
 
-
         // Add Void Pairs
         public void ContagiousItemManager_Init(On.RoR2.Items.ContagiousItemManager.orig_Init orig)
         {
@@ -255,6 +339,7 @@ namespace UltitemsCyan
             List<ItemDef.Pair> voidPairs = [.. ItemCatalog.itemRelationships[DLC1Content.ItemRelationshipTypes.ContagiousItem]]; // Collection Expression?
             PrintPairList(CorruptionPairs);
             ItemCatalog.itemRelationships[DLC1Content.ItemRelationshipTypes.ContagiousItem] = voidPairs.Union(CorruptionPairs).ToArray();
+            //ItemCatalog.itemRelationships[DLC3Content.ItemRelationshipTypes.]
             Log.Debug("End of Ultitems init");
             orig();
         }
@@ -264,6 +349,50 @@ namespace UltitemsCyan
             foreach (ItemDef.Pair pair in list)
             {
                 Log.Debug(". " + pair.itemDef1.name + " -> " + pair.itemDef2.name);
+            }
+        }
+
+        public class MyUltRecipes : IContentPackProvider
+        {
+            internal ContentPack contentPack = new();
+
+            public static List<CraftableDef> Recipies = [];
+            //public static CraftableDef[] CraftRecipies = new CraftableDef[numRecipies];
+
+            public string identifier => "Bluefishracer.UltitemsCyanRecipes";
+
+            public void Initialise()
+            {
+                ContentManager.collectContentPackProviders += AddSelf;
+            }
+
+            private void AddSelf(ContentManager.AddContentPackProviderDelegate add)
+            {
+                add(this);
+            }
+
+            public IEnumerator LoadStaticContentAsync(LoadStaticContentAsyncArgs args)
+            {
+                Log.Warning("-JY Load Static");
+                contentPack.identifier = identifier;
+                contentPack.craftableDefs.Add([.. Recipies]);
+                args.ReportProgress(1f);
+                yield break;
+            }
+
+            public IEnumerator GenerateContentPackAsync(GetContentPackAsyncArgs args)
+            {
+                Log.Warning("-JY Generate");
+                ContentPack.Copy(contentPack, args.output);
+                args.ReportProgress(1f);
+                yield break;
+            }
+
+            public IEnumerator FinalizeAsync(FinalizeAsyncArgs args)
+            {
+                Log.Warning("-JY Finalize");
+                args.ReportProgress(1f);
+                yield break;
             }
         }
 

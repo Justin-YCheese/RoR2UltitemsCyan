@@ -59,7 +59,7 @@ namespace UltitemsCyan.Items.Tier3
             // Calculate just in case of compatability with other mods?
             //float barrierDecay = orig(self);
             // If you have taffy and no shield
-            if (self.body.inventory.GetItemCountEffective(item) > 0 && self.shield <= 0)
+            if (self && self.body && self.body.inventory && self.body.inventory.GetItemCountEffective(item) > 0 && self.shield <= 0)
             {
                 // Then don't lose barrier
                 return orig(self) * 0f;

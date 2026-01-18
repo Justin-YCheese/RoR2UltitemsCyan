@@ -48,7 +48,7 @@ namespace UltitemsCyan.Items.Void
                 "WORMHOLES",
                 itemName,
                 "High damage hits also create a void bubble. <style=cIsVoid>Corrupts all Grapevine</style>.",
-                "Hits that deal more than 400% damage also create a void bubble of 15m (+3m per stack) that last for 8 seconds. Can have 1 (+1 per stack) bubble at a time. <style=cIsVoid>Corrupts all Grapevine</style>.",
+                "Hits that deal <style=cIsDamage>more than 400% damage</style> also create a <style=cIsVoid>void bubble</style> of <style=cIsUtility>15m</style> <style=cStack>(+3m per stack)</style> that last for <style=cIsUtility>8</style> seconds. Can have <style=cIsUtility>1</style> <style=cStack>(+1 per stack)</style> bubble at a time. <style=cIsVoid>Corrupts all Grapevine</style>.",
                 "Get it? It's a worm with holes!",
                 ItemTier.VoidTier3,
                 UltAssets.WormHolesSprite,
