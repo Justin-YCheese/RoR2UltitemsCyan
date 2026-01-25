@@ -9,7 +9,7 @@ namespace UltitemsCyan.Items.Tier2
     // TODO: check if Item classes needs to be public
     public class XenonAmpoule : ItemBase
     {
-        private static ItemDef item;
+        public static ItemDef item;
 
         public static GameObject TracerRailgun = Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/Railgunner/TracerRailgun.prefab").WaitForCompletion();
         //public static GameObject TracerRailgunCryo = Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/Railgunner/TracerRailgunCryo.prefab").WaitForCompletion();

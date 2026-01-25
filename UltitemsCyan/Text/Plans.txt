@@ -146,6 +146,7 @@
 		- Losing stacks
 - Change Fleabag and Grape orb color
 
+- Make Corroding vault's items quantity luck based?
 
 - Sonorous Server Client differences?
 	- Visual Glitch with Blizzard (I picked up sonorous pail while haveing blizzard up)

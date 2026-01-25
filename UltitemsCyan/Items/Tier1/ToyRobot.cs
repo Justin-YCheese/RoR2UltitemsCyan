@@ -141,72 +141,10 @@ namespace UltitemsCyan.Items.Tier1
                     if (gravitatePickup && gravitatePickup.gravitateTarget == null && gravitatePickup.teamFilter.teamIndex == body.teamComponent.teamIndex)
                     {
                         //Log.Debug(" ---- || ---- Toy Pickup: Found " + pickUp.gameObject.name);
-                        // If it does not have a gravitation target, then pull in
-                        // Chance to pickup, so that one player doesn't pickup all stuff
-                        // Log.Warning("Toy Pickup for " + body.GetUserName() + "\t is " + (minPickupChance + (ratioPickupChance / stack)));
                         if (Util.CheckRoll(minPickupChance + ratioPickupChance / stack))
                         {
-                            //GravitatePickup gravitatePickup = pickUp.gameObject.GetComponent<RoR2.JunkPickup>();
-                            // If a junk pickup and the player is a drifter then pull, otherwise ignore
-                            //if (pickupIndex == PickupCatalog.FindPickupIndex(DLC3Content.Items.Junk.itemIndex) &&
-                            //    (body.bodyFlags & CharacterBody.BodyFlags.CollectJunk) != CharacterBody.BodyFlags.None)
-
                             gravitatePickup.gravitateTarget = body.transform;
                         }
-
-
-
-                        /*/ Failed Check closest player method
-                        // As a Pickup
-                        Log.Warning("Toy Robot on the job! for " + body.GetUserName());
-                        Vector3 pickUpTransform = pickUp.transform.position;
-                        // Detect other Sphere Colliders
-                        float minDistance = float.MaxValue;
-                        //float minDistance = Vector3.Distance(pickUp.transform.position, body.transform.position);
-
-                        CharacterBody target = body;
-                        Collider[] overlappingSpheres = Physics.OverlapSphere(pickUpTransform, 0.5f); // Get all spheres overlapping with this sphere
-
-                        for (int i = 0; i < overlappingSpheres.Length; i++)
-                        {
-                            Log.Debug("Type: " + overlappingSpheres[i].GetType() + " is sphere? " + (overlappingSpheres[i].GetType() == typeof(SphereCollider)));
-                            if (overlappingSpheres[i].GetType() == typeof(SphereCollider) && overlappingSpheres[i].GetComponent<CharacterBody>())
-                            {
-                                var playerBody = overlappingSpheres[i].GetComponent<CharacterBody>();
-                                if (playerBody)
-                                {
-                                    Log.Debug("Found Player? " + playerBody.GetUserName());
-                                    float distance = Vector3.Distance(pickUpTransform, overlappingSpheres[i].transform.position);
-                                    if (distance < minDistance)
-                                    {
-                                        // Found a closer player, will fly towards them
-                                        minDistance = distance;
-                                        Log.Debug("Get Closer Character Body?");
-                                        target = overlappingSpheres[i].GetComponent<CharacterBody>();
-                                        Log.Debug("Target " + target.GetUserName());
-                                    }
-                                    Log.Debug("Position of sphere search " + i + " is " + overlappingSpheres[i].transform.position);
-                                }
-                            }
-                        }
-                        //*/
-
-                        // Print distance of pickup
-                        /*/ Measure distance
-                        var measureDistance = Vector3.Distance(body.transform.position, pickUp.transform.position);
-                        if (maxDistance < measureDistance)
-                        {
-                            maxDistance = measureDistance;
-                            Log.Debug("Max distance: " + maxDistance);
-                        }//*/
-
-                        //gravitatePickup.gravitateTarget = body.transform;
-
-                        //Body team = 1f
-                        //Pickup team = Player
-                        //gravitatePickup.maxSpeed = 40
-                        //Gravitate tag: untagged
-                        // 16 - 24 -
                     }
                 }
             }

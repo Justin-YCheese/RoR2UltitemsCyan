@@ -1,15 +1,5 @@
 ﻿using BepInEx.Configuration;
-using R2API;
 using RoR2;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.Networking;
-using HG;
-using static Facepunch.Steamworks.Inventory.Recipe;
-using UltitemsCyan.Equipment;
-using UltitemsCyan.Items.Tier3;
 
 namespace UltitemsCyan.Items.Food
 {
@@ -20,8 +10,8 @@ namespace UltitemsCyan.Items.Food
         public static ItemDef item;
 
         // TODO change to only 
-        private const float regenPercentBase = -25f;
-        private const float regenPercentPerStack = 75f;
+        private const float regenPercentBase = -50f;
+        private const float regenPercentPerStack = 100f;
 
         public override void Init(ConfigFile configs)
         {
@@ -34,12 +24,12 @@ namespace UltitemsCyan.Items.Food
                 "PERMAGLAZE",
                 itemName,
                 "Barrier no longer decays. Gain barrier regeneration at full health.",
-                "Barrier won't decay. Gain barrier regeneration equal to 50% (+75% per stack) of health regeneration when at full health.",
+                "Barrier won't decay. Gain barrier regeneration equal to 50% (+100% per stack) of health regeneration when at full health.",
                 "Like Permafrost okay?",
                 ItemTier.FoodTier,
                 UltAssets.SandPailSprite,
                 UltAssets.SandPailPrefab,
-                [ItemTag.Utility]
+                [ItemTag.Utility, ItemTag.FoodRelated]
             );
 
             
@@ -68,15 +58,15 @@ namespace UltitemsCyan.Items.Food
         private float HealthComponent_Heal(On.RoR2.HealthComponent.orig_Heal orig, HealthComponent self, float amount, ProcChainMask procChainMask, bool nonRegen)
         {
             // If health regen
-            if (self && !nonRegen)
+            if (self && self.body && self.body.inventory && !nonRegen)
             {
                 int grabCount = self.body.inventory.GetItemCountEffective(item);
-                //Log.Debug("Get Barrier health fraction: Max Health " + self.body.maxHealth + " | Current Health " + self.health);
                 if (grabCount > 0 && self.health >= self.body.maxHealth && amount > 0)
                 {
                     self.AddBarrier(amount * (regenPercentBase + grabCount * regenPercentPerStack) / 100f);
                 }
             }
+            Log.Debug("End of Permaglaze heal:");
             return orig(self, amount, procChainMask, nonRegen);
         }
     }

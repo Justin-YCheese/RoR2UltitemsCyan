@@ -32,7 +32,6 @@ using BepInEx.Configuration;
 using UltitemsCyan.Items;
 using RoR2.ContentManagement;
 //using RoR2.ExpansionManagement;
-using System;
 using System.Collections;
 
 //using RoR2.ContentManagement;
@@ -95,7 +94,11 @@ namespace UltitemsCyan
         public static PluginInfo PInfo { get; private set; }
         //public static ExpansionDef sotvDLC;
 
-        public const int numRecipies = 1;
+        // Global index for adding recipies, starts at zero
+        public int ultRecipesIndex = 0;
+        // Total number of craftable recipies
+        public const int numRecipies = 20;
+
         //public static CraftableDef[] CraftRecipies = new CraftableDef[numRecipies];
 
         public static Sprite mysterySprite = Addressables.LoadAssetAsync<Sprite>("RoR2/Base/Common/MiscIcons/texMysteryIcon.png").WaitForCompletion();
@@ -113,9 +116,6 @@ namespace UltitemsCyan
         // config file
         private static ConfigFile cfgFile;
         //*/
-
-     
-
 
         public void Awake()
         {
@@ -270,60 +270,149 @@ namespace UltitemsCyan
             new MyUltRecipes().Initialise();
 
             // Add recipies when ready
-            PickupCatalog.availability.CallWhenAvailable(FillRecipes);
+            PickupCatalog.availability.CallWhenAvailable(DefineRecipes);
 
             Log.Warning("Ultitems Cyan Done: " + PluginVersion + " <- " + PluginSuffix);
         }
 
-        private void DefineRecipes()
+        public struct Ingredient
         {
-            Log.Warning(":: ~~ Define Recipes ~~ ::");
+            public int index;
+            public bool isEquipment;
 
-            //ifrits distinction
-            //FillRecipes(CraftRecipies[0], 1, ["","",""]);
-        }
+            public Ingredient(ItemIndex item) { index = (int)item; isEquipment = false; }
+            public Ingredient(EquipmentIndex equip) { index = (int)equip; isEquipment = true; }
 
-        private void FillRecipes() //CraftableDef craftable, int amount, string[] recipesComponents
-        {
-            Debug.Log("check filling...");
+            // This allows: Ingredient ing = ItemIndex.Syringe;
+            public static implicit operator Ingredient(ItemIndex item) => new(item);
+            // This allows: Ingredient ing = EquipmentIndex.Saw;
+            public static implicit operator Ingredient(EquipmentIndex equip) => new(equip);
 
-            CraftableDef craftable = MyUltRecipes.Recipies[0];
+            public readonly int GetInt() { return index; }
 
-            //null check
-            UnityEngine.Object firstPickupIngrediant = EquipmentCatalog.GetEquipmentDef(IceCubes.equipment.equipmentIndex);
-            UnityEngine.Object secondPickupIngrediant = ItemCatalog.GetItemDef(RockyTaffy.item.itemIndex);
-            UnityEngine.Object pickupResult = ItemCatalog.GetItemDef(Permaglaze.item.itemIndex);
-
-            if (!firstPickupIngrediant || !secondPickupIngrediant || !pickupResult)
+            public readonly Object GetObject()
             {
-                Debug.Log(" Missing def:");
-                craftable.recipes = [];
-                craftable.pickup = null;
-                return;
+                if (isEquipment)
+                {
+                    return EquipmentCatalog.GetEquipmentDef((EquipmentIndex)index) ?? null;
+                }
+                else
+                {
+                    return ItemCatalog.GetItemDef((ItemIndex)index) ?? null;
+                }
             }
 
-            Recipe[] array = new Recipe[1];
-            Recipe recipe = new()
-            { //make the recipe
-                amountToDrop = 1,
-                ingredients = [
+        }
+
+        private void DefineRecipes()
+        {
+            // Number of Recipies are: 20
+
+            Log.Warning(":: ~~ Define Recipes ~~ ::");
+
+            // In code name order
+
+            // ------ White Recipies
+            // Base
+            FillRecipes(RoR2Content.Items.WardOnLevel.itemIndex, 2, [[RoR2Content.Items.ScrapWhite.itemIndex, TinyIgloo.item.itemIndex]]);
+            FillRecipes(RoR2Content.Items.SecondarySkillMagazine.itemIndex, 4, [[RoR2Content.Items.ScrapWhite.itemIndex, UltravioletBulb.item.itemIndex]]);
+            // Ultitems
+            FillRecipes(Frisbee.item.itemIndex, 2, [[RoR2Content.Items.ScrapWhite.itemIndex, RoR2Content.Items.JumpBoost.itemIndex]]);
+
+            Log.Warning(":: ~~ TOY ROBOT ~~ :: | Toy:" + ToyRobot.item.itemIndex + " | Mag:" + RoR2Content.Items.SecondarySkillMagazine.itemIndex + " | Spurs:" + DLC3Content.Items.JumpDamageStrike.itemIndex + "");
+            FillRecipes(ToyRobot.item.itemIndex, 2, [[RoR2Content.Items.ScrapWhite.itemIndex, DLC3Content.Items.SpeedOnPickup.itemIndex]]);
+            FillRecipes(ToyRobot.item.itemIndex, 4, [[RoR2Content.Items.ScrapWhite.itemIndex, DLC1Content.Items.DroneWeapons.itemIndex]]);
+            Log.Warning(":: ~~ TOY ROBOT ~~ ::");
+
+            // ------ Green Recipies
+            // Base
+            FillRecipes(RoR2Content.Items.Feather.itemIndex, 1, [[Frisbee.item.itemIndex, DLC3Content.Items.JumpDamageStrike.itemIndex]]);
+            FillRecipes(RoR2Content.Items.EquipmentMagazine.itemIndex, 1, [[XenonAmpoule.item.itemIndex, RoR2Content.Items.SecondarySkillMagazine.itemIndex]]);
+            FillRecipes(DLC3Content.Items.SpeedOnPickup.itemIndex, 1, [[FleaBag.item.itemIndex, RoR2Content.Items.BonusGoldPackOnKill.itemIndex],
+                                                                       [FleaBag.item.itemIndex, RoR2Content.Items.Bandolier.itemIndex]]);
+            // Ultitems
+            FillRecipes(TinyIgloo.item.itemIndex, 1, [[DLC2Content.Items.AttackSpeedPerNearbyAllyOrEnemy.itemIndex, RoR2Content.Items.IceRing.itemIndex]]);
+            FillRecipes(DegreeScissors.item.itemIndex, 1, [[RoR2Content.Items.TreasureCache.itemIndex, BirthdayCandles.item.itemIndex]]);
+            FillRecipes(HMT.item.itemIndex, 1, [[RoR2Content.Items.IgniteOnKill.itemIndex, RoR2Content.Items.BonusGoldPackOnKill.itemIndex]]);
+            FillRecipes(HMT.item.itemIndex, 1, [[RoR2Content.Items.ScrapGreen.itemIndex, RoR2Content.Items.LaserTurbine.itemIndex]]);
+
+            // ------ Red Recipies
+            // Base
+            FillRecipes(RoR2Content.Items.NovaOnHeal.itemIndex, 1, [[TinyIgloo.item.itemIndex, RoR2Content.Items.Squid.itemIndex]]);
+            FillRecipes(RoR2Content.Items.Talisman.itemIndex, 1, [[OverclockedGPU.item.itemIndex, RoR2Content.Items.DeathMark.itemIndex]]);
+            FillRecipes(DLC1Content.Items.ImmuneToDebuff.itemIndex, 1, [[IceCubes.equipment.equipmentIndex, RoR2Content.Items.Phasing.itemIndex]]);
+            FillRecipes(DLC3Content.Items.Duplicator.itemIndex, 1, [[DegreeScissors.item.itemIndex, DegreeScissors.item.itemIndex]]);
+            // Ultitems
+            FillRecipes(SuesMandibles.item.itemIndex, 1, [[SuesMandiblesConsumed.item.itemIndex, RoR2Content.Items.ShinyPearl.itemIndex],
+                                                          [SuesMandiblesConsumed.item.itemIndex, RoR2Content.Equipment.FireBallDash.equipmentIndex]]);
+            FillRecipes(PigsSpork.item.itemIndex, 1, [[DLC2Content.Items.TeleportOnLowHealth.itemIndex, DLC2Content.Items.TriggerEnemyDebuffs.itemIndex],
+                                                      [DLC2Content.Items.TeleportOnLowHealth.itemIndex, RoR2Content.Items.ExplodeOnDeath.itemIndex]]);
+
+            // ------ Equipment Recipies
+            // Ultitems
+            FillRecipes(YieldSign.equipment.equipmentIndex, 1, [[RoR2Content.Items.Crowbar.itemIndex, DLC1Content.Items.MoveSpeedOnKill.itemIndex],
+                                                                [RoR2Content.Items.Crowbar.itemIndex, RoR2Content.Items.SprintOutOfCombat.itemIndex]]);
+
+            // ------ Void Recipies
+            // Ultitems
+            //FillRecipes(InhabitedCoffin.item.itemIndex, 1, [[.itemIndex, .itemIndex]]);
+            //FillRecipes(JealousFoe.item.itemIndex, 2, [[.itemIndex, .itemIndex]]);
+            //FillRecipes(ZorsePill.item.itemIndex, 1, [[.itemIndex, .itemIndex]]);
+
+            // ------ Food Recipies
+            // Ultitems
+            FillRecipes(Permaglaze.item.itemIndex, 1, [[IceCubes.equipment.equipmentIndex, RockyTaffy.item.itemIndex],
+                                                       [IceCubes.equipment.equipmentIndex, RoR2Content.Items.Icicle.itemIndex]]);
+            //FillRecipes(AughtBasqueCheese.item.itemIndex, 1, [[.itemIndex, .itemIndex]]);
+        }
+
+        private void FillRecipes(Ingredient product, int quantity, Ingredient[][] ingrediantList)
+        {
+            // Get content's repipe index for this recipe
+            CraftableDef craft = MyUltRecipes.Recipies[ultRecipesIndex];
+
+            if (product.GetInt() == 236)
+            {
+                Log.Warning(":: ~~ TOY ROBOT ~~ :: | recipe #" + ultRecipesIndex);
+            }
+
+            ultRecipesIndex++;
+
+            // Iterate through ingrediant list and create recipe array
+            int listLength = ingrediantList.Length;
+            Recipe[] collectRecipies = new Recipe[listLength];
+            Debug.Log("Recipe legnth: " + listLength);
+            for (int i = 0; i < listLength; i++)
+            {
+                if (product.GetInt() == 236)
+                {
+                    Log.Warning(":: ~~ TOY ROBOT ~~ :: | 1: " + ingrediantList[i][0].GetObject() ?? null);
+                    Log.Warning(":: ~~ TOY ROBOT ~~ :: | 2: " + ingrediantList[i][1].GetObject() ?? null);
+                }
+                Recipe entry = new()
+                { //make the recipe
+                    amountToDrop = quantity,
+                    ingredients = [
                     new RecipeIngredient {
-                        pickup = firstPickupIngrediant
+                        pickup = ingrediantList[i][0].GetObject() ?? null,
                     },
                     new RecipeIngredient {
-                        pickup = secondPickupIngrediant
-                    }
-                ]
-            };
+                        pickup = ingrediantList[i][1].GetObject() ?? null,
+                    }]
+                };
+                collectRecipies[i] = entry;
+            }
 
             //assign the recipe to the craftable def
-            craftable.pickup = pickupResult;
-            array[0] = recipe;
-            craftable.recipes = [
-                recipe
-            ];
+            if (product.GetInt() == 236)
+            {
+                Log.Warning(":: ~~ TOY ROBOT ~~ :: | Toy:" + product.GetObject() ?? null);
 
-            Debug.Log("Added recipe for Permaglaze");
+            }
+            craft.pickup = product.GetObject() ?? null;
+            craft.recipes = collectRecipies;
+
+            Debug.Log("Added recipe #" + ultRecipesIndex + " for " + product.GetInt());
         }
 
         private void Stage_onStageStartGlobal(Stage obj)
@@ -339,7 +428,6 @@ namespace UltitemsCyan
             List<ItemDef.Pair> voidPairs = [.. ItemCatalog.itemRelationships[DLC1Content.ItemRelationshipTypes.ContagiousItem]]; // Collection Expression?
             PrintPairList(CorruptionPairs);
             ItemCatalog.itemRelationships[DLC1Content.ItemRelationshipTypes.ContagiousItem] = voidPairs.Union(CorruptionPairs).ToArray();
-            //ItemCatalog.itemRelationships[DLC3Content.ItemRelationshipTypes.]
             Log.Debug("End of Ultitems init");
             orig();
         }

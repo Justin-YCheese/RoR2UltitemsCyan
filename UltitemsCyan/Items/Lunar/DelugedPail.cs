@@ -18,7 +18,7 @@ namespace UltitemsCyan.Items.Lunar
 
         private const float attackPerWhite = 2.5f;
         private const float regenPerGreen = 0.05f;
-        private const float speedPerRed = 10f;
+        private const float speedPerRed = 15f;
         private const float critPerBoss = 10f;
         //private const float armourPerMisc = 2f;
         //private const float healthPerLunar = 5f;
@@ -40,7 +40,7 @@ namespace UltitemsCyan.Items.Lunar
                 "DELUGEDPAIL",
                 itemName,
                 "Gain stats for each item held... <style=cDeath>BUT picking up an item triggers a restack.</style>",
-                "Gain <style=cIsDamage>2.5% attack</style> per common, <style=cIsHealing>0.05 regen</style> per <style=cIsHealing>uncommon</style>, <style=cIsUtility>10% speed</style> per legendary</style>, <style=cIsDamage>10% crit</style> per <style=cIsDamage>boss</style> item, and <style=cIsUtility>1% jump height</style> per <style=cIsUtility>lunar</style> <style=cStack>(+20% of each stat per stack)</style>. Trigger a <style=cDeath>restack</style> for non lunar items.",
+                "Gain <style=cIsDamage>2.5% attack</style> per common, <style=cIsHealing>0.05 regen</style> per <style=cIsHealing>uncommon</style>, <style=cIsUtility>15% speed</style> per legendary</style>, <style=cIsDamage>10% crit</style> per <style=cIsDamage>boss</style> item, and <style=cIsUtility>1% jump height</style> per <style=cIsUtility>lunar</style> <style=cStack>(+20% of each stat per stack)</style>. Trigger a <style=cDeath>restack</style> for non lunar items.",
                 "It's a tuning fork? no it's just a sand pail. The sand in the pail shifts with a sound which hums through it. Like a melody of waves, or to be less romantic, like a restless static.",
                 ItemTier.Lunar,
                 UltAssets.SandPailSprite,
@@ -178,48 +178,6 @@ namespace UltitemsCyan.Items.Lunar
             }
         }
 
-        //
-        private void Inventory_GiveItem_ItemIndex_int(On.RoR2.Inventory.orig_GiveItem_ItemIndex_int orig, Inventory self, ItemIndex itemIndex, int count)
-        {
-            //Log.Debug("orig IN Sonorous Pail");
-            orig(self, itemIndex, count);
-            //Log.Debug("orig OUT Sonorous Pail");
-            if (NetworkServer.active && !inDelugedAlready && self) // Hopefully fix multiple triggers and visual bug?
-            {
-                ItemDef iDef = ItemCatalog.GetItemDef(itemIndex);
-                ItemTierDef iTierDef = ItemTierCatalog.GetItemTierDef(iDef.tier);
-                // Validate check, and pass if not lunar unless is pail
-                if (iDef && iTierDef && iTierDef.canRestack && (iTierDef.tier != ItemTier.Lunar || iDef == item)) // Valid Check (check iDef and iTierDef)
-                {
-                    inDelugedAlready = true;
-                    CharacterBody player = CharacterBody.readOnlyInstancesList.ToList().Find((body) => body.inventory == self);
-                    if (player && self.GetItemCountEffective(item) > 0) // Valid Check
-                    {
-                        //Log.Warning("Spork the inventory");
-                        SporkRestackInventory(self, new Xoroshiro128Plus(Run.instance.stageRng.nextUlong));
-                        // Effect after restock
-                        EffectManager.SpawnEffect(ShrineUseEffect, new EffectData
-                        {
-                            origin = player.transform.position,
-                            rotation = Quaternion.identity,
-                            scale = 0.5f,
-                            color = new Color(0.2392f, 0.8196f, 0.917647f) // Cyan Lunar color
-                        }, true);
-                        /*
-                        EffectManager.SpawnEffect(LegacyResourcesAPI.Load<GameObject>("Prefabs/Effects/ShrineUseEffect"), new EffectData
-                        {
-                            origin = base.transform.position,
-                            rotation = Quaternion.identity,
-                            scale = 1f,
-                            color = new Color(1f, 0.23f, 0.6337214f)
-                        }, true);
-                        //*/
-                    }
-                    inDelugedAlready = false;
-                }
-            }
-        }
-
         public void SporkRestackInventory(Inventory inventory, Xoroshiro128Plus rng)
         {
             //Log.Debug("Restock my sporks!");
@@ -235,7 +193,7 @@ namespace UltitemsCyan.Items.Lunar
                     bool flag = false;
                     foreach (ItemTierDef itemTierDef in ItemTierCatalog.allItemTierDefs)
                     {
-                        if (itemTierDef.canRestack)
+                        if (itemTierDef.canRestack && itemTierDef.tier != ItemTier.Lunar)
                         {
                             int countPerm = 0;
                             float countTemp = 0f;
@@ -244,7 +202,7 @@ namespace UltitemsCyan.Items.Lunar
                             inventory.effectiveItemStacks.GetNonZeroIndices(playerItems);
                             foreach (ItemIndex itemIndex in playerItems)
                             {
-                                inventory.effectiveItemStacks.GetStackValue(itemIndex);
+                                _ = inventory.effectiveItemStacks.GetStackValue(itemIndex);
                                 ItemDef itemDef = ItemCatalog.GetItemDef(itemIndex);
                                 if (itemTierDef.tier == itemDef.tier && itemDef.DoesNotContainTag(ItemTag.ObjectiveRelated) && itemDef.DoesNotContainTag(ItemTag.PowerShape))
                                 {

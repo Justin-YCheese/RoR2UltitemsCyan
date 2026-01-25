@@ -89,29 +89,5 @@ namespace UltitemsCyan.Items
         public ItemDef GetItemDef { get; set; }
         public EquipmentDef GetEquipmentDef { get; set; }
         public ItemDef GetTransformItem { get; set; }
-
-        private Recipe[] _recepies; //TODO
-
-        /*
-        public Recipe[] SetRecepies
-        {
-            get
-            {
-                return _recepies;
-            }
-
-            set
-            {
-                // Add your custom logic here!
-                if (value != null)
-                {
-                    _recepies = value;
-
-                    item.requiredExpansion = Sovt;
-                    Debug.Log($"Recipe set to: {value.nameToken}");
-                }
-            }
-        }
-        //*/
     }
 }

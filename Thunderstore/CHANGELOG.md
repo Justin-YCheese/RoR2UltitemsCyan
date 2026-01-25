@@ -1,6 +1,10 @@
-## 0.13.5
+## 0.14.0
 
-- Fixed various inaccurate item tool tips
+- Added Recipies!
+    - Check readme for the list of recipies
+- Added New Items!
+    - Permaglaze
+    - Worm Holes
 - Fixed and Readding
     - Obsolute
     - Pig's Spork
@@ -10,10 +14,12 @@
     - When hit below 25% still explode but inflicting bleed now splashes
 - 1000 Degree Scissors
     - Now uses isConsumed, thus nolonger melting tonic afflictions
-    - And better compatability with other mods
+- Fixed Deluged Pail restacking lunar items
+- Buffed Deluged Pail speed per red item 10% -> 15%
 - Koala Sticker min damage nerfed from 5 -> 8
-- Corroding Vault give 10 to 15 items instead of just 15
+- Corroding Vault give 10 to 15 items instead of just 15 items
 - Rocky Taffy Shield 32% -> 30%
+- Fixed various inaccurate item tool tips
 
 ## 0.13.4
 
