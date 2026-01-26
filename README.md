@@ -1,11 +1,14 @@
+___
 # Ultitems Cyan
 
 Through my experiance from making vanilla modded items in Minecraft, this pack contains various items which try to complement the vanilla game.
-
 There are still alot of print messages in the logs because I'm still debugging stuff...
 
 There is a config file to enable or disable specific items.
 
+Below are the included items, equipments, and recipies added.
+___
+### Items:
 | Icon | Item | Description | Tier |
 |:--:|--|--|:--:|
 | ![Imgur](https://i.imgur.com/j0V4Qt8.png) | Crème Brûlée        | Heal when hitting full health enemies.                                                                                  |      White      |
@@ -21,7 +24,7 @@ There is a config file to enable or disable specific items.
 | ![Imgur](https://i.imgur.com/7nCsVaj.png) | Xenon Ampoule       | Activating your Equipment also fires a laser. Damage and size scale with equipment duration.                            |      Green      |
 | ![Imgur](https://i.imgur.com/4DFayZF.png) | Corroding Vault     | Breaks at the start of the next stage. Contains white items.                                                            |       Red       |
 | ![Imgur](https://i.imgur.com/t7YNoVY.png) | Grapevine           | Chance on kill to drop grapes that block damage.                                                                        |       Red       |
-| ![Imgur](https://i.imgur.com/ChJnX9C.png) | Pig's Spork (removed)         | Bleeds heal you. When at low health explode and gain 200% chance to bleed enemies.                                      |       Red       |
+| ![Imgur](https://i.imgur.com/ChJnX9C.png) | Pig's Spork         | Inflict bleed equal to missing health. When hit at low health explode and inflicting bleed will splash.                 |       Red       |
 | ![Imgur](https://i.imgur.com/fMenqmv.png) | Sue's Mandibles     | Endure a killing blow then gain invulnerability and disable healing for 30s. Consumed on use.                           |       Red       |
 | ![Imgur](https://i.imgur.com/85CkaFY.png) | Viral Essence       | Increase speed per unique status effect.                                                                                |       Red       |
 | ![Imgur](https://i.imgur.com/70oQsj7.png) | Rocky Taffy         | Gain a recharging shield. Buff gives a stable barrier without your shield. Buff gained with full shield.                |       Red       |
@@ -36,13 +39,39 @@ There is a config file to enable or disable specific items.
 | ![Imgur](https://i.imgur.com/rNTV1Tx.png) | Rotten Bones        | Deal more damage over time. **Corrupts all Birthday Candles**.                                                          |    Void Green   |
 | ![Imgur](https://i.imgur.com/pkuZxAg.png) | Zorse Pill          | Starve enemies on hit dealing percent TOTAL damage. **Corrupts all HMTs**.                                              |    Void Green   |
 | ![Imgur](https://i.imgur.com/D8sAljB.png) | Inhabited Coffin    | Breaks at the start of the next stage. Contains void items. **Corrupts all Corroding Vaults**.                          |     Void Red    |
-| ![Imgur](https://i.imgur.com/ESyUfae.png) | Quantum Peel (removed) | Gain speed and jump power when damaged. **Corrupts all Viral Smogs**.                                          |     Void Red    |
-
+| ![Imgur](https://i.imgur.com/ESyUfae.png) | Quantum Peel (removed) | Gain speed and jump power when damaged. **Corrupts all Viral Smogs**.                                                |     Void Red    |
+| ![Imgur](https://i.imgur.com/OM2CjLT.png) | Permaglaze          | Barrier no longer decays. Gain barrier regeneration at full health.                                                     |       Food      |
+___
+### Equipments:
 | Icon | Equipment| Cooldown | Description | Type |
 |:--:|--|:--:|--|:--:|
-| ![Imgur](https://i.imgur.com/7tlpOSq.png) | 9 Ice Cubes         | 60  | Gain barrier on use																									  | Normal |
-| ![Imgur](https://i.imgur.com/1ihwNDY.png) | Orbital Quark       | 60  | Spawn a zero gravity zone for 30 seconds.    																			  | Normal |
-| ![Imgur](https://i.imgur.com/seg2YFF.png) | Yield Sign          | 10  | Alternate between multiplying speed and canceling it. Hit nearby enemies each time.                                     | Normal |
-| ![Imgur](https://i.imgur.com/dVK9J9h.png) | Macroseismograph    | 300 | While on the ground, summons a tremendious power... **BUT forgo all equipments**                                        | Lunar  |
-| ![Imgur](https://i.imgur.com/CfvSgjp.png) | Pot of Regolith     | 2   | **Take damage** on use.                                                                                                 | Lunar  |
-| ![Imgur](https://i.imgur.com/IrEnroy.png) | Obsolute (removed)            | 30  | **Erase** your last item from existence and gain some gold.                                                             | Lunar  |
+| ![Imgur](https://i.imgur.com/7tlpOSq.png) | 9 Ice Cubes         | 60  | Gain barrier on use																  | Normal |
+| ![Imgur](https://i.imgur.com/1ihwNDY.png) | Orbital Quark       | 60  | Spawn a zero gravity zone for 30 seconds.    										  | Normal |
+| ![Imgur](https://i.imgur.com/seg2YFF.png) | Yield Sign          | 10  | Alternate between multiplying speed and canceling it. Hit nearby enemies each time. | Normal |
+| ![Imgur](https://i.imgur.com/dVK9J9h.png) | Macroseismograph    | 300 | While on the ground, summons a tremendious power... **BUT forgo all equipments**    | Lunar  |
+| ![Imgur](https://i.imgur.com/CfvSgjp.png) | Pot of Regolith     | 2   | **Take damage** on use.                                                             | Lunar  |
+| ![Imgur](https://i.imgur.com/IrEnroy.png) | Obsolute            | 30  | **Erase** your last item from existence and gain some gold.                         | Lunar  |
+___
+### Recipes:
+|    Tier   |         Result         | Ingredient 1             | Ingredient 2                      |
+|:---------:|:----------------------:|--------------------------|-----------------------------------|
+|   White   |      Warbanner x2      | White Scrap              | Tiny Igloo                        |
+|   White   |   Backup Magazine x4   | White Scrap              | Ultraviolet Bulb                  |
+|   White   |       Frisbee x2       | White Scrap              | Wax Quail                         |
+|   White   |      Toy Robot x2      | White Scrap              | Collector's Compulsion            |
+|   White   |      Toy Robot x4      | White Scrap              | Spare Drones                      |
+|   Green   |      Hopoo Feather     | Frisbee                  | Faraday Spur                      |
+|   Green   |        Fuel Cell       | Xenon Ampoule            | Backup Magazine                   |
+|   Green   | Collector's Compulsion | Flea Bag                 | Ghor's Tome \| Bandolier          |
+|   Green   |       Tiny Igloo       | Bolstering Lantern       | Runald's Band                     |
+|   Green   |  1000 Degree Scissors  | Rusted Key               | Birthday Candles                  |
+|   Green   |           HMT          | Gasoline                 | Ghor's Tome                       |
+|   Green   |          HMT x2        | Green Scrap              | Resonance Disc                    |
+|    Red    |   N'kuhana's Opinion   | Tiny Igloo               | Squid Polyp                       |
+|    Red    |   Soulbound Catalyst   | Overclocked GPU          | Death Mark                        |
+|    Red    |     Ben's Raincoat     | 9 Ice Cubes              | Old War Stealth Kit               |
+|    Red    | Substandard Duplicator | 1000 Degree Scissors     | 1000 Degree Scissors              |
+|    Red    |     Sue's Mandibles    | Sue's Mandibles consumed | Irradiant Pearl \| Volcanic Egg   |
+|    Red    |       Pig's Spork      | Unstable Transmitter     | Noxious Thorn \| Will-o'-the-wisp |
+| Equipment |       Yield Sign       | Crowbar                  | Hunter's Harpoon \|  Red Whip     |
+|    Food   |       Permaglaze       | 9 Ice Cubes              | Rocky Taffy \| Frost Relic        |

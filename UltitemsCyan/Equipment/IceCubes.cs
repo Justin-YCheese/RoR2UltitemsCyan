@@ -1,5 +1,6 @@
 ﻿using BepInEx.Configuration;
 using RoR2;
+using UnityEngine.Networking;
 
 namespace UltitemsCyan.Equipment
 {
@@ -41,7 +42,7 @@ namespace UltitemsCyan.Equipment
 
         private bool EquipmentSlot_PerformEquipmentAction(On.RoR2.EquipmentSlot.orig_PerformEquipmentAction orig, EquipmentSlot self, EquipmentDef equipmentDef)
         {
-            if (equipmentDef == equipment)
+            if (NetworkServer.active && self.equipmentDisabled && equipmentDef == equipment)
             {
                 CharacterBody activator = self.characterBody;
                 activator.healthComponent.AddBarrier(activator.healthComponent.fullBarrier * percentOfBarrier / 100f + flatBarrier);

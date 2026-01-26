@@ -27,8 +27,8 @@ namespace UltitemsCyan.Items.Food
                 "Barrier won't decay. Gain barrier regeneration equal to 50% (+100% per stack) of health regeneration when at full health.",
                 "Like Permafrost okay?",
                 ItemTier.FoodTier,
-                UltAssets.SandPailSprite,
-                UltAssets.SandPailPrefab,
+                UltAssets.PetRockSprite,
+                UltAssets.PetRockPrefab,
                 [ItemTag.Utility, ItemTag.FoodRelated]
             );
 
@@ -58,7 +58,7 @@ namespace UltitemsCyan.Items.Food
         private float HealthComponent_Heal(On.RoR2.HealthComponent.orig_Heal orig, HealthComponent self, float amount, ProcChainMask procChainMask, bool nonRegen)
         {
             // If health regen
-            if (self && self.body && self.body.inventory && !nonRegen)
+            if (self && !nonRegen && self.body && self.body.inventory)
             {
                 int grabCount = self.body.inventory.GetItemCountEffective(item);
                 if (grabCount > 0 && self.health >= self.body.maxHealth && amount > 0)
@@ -66,7 +66,6 @@ namespace UltitemsCyan.Items.Food
                     self.AddBarrier(amount * (regenPercentBase + grabCount * regenPercentPerStack) / 100f);
                 }
             }
-            Log.Debug("End of Permaglaze heal:");
             return orig(self, amount, procChainMask, nonRegen);
         }
     }

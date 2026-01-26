@@ -14,12 +14,20 @@
     - When hit below 25% still explode but inflicting bleed now splashes
 - 1000 Degree Scissors
     - Now uses isConsumed, thus nolonger melting tonic afflictions
-- Fixed Deluged Pail restacking lunar items
 - Buffed Deluged Pail speed per red item 10% -> 15%
+- Buffed Xenon Ampoule's Damage
+    - Base damage 1600% -> 2000%
+    - Stack damage 400% -> 600%
+    - Long cooldown max multiplier 4 -> 5
+        - (Max damage with equipments of 300s and 5x damage instead of 240s and 4x)
+- Fixed Deluged Pail restacking lunar items (Didn't realize was different when I readded it)
 - Koala Sticker min damage nerfed from 5 -> 8
 - Corroding Vault give 10 to 15 items instead of just 15 items
 - Rocky Taffy Shield 32% -> 30%
 - Fixed various inaccurate item tool tips
+
+- Worm Holes visually doesn't work in multiplayer
+- Will update permafrost visuals
 
 ## 0.13.4
 

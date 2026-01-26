@@ -20,8 +20,8 @@ namespace UltitemsCyan.Items.Tier2
         //public static GameObject Tracer4 = Addressables.LoadAssetAsync<GameObject>("RoR2/Junk/Mage/TracerMageIceLaser.prefab").WaitForCompletion();
         //public static GameObject Tracer5 = Addressables.LoadAssetAsync<GameObject>("RoR2/Junk/Commando/TracerBarrage2.prefab").WaitForCompletion();
 
-        public const float baseDamage = 16f / 3f; // div 3f to account for weak point and crit
-        public const float damagePerStack = 4f / 3f; // div 3f to account for weak point and crit
+        public const float baseDamage = 20f / 3f; // div 3f to account for weak point and crit
+        public const float damagePerStack = 6f / 3f; // div 3f to account for weak point and crit
         public const float shortDamagePercent = 70f; // Percent of normal damage
 
         public const float shortLaserRadius = 1.6f;
@@ -32,7 +32,7 @@ namespace UltitemsCyan.Items.Tier2
 
         public const float shortCooldown = 20f;    // Less than or equal, small laser and has half damage
         public const float longCooldown = 60f;   // Greater than or equal, big laser multiple cooldown by cooldown / 60
-        public const float maxCooldownMultipler = 4f;
+        public const float maxCooldownMultipler = 5f;
 
         public const float subCooldown = .3f;
 
@@ -67,7 +67,7 @@ namespace UltitemsCyan.Items.Tier2
                 "XENONAMPOULE",
                 itemName,
                 "Activating your Equipment also fires a laser. Damage and size scale with equipment duration.",
-                "Activating your Equipment also fires a <style=cIsDamage>critting laser</style> for <style=cIsDamage>1600%</style> <style=cStack>(+400% per stack)</style> base damage. The damage and size scales with an equipment's cooldown.",
+                "Activating your Equipment also fires a <style=cIsDamage>critting laser</style> for <style=cIsDamage>2000%</style> <style=cStack>(+600% per stack)</style> base damage. The damage and size scales with an equipment's cooldown.",
                 "It's Purple because I messed up. Xenon is supposed to be more blue than hyrdogen, but I wanted an X name. Sorry.",
                 ItemTier.Tier2,
                 UltAssets.XenonAmpouleSprite,

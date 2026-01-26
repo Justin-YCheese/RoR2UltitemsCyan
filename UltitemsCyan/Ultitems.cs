@@ -84,9 +84,9 @@ namespace UltitemsCyan
         public const string PluginGUID = PluginAuthor + "." + PluginName;
         public const string PluginAuthor = "SporkySpig";
         public const string PluginName = "UltitemsCyan";
-        public const string PluginVersion = "0.13.5";
+        public const string PluginVersion = "0.14.0";
 
-        public const string PluginSuffix = "Sporked the Worm?";
+        public const string PluginSuffix = "Sporked the Worm? Must by yummy...";
 
         private static ConfigFile UltitemsConfig { get; set; }
 
@@ -262,9 +262,9 @@ namespace UltitemsCyan
             for (int i = 0; i < numRecipies; i++)
             {
                 CraftableDef c = ScriptableObject.CreateInstance<CraftableDef>();
-                c.name = "Recipe #" + (i + 1);
+                c.name = "Ultitems Cyan Recipe #" + (i + 1);
                 MyUltRecipes.Recipies.Add(c);
-                Debug.Log("Added blank recipe " + c.name);
+                //Debug.Log("Added blank recipe " + c.name);
             }
 
             new MyUltRecipes().Initialise();
@@ -312,19 +312,16 @@ namespace UltitemsCyan
 
             // In code name order
 
-            // ------ White Recipies
+            // ------ White Recipies ------------------------------------------------------------------------------------------------------------------------------------
             // Base
             FillRecipes(RoR2Content.Items.WardOnLevel.itemIndex, 2, [[RoR2Content.Items.ScrapWhite.itemIndex, TinyIgloo.item.itemIndex]]);
             FillRecipes(RoR2Content.Items.SecondarySkillMagazine.itemIndex, 4, [[RoR2Content.Items.ScrapWhite.itemIndex, UltravioletBulb.item.itemIndex]]);
             // Ultitems
             FillRecipes(Frisbee.item.itemIndex, 2, [[RoR2Content.Items.ScrapWhite.itemIndex, RoR2Content.Items.JumpBoost.itemIndex]]);
-
-            Log.Warning(":: ~~ TOY ROBOT ~~ :: | Toy:" + ToyRobot.item.itemIndex + " | Mag:" + RoR2Content.Items.SecondarySkillMagazine.itemIndex + " | Spurs:" + DLC3Content.Items.JumpDamageStrike.itemIndex + "");
             FillRecipes(ToyRobot.item.itemIndex, 2, [[RoR2Content.Items.ScrapWhite.itemIndex, DLC3Content.Items.SpeedOnPickup.itemIndex]]);
             FillRecipes(ToyRobot.item.itemIndex, 4, [[RoR2Content.Items.ScrapWhite.itemIndex, DLC1Content.Items.DroneWeapons.itemIndex]]);
-            Log.Warning(":: ~~ TOY ROBOT ~~ ::");
 
-            // ------ Green Recipies
+            // ------ Green Recipies ------------------------------------------------------------------------------------------------------------------------------------
             // Base
             FillRecipes(RoR2Content.Items.Feather.itemIndex, 1, [[Frisbee.item.itemIndex, DLC3Content.Items.JumpDamageStrike.itemIndex]]);
             FillRecipes(RoR2Content.Items.EquipmentMagazine.itemIndex, 1, [[XenonAmpoule.item.itemIndex, RoR2Content.Items.SecondarySkillMagazine.itemIndex]]);
@@ -336,7 +333,7 @@ namespace UltitemsCyan
             FillRecipes(HMT.item.itemIndex, 1, [[RoR2Content.Items.IgniteOnKill.itemIndex, RoR2Content.Items.BonusGoldPackOnKill.itemIndex]]);
             FillRecipes(HMT.item.itemIndex, 1, [[RoR2Content.Items.ScrapGreen.itemIndex, RoR2Content.Items.LaserTurbine.itemIndex]]);
 
-            // ------ Red Recipies
+            // ------ Red Recipies --------------------------------------------------------------------------------------------------------------------------------------
             // Base
             FillRecipes(RoR2Content.Items.NovaOnHeal.itemIndex, 1, [[TinyIgloo.item.itemIndex, RoR2Content.Items.Squid.itemIndex]]);
             FillRecipes(RoR2Content.Items.Talisman.itemIndex, 1, [[OverclockedGPU.item.itemIndex, RoR2Content.Items.DeathMark.itemIndex]]);
@@ -348,18 +345,18 @@ namespace UltitemsCyan
             FillRecipes(PigsSpork.item.itemIndex, 1, [[DLC2Content.Items.TeleportOnLowHealth.itemIndex, DLC2Content.Items.TriggerEnemyDebuffs.itemIndex],
                                                       [DLC2Content.Items.TeleportOnLowHealth.itemIndex, RoR2Content.Items.ExplodeOnDeath.itemIndex]]);
 
-            // ------ Equipment Recipies
+            // ------ Equipment Recipies --------------------------------------------------------------------------------------------------------------------------------
             // Ultitems
             FillRecipes(YieldSign.equipment.equipmentIndex, 1, [[RoR2Content.Items.Crowbar.itemIndex, DLC1Content.Items.MoveSpeedOnKill.itemIndex],
                                                                 [RoR2Content.Items.Crowbar.itemIndex, RoR2Content.Items.SprintOutOfCombat.itemIndex]]);
 
-            // ------ Void Recipies
+            // ------ Void Recipies -------------------------------------------------------------------------------------------------------------------------------------
             // Ultitems
             //FillRecipes(InhabitedCoffin.item.itemIndex, 1, [[.itemIndex, .itemIndex]]);
             //FillRecipes(JealousFoe.item.itemIndex, 2, [[.itemIndex, .itemIndex]]);
             //FillRecipes(ZorsePill.item.itemIndex, 1, [[.itemIndex, .itemIndex]]);
 
-            // ------ Food Recipies
+            // ------ Food Recipies -------------------------------------------------------------------------------------------------------------------------------------
             // Ultitems
             FillRecipes(Permaglaze.item.itemIndex, 1, [[IceCubes.equipment.equipmentIndex, RockyTaffy.item.itemIndex],
                                                        [IceCubes.equipment.equipmentIndex, RoR2Content.Items.Icicle.itemIndex]]);
@@ -368,29 +365,17 @@ namespace UltitemsCyan
 
         private void FillRecipes(Ingredient product, int quantity, Ingredient[][] ingrediantList)
         {
-            // Get content's repipe index for this recipe
+            // Get and increment content's repipe index
             CraftableDef craft = MyUltRecipes.Recipies[ultRecipesIndex];
-
-            if (product.GetInt() == 236)
-            {
-                Log.Warning(":: ~~ TOY ROBOT ~~ :: | recipe #" + ultRecipesIndex);
-            }
-
             ultRecipesIndex++;
 
             // Iterate through ingrediant list and create recipe array
             int listLength = ingrediantList.Length;
             Recipe[] collectRecipies = new Recipe[listLength];
-            Debug.Log("Recipe legnth: " + listLength);
             for (int i = 0; i < listLength; i++)
             {
-                if (product.GetInt() == 236)
-                {
-                    Log.Warning(":: ~~ TOY ROBOT ~~ :: | 1: " + ingrediantList[i][0].GetObject() ?? null);
-                    Log.Warning(":: ~~ TOY ROBOT ~~ :: | 2: " + ingrediantList[i][1].GetObject() ?? null);
-                }
                 Recipe entry = new()
-                { //make the recipe
+                { // Make the recipe
                     amountToDrop = quantity,
                     ingredients = [
                     new RecipeIngredient {
@@ -402,13 +387,7 @@ namespace UltitemsCyan
                 };
                 collectRecipies[i] = entry;
             }
-
-            //assign the recipe to the craftable def
-            if (product.GetInt() == 236)
-            {
-                Log.Warning(":: ~~ TOY ROBOT ~~ :: | Toy:" + product.GetObject() ?? null);
-
-            }
+            // Assign the recipe to the craftable def
             craft.pickup = product.GetObject() ?? null;
             craft.recipes = collectRecipies;
 

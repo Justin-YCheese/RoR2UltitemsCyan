@@ -3,6 +3,7 @@ using RoR2;
 using System;
 using UltitemsCyan.Buffs;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace UltitemsCyan.Items.Lunar
 {
@@ -114,7 +115,7 @@ namespace UltitemsCyan.Items.Lunar
             {
                 // If the victum has an inventory
                 // and damage isn't rejected?
-                if (self && victim && victim.GetComponent<CharacterBody>() && victim.GetComponent<CharacterBody>().inventory && !damageInfo.rejected && damageInfo.damageType != DamageType.DoT)
+                if (NetworkServer.active && self && victim && victim.GetComponent<CharacterBody>() && victim.GetComponent<CharacterBody>().inventory && !damageInfo.rejected && damageInfo.damageType != DamageType.DoT)
                 {
                     CharacterBody injured = victim.GetComponent<CharacterBody>();
                     int grabCount = injured.inventory.GetItemCountEffective(item);

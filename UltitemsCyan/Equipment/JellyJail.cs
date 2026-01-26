@@ -2,6 +2,7 @@
 using RoR2;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.Networking;
 
 namespace UltitemsCyan.Equipment
 {
@@ -71,7 +72,7 @@ namespace UltitemsCyan.Equipment
 
         private bool EquipmentSlot_PerformEquipmentAction(On.RoR2.EquipmentSlot.orig_PerformEquipmentAction orig, EquipmentSlot self, EquipmentDef equipmentDef)
         {
-            if (equipmentDef == equipment)
+            if (NetworkServer.active && self.equipmentDisabled && equipmentDef == equipment)
             {
                 Ray ray = new(self.GetAimRay().origin, Vector3.down);
                 RaycastHit raycastHit;

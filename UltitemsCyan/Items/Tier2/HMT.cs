@@ -66,7 +66,7 @@ namespace UltitemsCyan.Items.Tier2
         private void GlobalEventManager_OnHitEnemy(On.RoR2.GlobalEventManager.orig_OnHitEnemy orig, GlobalEventManager self, DamageInfo damageInfo, GameObject victim)
         {
             //Log.Debug("On Hit! HMT");
-            if (damageInfo.attacker)
+            if (NetworkServer.active && damageInfo.attacker)
             {
                 if (onHitAttacker && onHitAttacker != damageInfo.attacker)
                 {

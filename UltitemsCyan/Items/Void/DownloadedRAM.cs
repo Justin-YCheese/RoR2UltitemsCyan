@@ -4,6 +4,7 @@ using UltitemsCyan.Buffs;
 using UltitemsCyan.Items.Tier2;
 using UnityEngine;
 using BepInEx.Configuration;
+using UnityEngine.Networking;
 
 namespace UltitemsCyan.Items.Void
 {
@@ -93,7 +94,7 @@ namespace UltitemsCyan.Items.Void
             {
                 // If the victum has an inventory
                 // and damage isn't rejected?
-                if (self && victim && damageInfo.attacker.GetComponent<CharacterBody>() && damageInfo.attacker.GetComponent<CharacterBody>().inventory && !damageInfo.rejected && damageInfo.damageType != DamageType.DoT)
+                if (NetworkServer.active && self && victim && damageInfo.attacker.GetComponent<CharacterBody>() && damageInfo.attacker.GetComponent<CharacterBody>().inventory && !damageInfo.rejected && damageInfo.damageType != DamageType.DoT)
                 {
                     CharacterBody inflictor = damageInfo.attacker.GetComponent<CharacterBody>();
                     int grabCount = inflictor.inventory.GetItemCountEffective(item);

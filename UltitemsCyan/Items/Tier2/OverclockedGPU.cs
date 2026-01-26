@@ -1,6 +1,7 @@
 ﻿using RoR2;
 using UnityEngine;
 using BepInEx.Configuration;
+using UnityEngine.Networking;
 
 namespace UltitemsCyan.Items.Tier2
 {
@@ -83,7 +84,7 @@ namespace UltitemsCyan.Items.Tier2
             //Log.Warning("Overclocking hit");
             try
             {
-                if (self && victim && victim.GetComponent<CharacterBody>() && !damageInfo.rejected && damageInfo.damageType != DamageType.DoT)
+                if (NetworkServer.active && self && victim && victim.GetComponent<CharacterBody>() && !damageInfo.rejected && damageInfo.damageType != DamageType.DoT)
                 {
                     CharacterBody injured = victim.GetComponent<CharacterBody>();
                     if (injured.HasBuff(Buffs.OverclockedBuff.buff))

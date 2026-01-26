@@ -22,7 +22,7 @@ namespace UltitemsCyan.Items.Lunar
         private const float critPerBoss = 10f;
         //private const float armourPerMisc = 2f;
         //private const float healthPerLunar = 5f;
-        private const float jumpPerLunar = 1f;
+        private const float jumpPerLunar = 2f;
         private const float stackPercent = 20f;
 
         public bool inDelugedAlready = false;

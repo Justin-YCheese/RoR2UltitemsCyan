@@ -7,9 +7,6 @@
 
 	When Testing:
 - Test Worm Holes Multiplayer effects
-- Check that Mythrixs can apply starve
-
-- Test All Items
 
 	My Item Add Order:
 

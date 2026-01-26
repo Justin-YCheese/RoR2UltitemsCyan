@@ -6,6 +6,7 @@ using UltitemsCyan.Items.Lunar;
 using BepInEx.Configuration;
 using RoR2.Orbs;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace UltitemsCyan.Equipment
 {
@@ -90,19 +91,19 @@ namespace UltitemsCyan.Equipment
             //On.RoR2.PickupDropTable.GenerateDrop += PickupDropTable_GenerateDrop;
         }
 
-        private PickupIndex PickupDropTable_GenerateDrop(On.RoR2.PickupDropTable.orig_GenerateDrop orig, PickupDropTable self, Xoroshiro128Plus rng)
-        {
-            PickupIndex pickup = orig(self, rng);
-            if (dissolvedList.Contains(PickupCatalog.GetPickupDef(pickup).itemIndex))
-            {
-                //Log.Debug("Pickup " + PickupCatalog.GetPickupDef(pickup).nameToken + " was dissolved...");
-                return pickup;
-            }
-            else
-            {
-                return pickup;
-            }
-        }
+        //private PickupIndex PickupDropTable_GenerateDrop(On.RoR2.PickupDropTable.orig_GenerateDrop orig, PickupDropTable self, Xoroshiro128Plus rng)
+        //{
+        //    PickupIndex pickup = orig(self, rng);
+        //    if (dissolvedList.Contains(PickupCatalog.GetPickupDef(pickup).itemIndex))
+        //    {
+        //        //Log.Debug("Pickup " + PickupCatalog.GetPickupDef(pickup).nameToken + " was dissolved...");
+        //        return pickup;
+        //    }
+        //    else
+        //    {
+        //        return pickup;
+        //    }
+        //}
 
         private void Run_BeginStage(On.RoR2.Run.orig_BeginStage orig, Run self)
         {
@@ -114,7 +115,7 @@ namespace UltitemsCyan.Equipment
         // Delete Existing instances of the item, and remove from drops
         private bool EquipmentSlot_PerformEquipmentAction(On.RoR2.EquipmentSlot.orig_PerformEquipmentAction orig, EquipmentSlot self, EquipmentDef equipmentDef)
         {
-            if (equipmentDef == equipment)
+            if (NetworkServer.active && self.equipmentDisabled && equipmentDef == equipment)
             {
                 /*/
                 if (self.gameObject && self.gameObject.name.Contains("EquipmentDrone"))

@@ -42,7 +42,7 @@ namespace UltitemsCyan.Equipment
             orig(self);
             if (self.equipmentIndex == equipment.equipmentIndex && self.characterBody && self.characterBody.characterMotor)
             {
-                Log.Debug("RPC Equipment | Net? " + NetworkServer.active);
+                //Log.Debug("RPC Equipment | Net? " + NetworkServer.active);
                 if (NetworkServer.active)
                 {
                     // Boost Multipliers because item switches on server first
@@ -58,9 +58,9 @@ namespace UltitemsCyan.Equipment
         //
         private bool EquipmentSlot_PerformEquipmentAction(On.RoR2.EquipmentSlot.orig_PerformEquipmentAction orig, EquipmentSlot self, EquipmentDef equipmentDef)
         {
-            if (equipmentDef == equipment)
+            if (NetworkServer.active && self.equipmentDisabled && equipmentDef == equipment)
             {
-                Log.Debug("Yields qStop");
+                Log.Debug("Yields Stop");
                 self.characterBody.inventory.SetEquipmentIndex(YieldSign.equipment.equipmentIndex, true);
                 return true;
             }

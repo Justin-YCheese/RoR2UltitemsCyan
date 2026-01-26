@@ -145,6 +145,11 @@ namespace UltitemsCyan
         public static Sprite TickCritSprite;
         public static Sprite ZorseStarveSprite;
 
+
+        // Rock
+        public static GameObject PetRockPrefab;
+        public static Sprite PetRockSprite;
+
         public static void Init()
         {
             string path = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Ultitems.PInfo.Location), "ultitembundle");
@@ -354,6 +359,10 @@ namespace UltitemsCyan
             TaffyChewSprite = mainBundle.LoadAsset<Sprite>("TaffyChew");
             TickCritSprite = mainBundle.LoadAsset<Sprite>("TickCrit");
             ZorseStarveSprite = mainBundle.LoadAsset<Sprite>("ZorseStarve");
+
+            // Rock
+            PetRockPrefab = mainBundle.LoadAsset<GameObject>("PetRock");
+            PetRockSprite = mainBundle.LoadAsset<Sprite>("PetRock");
 
             /*/
             DegreeScissorsSprite = mainBundle.LoadAsset<Sprite>("DegreeScissors");

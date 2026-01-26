@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using UnityEngine.Networking;
 using EntityStates;
 
+
 namespace UltitemsCyan.Items.Void
 {
 
@@ -20,11 +21,17 @@ namespace UltitemsCyan.Items.Void
         private readonly GameObject voidCamp = Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/VoidCamp/VoidCamp.prefab").WaitForCompletion();
         private GameObject wormZone;
 
+        // The worm hole visually is shrinking when spawned (doesn't actually change anything visually (zone looks like is spawns infinitly large)
+        //public const int wormInitialVisualRadius = 32;
+        // Initial size is 15 + 3m per stack
         public const int wormBaseRadius = 12;
         public const int wormRadiusPerItem = 3;
 
-        // How long each worm last
+        // How many seconds each worm last
         public const int wormDuration = 8;
+        // Size of the center's orb (changes scale of void area too so is annoying to add)
+        //public const float emitterOrbScaleMultiplier = 0.72f;
+        public const float emitterOrbVerticalOffset = -2.15f;
 
         public const float wormFogTickPeriod = 0.3f;  // Tick Timer (default 0.5)
         public const float wormFogDamage = 0.056f;    // Percent Health Damage (default 0.025)
@@ -34,7 +41,6 @@ namespace UltitemsCyan.Items.Void
 
         // How long until another worm can be spawned (relevant if you have multiple stacks)
         public const float wormCooldown = 0.12f;
-
         public const int wormsHolesPerStack = 1;
 
         public override void Init(ConfigFile configs)
@@ -56,6 +62,7 @@ namespace UltitemsCyan.Items.Void
                 [ItemTag.Damage, ItemTag.Utility],
                 Grapevine.item
             );
+            CreateWormZoneGameObject();
             _ = R2API.ContentAddition.AddEntityState<IdleWorm>(out _);
         }
 
@@ -87,12 +94,13 @@ namespace UltitemsCyan.Items.Void
 
             try
             {
-                if (self && victim && damageInfo.attacker.GetComponent<CharacterBody>() && damageInfo.attacker.GetComponent<CharacterBody>().inventory && !damageInfo.rejected && damageInfo.damageType != DamageType.DoT)
+                if (NetworkServer.active && self && victim && damageInfo.attacker.GetComponent<CharacterBody>() && damageInfo.attacker.GetComponent<CharacterBody>().inventory && !damageInfo.rejected && damageInfo.damageType != DamageType.DoT)
                 {
                     CharacterBody inflictor = damageInfo.attacker.GetComponent<CharacterBody>();
                     int grabCount = inflictor.inventory.GetItemCountEffective(item);
                     if (grabCount > 0 && damageInfo.damage / inflictor.damage >= 4f)
                     {
+                        
                         // If damage greater than 400% then create void bubble
                         TrySpawnHole(inflictor, grabCount, damageInfo.position);
                     }
@@ -106,12 +114,6 @@ namespace UltitemsCyan.Items.Void
 
         private void TrySpawnHole(CharacterBody attacker, int grabCount, Vector3 position)
         {
-            // Create my worm zone GameObject
-            if (wormZone == null)
-            {
-                CreateWormZoneGameObject(position);
-            }
-
             // Get worm zones the player has
             WormHoleToken HoleToken = attacker.gameObject.GetComponent<WormHoleToken>();
             if (!HoleToken)
@@ -123,23 +125,37 @@ namespace UltitemsCyan.Items.Void
             // Also GetCleanCount removes old zones
             if (HoleToken.GetCleanCount() + 1 > wormsHolesPerStack * grabCount)
             {
-                //Log.Debug(" worm worm --- Too many worms DO NOT Spawn");
+                Log.Debug(" worm worm --- Too many worms DO NOT Spawn");
                 return;
             }
             // If it is too soon to add another worm
             else if (!HoleToken.GetCooldownReady())
             {
-                //Log.Debug(" worm worm --- Too fast! There's a worm cooldown");
+                Log.Debug(" worm worm --- Too fast! There's a worm cooldown");
                 return;
             }
 
             // Start Creating Worm Zone !!!
             GameObject wormZoneInstance = UnityEngine.Object.Instantiate(wormZone, position, Quaternion.identity);
+            //GameObject wormZoneInstance = UnityEngine.Object.Instantiate(wormZone, position, Quaternion.identity);
+
             wormZoneInstance.SetActive(true);
 
+            //SphereZone sphere = wormZoneInstance.transform.Find("Camp 1 - Void Monsters & Interactables").GetComponent<SphereZone>();
+            //sphere.radius = wormBaseRadius + wormRadiusPerItem * grabCount;
+            //sphere.Networkradius = wormBaseRadius + wormRadiusPerItem * grabCount;
+
+            // Calculate and set syncedRadius
+            Log.Warning(" | | | server set radius  | | |");
+            WormHoleSync wormSyncSize = wormZoneInstance.GetComponent<WormHoleSync>();
             SphereZone sphere = wormZoneInstance.transform.Find("Camp 1 - Void Monsters & Interactables").GetComponent<SphereZone>();
-            sphere.radius = wormBaseRadius + wormRadiusPerItem * grabCount;
-            sphere.Networkradius = wormBaseRadius + wormRadiusPerItem * grabCount;
+
+            Log.Warning(" | | | sync: " + wormSyncSize.syncedRadius + " old radius: " + sphere.radius + " | | |");
+
+            wormSyncSize.syncedRadius = wormBaseRadius + wormRadiusPerItem * grabCount;
+            wormSyncSize.OnRadiusChanged(wormSyncSize.syncedRadius);
+            
+            Log.Warning(" | | | sync: " + wormSyncSize.syncedRadius + " NEW radius: " + sphere.radius + " | | |");
 
             // Add zone to owned zones
             HoleToken.EnqueueWorm(wormZoneInstance);
@@ -147,9 +163,10 @@ namespace UltitemsCyan.Items.Void
         }
 
         // Should be Ran once to create Worm Zone Object
-        private void CreateWormZoneGameObject(Vector3 position)
+        private void CreateWormZoneGameObject()
         {
-            wormZone = UnityEngine.Object.Instantiate(voidCamp);
+            //wormZone = UnityEngine.Object.Instantiate(voidCamp);
+            wormZone = R2API.PrefabAPI.InstantiateClone(voidCamp, "UltitemsWormHoleZone", false);
 
             wormZone.SetActive(false);
 
@@ -164,12 +181,28 @@ namespace UltitemsCyan.Items.Void
             stateMachine.mainStateType = new SerializableEntityStateType(typeof(IdleWorm));
 
             Transform modelCenterEmitter = wormZone.transform.Find("mdlVoidFogEmitter");
-            Transform modelBase = modelCenterEmitter.transform.Find("mdlVoidFogEmitterBase");
-            if (modelBase)
+            if (modelCenterEmitter)
             {
-                //Log.Debug(" worm worm --- Found and deactivate mdlVoidFogEmitter base");
-                modelBase.gameObject.SetActive(false);
+                // Note: Scaling a sphere by radius means multiplying by 2 (diameter)
+                // or adjusting based on the original prefab's base scale.
+                //modelCenterEmitter.localScale = Vector3.one * emitterOrbScaleMultiplier;
+                Animator animator = modelCenterEmitter.GetComponent<Animator>();
+                if (animator)
+                {
+                    //Log.Debug(" worm worm --- Found and shifted animator of orb");
+                    animator.rootPosition = new Vector3(0, emitterOrbVerticalOffset, 0);
+                }
+                Transform modelBase = modelCenterEmitter.transform.Find("mdlVoidFogEmitterBase");
+                if (modelBase)
+                {
+                    //Log.Debug(" worm worm --- Found and deactivate mdlVoidFogEmitter base");
+                    modelBase.gameObject.SetActive(false);
+                    //UnityEngine.Object.Destroy(modelBase.gameObject);
+                }
             }
+            
+
+            //UnityEngine.Object.Destroy(wormZone.gameObject.GetComponent("mdlVoidFogEmitter").gameObject.GetComponent("mdlVoidFogEmitterBase"));
 
             // Doesn't Work for some reason...
             //Transform modelSphere = modelCenterEmitter.transform.Find("mdlVoidFogEmitterSphere");
@@ -185,19 +218,22 @@ namespace UltitemsCyan.Items.Void
             {
                 //Log.Debug(" worm worm --- Found and deactivate Decal");
                 voidDecal.gameObject.SetActive(false);
+                //UnityEngine.Object.Destroy(voidDecal.gameObject);
             }
+
+            //UnityEngine.Object.Destroy(wormZone.gameObject.GetComponent("Decal"));
 
             Transform CampOne = wormZone.transform.Find("Camp 1 - Void Monsters & Interactables");
             if (CampOne)
             {
-                //Log.Debug(" worm worm --- Found and deactivate Camp One Director");
+                Log.Debug(" worm worm --- Found and deactivate Camp One Director");
                 UnityEngine.Object.Destroy(CampOne.gameObject.GetComponent<CampDirector>());
                 UnityEngine.Object.Destroy(CampOne.gameObject.GetComponent<CombatDirector>());
 
-                //Log.Debug(" worm worm --- SphereZone");
-                SphereZone sphere = CampOne.gameObject.GetComponent<SphereZone>();
-                sphere.radius = wormBaseRadius;
-                sphere.Networkradius = wormBaseRadius;
+                Log.Debug(" worm worm --- SphereZone");
+                //SphereZone sphere = CampOne.gameObject.GetComponent<SphereZone>();
+                //sphere.radius = wormInitialVisualRadius;
+                //sphere.Networkradius = wormInitialVisualRadius;
 
                 TeamFilter filter = CampOne.gameObject.GetComponent<TeamFilter>();
                 filter.teamIndexInternal = (int)TeamIndex.None;
@@ -212,17 +248,36 @@ namespace UltitemsCyan.Items.Void
                 fog.healthFractionPerSecond = wormFogDamage;
                 fog.healthFractionRampCoefficientPerSecond = wormFogDamageRamp;
                 fog.healthFractionRampIncreaseCooldown = wormFogRampCooldown;
-                fog.initialSafeZones = [sphere];
+                //fog.initialSafeZones = [sphere];
             }
+
+            _ = wormZone.AddComponent<WormHoleSync>();
 
             Transform CampTwo = wormZone.transform.Find("Camp 2 - Flavor Props & Void Elites");
             if (CampTwo)
             {
-                //Log.Debug(" worm worm --- Found and deactivate Camp Two Director");
+                Log.Debug(" worm worm --- Found and deactivate Camp Two Director");
                 CampTwo.gameObject.SetActive(false);
+                //UnityEngine.Object.Destroy(CampTwo.gameObject);
             }
 
+            //if (wormZone.GetComponent<NetworkIdentity>())
+            //{
+            //    // We access the internal field to clear it. 
+            //    // This prevents the new prefab from "thinking" it's still a VoidCamp.
+            //    System.Reflection.FieldInfo assetIdField = typeof(NetworkIdentity).GetField("m_AssetId",
+            //        System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+
+            //    assetIdField.SetValue(wormZone.GetComponent<NetworkIdentity>(), NetworkHash128.Parse("0"));
+            //}
+
+            //UnityEngine.Object.Destroy(wormZone.gameObject.GetComponent("Camp 2 - Flavor Props & Void Elites"));
+
             //_ = wormZone.AddComponent<WormHoleTimer>();
+
+            //Log.Debug(" worm worm --- Done Modifications, Now Register");
+
+            R2API.PrefabAPI.RegisterNetworkPrefab(wormZone);
         }
 
         public class WormHoleToken : MonoBehaviour
@@ -260,14 +315,14 @@ namespace UltitemsCyan.Items.Void
 
             public void Destory()
             {
-                Log.Debug(" | | | Destroyed Worm Token | | |");
+                //Log.Debug(" | | | Destroyed Worm Token | | |");
                 while (ownedVoidHoles.Count > 0)
                 {
                     GameObject hole = ownedVoidHoles.Dequeue();
                     Destroy(hole);
                     NetworkServer.Destroy(hole);
                 }
-                Log.Debug(" | | | Destroyed Worm Token End | | |");
+                //Log.Debug(" | | | Destroyed Worm Token End | | |");
             }
         }
 
@@ -310,6 +365,34 @@ namespace UltitemsCyan.Items.Void
                 {
                     completeObjectiveChatMessageToken = null
                 });
+            }
+        }
+
+        public class WormHoleSync : NetworkBehaviour
+        {
+            // SyncVar with a hook to update the child when the value arrives
+            //[SyncVar (hook = nameof(OnRadiusChanged))]
+            [SyncVar] public float syncedRadius;
+
+            [Server]
+            public void OnRadiusChanged(float newRadius)
+            {
+                //Log.Warning(" | | | worm worm setting safezone for Worm Hole Fog | | |");
+                syncedRadius = newRadius;
+                // Find the child and apply the radius locally on the client
+                Transform campOne = transform.Find("Camp 1 - Void Monsters & Interactables");
+                if (campOne)
+                {
+                    //Log.Warning(" | | | worm worm camp 1 | | |");
+                    SphereZone sphere = campOne.GetComponent<SphereZone>();
+                    if (sphere)
+                    {
+                        sphere.radius = newRadius;
+                        sphere.Networkradius = newRadius;
+                        //Log.Warning(" | | | worm setting safe zone | | |");
+                        campOne.gameObject.GetComponent<FogDamageController>().safeZones = [sphere];
+                    }
+                }
             }
         }
     }
