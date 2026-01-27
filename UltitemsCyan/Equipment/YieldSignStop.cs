@@ -58,7 +58,7 @@ namespace UltitemsCyan.Equipment
         //
         private bool EquipmentSlot_PerformEquipmentAction(On.RoR2.EquipmentSlot.orig_PerformEquipmentAction orig, EquipmentSlot self, EquipmentDef equipmentDef)
         {
-            if (NetworkServer.active && self.equipmentDisabled && equipmentDef == equipment)
+            if (NetworkServer.active && !self.equipmentDisabled && equipmentDef == equipment)
             {
                 Log.Debug("Yields Stop");
                 self.characterBody.inventory.SetEquipmentIndex(YieldSign.equipment.equipmentIndex, true);

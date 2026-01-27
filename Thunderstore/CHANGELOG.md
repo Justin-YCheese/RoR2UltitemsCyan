@@ -1,3 +1,7 @@
+## 0.14.1
+
+- Fixed my equipment only being usable when disabled...  (whoops)
+
 ## 0.14.0
 
 - Added Recipies!

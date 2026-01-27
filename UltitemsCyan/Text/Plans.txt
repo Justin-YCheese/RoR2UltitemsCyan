@@ -7,6 +7,7 @@
 
 	When Testing:
 - Test Worm Holes Multiplayer effects
+- Test Rocky Taffy's status not being consumed when shield is lost
 
 	My Item Add Order:
 
@@ -40,8 +41,8 @@
 
 - With Worm Holes
 	- Move timer component to idleWorm (optimize and organize)
-	- Make worms use more shades as it goes back (too purple similar to Coffin)
 	- Seed isn't centered (needs to be lowered but It's not working)
+	- Make worm track damage dealt
 
 - Inhabited Coffin is an actually aproriate size
 	- How do I change the size for the other items?

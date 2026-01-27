@@ -22,7 +22,7 @@ namespace UltitemsCyan.Items.Void
         private GameObject wormZone;
 
         // The worm hole visually is shrinking when spawned (doesn't actually change anything visually (zone looks like is spawns infinitly large)
-        //public const int wormInitialVisualRadius = 32;
+        public const int wormInitialRadius = 15;
         // Initial size is 15 + 3m per stack
         public const int wormBaseRadius = 12;
         public const int wormRadiusPerItem = 3;
@@ -190,7 +190,7 @@ namespace UltitemsCyan.Items.Void
                 if (animator)
                 {
                     //Log.Debug(" worm worm --- Found and shifted animator of orb");
-                    animator.rootPosition = new Vector3(0, emitterOrbVerticalOffset, 0);
+                    animator.bodyPosition = new Vector3(0, emitterOrbVerticalOffset, 0);
                 }
                 Transform modelBase = modelCenterEmitter.transform.Find("mdlVoidFogEmitterBase");
                 if (modelBase)
@@ -231,9 +231,9 @@ namespace UltitemsCyan.Items.Void
                 UnityEngine.Object.Destroy(CampOne.gameObject.GetComponent<CombatDirector>());
 
                 Log.Debug(" worm worm --- SphereZone");
-                //SphereZone sphere = CampOne.gameObject.GetComponent<SphereZone>();
-                //sphere.radius = wormInitialVisualRadius;
-                //sphere.Networkradius = wormInitialVisualRadius;
+                SphereZone sphere = CampOne.gameObject.GetComponent<SphereZone>();
+                sphere.radius = wormInitialRadius;
+                sphere.Networkradius = wormInitialRadius;
 
                 TeamFilter filter = CampOne.gameObject.GetComponent<TeamFilter>();
                 filter.teamIndexInternal = (int)TeamIndex.None;
@@ -248,7 +248,7 @@ namespace UltitemsCyan.Items.Void
                 fog.healthFractionPerSecond = wormFogDamage;
                 fog.healthFractionRampCoefficientPerSecond = wormFogDamageRamp;
                 fog.healthFractionRampIncreaseCooldown = wormFogRampCooldown;
-                //fog.initialSafeZones = [sphere];
+                fog.initialSafeZones = [sphere];
             }
 
             _ = wormZone.AddComponent<WormHoleSync>();

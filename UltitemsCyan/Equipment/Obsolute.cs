@@ -115,7 +115,7 @@ namespace UltitemsCyan.Equipment
         // Delete Existing instances of the item, and remove from drops
         private bool EquipmentSlot_PerformEquipmentAction(On.RoR2.EquipmentSlot.orig_PerformEquipmentAction orig, EquipmentSlot self, EquipmentDef equipmentDef)
         {
-            if (NetworkServer.active && self.equipmentDisabled && equipmentDef == equipment)
+            if (NetworkServer.active && !self.equipmentDisabled && equipmentDef == equipment)
             {
                 /*/
                 if (self.gameObject && self.gameObject.name.Contains("EquipmentDrone"))

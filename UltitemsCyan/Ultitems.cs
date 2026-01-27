@@ -84,9 +84,9 @@ namespace UltitemsCyan
         public const string PluginGUID = PluginAuthor + "." + PluginName;
         public const string PluginAuthor = "SporkySpig";
         public const string PluginName = "UltitemsCyan";
-        public const string PluginVersion = "0.14.0";
+        public const string PluginVersion = "0.14.1";
 
-        public const string PluginSuffix = "Sporked the Worm? Must by yummy...";
+        public const string PluginSuffix = "Sporked the Worm? Must by yummy... and equip";
 
         private static ConfigFile UltitemsConfig { get; set; }
 
