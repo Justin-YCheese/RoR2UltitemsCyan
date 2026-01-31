@@ -68,9 +68,15 @@ namespace UltitemsCyan.Items.Lunar
             if (NetworkServer.active && !inDelugedAlready && inventory && inventory.GetItemCountEffective(item) > 0) // Hopefully fix multiple triggers and visual bug?
             {
                 ItemDef iDef = ItemCatalog.GetItemDef(itemIndex);
+                if (iDef == null)
+                {
+                    return;
+                }
+
                 ItemTierDef iTierDef = ItemTierCatalog.GetItemTierDef(iDef.tier);
                 // Validate check, and pass if not lunar unless is pail
-                if (iDef && iTierDef && iTierDef.canRestack && (iTierDef.tier != ItemTier.Lunar || iDef == item)) // Valid Check (check iDef and iTierDef)
+
+                if (iTierDef && (iTierDef.tier != ItemTier.Lunar || iDef == item)) // Valid Check (check iDef and iTierDef) //iTierDef.canRestack
                 {
                     inDelugedAlready = true;
                     CharacterBody player = CharacterBody.readOnlyInstancesList.ToList().Find((body) => body.inventory == inventory);
@@ -104,13 +110,21 @@ namespace UltitemsCyan.Items.Lunar
         private void Inventory_GiveItemTemp(On.RoR2.Inventory.orig_GiveItemTemp orig, Inventory self, ItemIndex itemIndex, float countToAdd)
         {
             orig(self, itemIndex, countToAdd);
-            CheckPailRestack(self, itemIndex);
+            Log.Info("Pail Check Count: " + countToAdd);
+            if (countToAdd > 0) // Was given an item
+            {
+                CheckPailRestack(self, itemIndex);
+            }
         }
 
         private void Inventory_GiveItemPermanent_ItemIndex_int(On.RoR2.Inventory.orig_GiveItemPermanent_ItemIndex_int orig, Inventory self, ItemIndex itemIndex, int countToAdd)
         {
             orig(self, itemIndex, countToAdd);
-            CheckPailRestack(self, itemIndex);
+            Log.Info("Pail Check Count: " + countToAdd);
+            if (countToAdd > 0) // Was given an item
+            {
+                CheckPailRestack(self, itemIndex);
+            }
         }
 
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
@@ -126,11 +140,8 @@ namespace UltitemsCyan.Items.Lunar
                     // White - Damage
                     // Green - Healing
                     // Red - Speed
-                    // VoidWhite - Damage
-                    // VoidGreen - Healing
-                    // VoidRed - Speed
-                    // Lunar - Health? Jump Power?
-                    // Untiered - Armor?
+                    // Lunar - Jump Power
+                    // Food - Cooldown?
                     // Armor, Attack Speed, Health,
                     // Jump Power, Shield, Cooldowns
                     int[] statTiers = new int[6]; // 0:Misc  1:Damage  2:Healing  3:Speed  4:Crits  5:Jump Height

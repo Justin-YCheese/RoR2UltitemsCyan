@@ -86,7 +86,7 @@ namespace UltitemsCyan.Items.Tier3
 
                             int quantityInVault = rng.RangeInt(minQuantityInVault, maxQuantityInVault + 1);
 
-                            Log.Debug("Vault giving " + quantityInVault + " items...");
+                            Log.Info("Vault contained " + quantityInVault + " items...");
 
                             // Give 15 different white items
                             for (int i = 0; i < quantityInVault; i++)
@@ -115,6 +115,7 @@ namespace UltitemsCyan.Items.Tier3
                                     Run.instance.availableTier1DropList.CopyTo(allWhiteItems);
                                 }
                             }
+                            //Chat.AddMessage("Your Vault contained " + quantityInVault + " items!");
                         }
                     }
                 }

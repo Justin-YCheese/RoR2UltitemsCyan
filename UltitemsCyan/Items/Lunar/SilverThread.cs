@@ -39,7 +39,7 @@ namespace UltitemsCyan.Items.Lunar
             item = CreateItemDef(
                 "SILVERTHREAD",
                 itemName,
-                "Chance to gain additional items... <style=cDeath>BUT doubles printer cost</style> and <style=cDeath>chance of losing items or dying upon being attacked</style>. Upon death, this item will be consumed.",
+                "Chance to gain additional items... <style=cDeath>BUT doubles printer cost</style> and gain <style=cDeath>a chance of losing items or dying upon being attacked</style>. Upon death, this item will be consumed.",
                 "<style=cIsUtility>50%</style> <style=cStack>(+25% chance per stack)</style> chance to pick up <style=cIsUtility>1</style> additional item. Printers and cauldrons cost are <style=cDeath>doubled</style>. You have a chance of <style=cDeath>snapping</style> equal to <style=cIsUtility>100%</style> <style=cStack>(+100% per stack)</style> of health lost. Snapping either <style=cDeath>breaks your last item</style> or <style=cDeath>kills you</style>. <style=cIsUtility>Upon death</style>, this item will be <style=cIsUtility>consumed</style>. <style=cIsUtility>Unaffected by luck</style>.",
                 "The end of the abacus of life. A King's Riches lays before you, but at the end of a strand which has been snapped intwine.",
                 ItemTier.Lunar,
@@ -184,8 +184,8 @@ namespace UltitemsCyan.Items.Lunar
             else
             {
                 // Kill Player
-                Log.Warning("The player snapped...");
-                Chat.AddMessage("Your thread of life has snapped...");
+                //Log.Warning("The player snapped...");
+                Chat.AddMessage("<style=cIsUtility>Your thread of life has snapped...</style>");
                 body.healthComponent.Suicide(killer.gameObject);
             }
         }
@@ -252,14 +252,14 @@ namespace UltitemsCyan.Items.Lunar
         // Make Scrapper return fewer items per Silver Thread Held
         private void ScrapperController_BeginScrapping_UniquePickup(On.RoR2.ScrapperController.orig_BeginScrapping_UniquePickup orig, ScrapperController self, UniquePickup pickupToTake)
         {
-            Log.Warning("My ****NEW**** Silver Scrapping check");
+            //Log.Warning("My ****NEW**** Silver Scrapping check");
             bool runOrig = true;
             if (NetworkServer.active && self)
             {
                 CharacterBody player = self.interactor.GetComponent<CharacterBody>();
                 if (player && player.master.inventory && player.master.inventory.GetItemCountEffective(item) > 0)
                 {
-                    Log.Debug("Silver Scrapping custom function");
+                    //Log.Debug("Silver Scrapping custom function");
                     // body has a silver thread in their inventory
                     runOrig = false;
 

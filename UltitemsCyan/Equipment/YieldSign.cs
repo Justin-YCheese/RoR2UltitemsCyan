@@ -85,7 +85,7 @@ namespace UltitemsCyan.Equipment
             orig(self);
             if (self.equipmentIndex == equipment.equipmentIndex && self.characterBody && self.characterBody.characterMotor)
             {
-                Log.Debug("RPC Equipment | Net? " + NetworkServer.active);
+                //Log.Debug("RPC Equipment | Net? " + NetworkServer.active);
                 if (NetworkServer.active)
                 {
                     // Stop Multipliers because item switches on server first

@@ -25,10 +25,12 @@ namespace UltitemsCyan.Equipment
         private const int radius = 110;
         private const float delay = 1.25f;
         private const float force = 8000f; //7450f //10500f (too high)
-        private const float earthquakeDamage = 10000f; // 1,000,000% = 10,000
+        private const float earthquakeDamage = 5000f; // 100,000% = 1,000
 
         private static readonly GameObject willOWisp = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/ExplodeOnDeath/WilloWispDelay.prefab").WaitForCompletion();
         private static readonly GameObject explosionEffect = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/FallBoots/BootShockwave.prefab").WaitForCompletion();
+        //private static readonly GameObject explosionEffect = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/FallBoots/BootShockwave.prefab").WaitForCompletion();
+        //private static readonly GameObject explosionEffect = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/FallBoots/BootShockwave.prefab").WaitForCompletion();
         //private static readonly GameObject warningEffect = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Meteor/MeteorStrikePredictionEffect.prefab").WaitForCompletion();
         //private static readonly GameObject warningEffect = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Common/GenericDelayBlast.prefab").WaitForCompletion();
         //private static readonly GameObject explostionEffect = Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/MajorAndMinorConstruct/OmniExplosionVFXMajorConstruct.prefab").WaitForCompletion();
@@ -54,7 +56,7 @@ namespace UltitemsCyan.Equipment
                 "MACROSEISMOGRAPH",
                 itemName,
                 "While on the ground, summons a tremendious power...  <style=cDeath>BUT forgo all equipments</style>",
-                "Deal <style=cIsDamage>1000000%</style> damage to all enemies within <style=cIsDamage>180m</style>. On use the equipment is <style=cIsDamage>consumed</style> and <style=cIsHealth>cannot be dropped</style>.",
+                "Deal <style=cIsDamage>500000%</style> damage to all enemies within <style=cIsDamage>180m</style>. On use the equipment is <style=cIsDamage>consumed</style> and <style=cIsHealth>cannot be dropped</style>.",
                 "This seismograph must be broken, it always reads at least 10. But there's no way that's true, I don't feel anything, yet I always try to avoid looking at it. It seems ominous, almost alive...",
                 cooldown,
                 true,

@@ -15,6 +15,7 @@ namespace UltitemsCyan.Items.Tier2
 
         public const float igniteChance = 10f;
 
+        // Check if description is accurate
         public const float baseBurnDuration = 6f;
         public const float durationPerItem = 2f;
 

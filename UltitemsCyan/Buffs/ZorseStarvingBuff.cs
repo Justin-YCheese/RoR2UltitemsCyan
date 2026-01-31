@@ -33,6 +33,8 @@ namespace UltitemsCyan.Buffs
         //public readonly GameObject testEffect3 = Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/ElementalRingVoid/ElementalRingVoidImplodeEffect.prefab").WaitForCompletion(); // large but light ring effect
         //public readonly GameObject testEffect4 = Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/MissileVoid/VoidImpactEffect.prefab").WaitForCompletion(); // small but impactful (rocket sound)
 
+
+
         public readonly GameObject FractureEffect = Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/BleedOnHitVoid/FractureImpactEffect.prefab").WaitForCompletion();
         public readonly GameObject LaserImpactEffect = Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/VoidRaidCrab/LaserImpactEffect.prefab").WaitForCompletion(); // Tiny
         //public readonly GameObject ElementalRingVoidImplodeEffect = Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/ElementalRingVoid/ElementalRingVoidImplodeEffect.prefab").WaitForCompletion(); // large but light ring effect
@@ -85,12 +87,12 @@ namespace UltitemsCyan.Buffs
                 EffectManager.SpawnEffect(FractureEffect, new EffectData
                 {
                     origin = self.corePosition,
-                    color = new Color(0.2392f, 0.8196f, 0.917647f) // Cyan Lunar color
+                    //color = new Color(0.2392f, 0.8196f, 0.917647f) // Cyan Lunar color
                 }, true);
                 EffectManager.SpawnEffect(LaserImpactEffect, new EffectData
                 {
                     origin = self.corePosition,
-                    color = new Color(0.2392f, 0.8196f, 0.917647f) // Cyan Lunar color
+                    //color = new Color(0.2392f, 0.8196f, 0.917647f) // Cyan Lunar color
                 }, true);
                 Log.Warning(" zzor zzor OnBuffFinalStackLost: POST spawn zorse");
                 /*EffectManager.SpawnEffect(ElementalRingVoidImplodeEffect, new EffectData

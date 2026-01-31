@@ -32,7 +32,7 @@ namespace UltitemsCyan.Items.Void
         public static ItemDef item;
         public static ItemDef transformItem;
 
-        private const float percentPerStack = 20f;
+        private const float percentPerStack = 25f;
         public const float duration = 3f; // Any greater than 3 and the health bar visual dissapears before inflicting damage
 
         public override void Init(ConfigFile configs)
@@ -46,7 +46,7 @@ namespace UltitemsCyan.Items.Void
                 "ZORSEPILL",
                 itemName,
                 "Starve enemies on hit to deal delayed damage. <style=cIsVoid>Corrupts all HMTs</style>.",
-                "Starve an enemy for <style=cIsDamage>20%</style> <style=cStack>(+20% per stack)</style> of TOTAL damage. Status duration <style=cIsDamage>resets</style> when reapplied. <style=cIsVoid>Corrupts all HMTs</style>.",
+                "Starve an enemy for <style=cIsDamage>25%</style> <style=cStack>(+25% per stack)</style> of TOTAL damage. Status duration <style=cIsDamage>resets</style> when reapplied. <style=cIsVoid>Corrupts all HMTs</style>.",
                 "Get this diet pill now! Eat one and it cut's your weight down. Disclaimer: the microbes inside are definitly not eating you from the inside out.",
                 ItemTier.VoidTier2,
                 UltAssets.ZorsePillSprite,

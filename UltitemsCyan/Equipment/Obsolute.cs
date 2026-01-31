@@ -249,7 +249,7 @@ namespace UltitemsCyan.Equipment
 
         private void Inventory_GiveItemPermanent_ItemIndex_int(On.RoR2.Inventory.orig_GiveItemPermanent_ItemIndex_int orig, Inventory self, ItemIndex itemIndex, int countToAdd)
         {
-            if (dissolvedList.Contains(itemIndex) && self)
+            if (self && countToAdd > 0 && dissolvedList.Contains(itemIndex))
             {
                 Log.Debug("Grabbed a disolved item...");
                 _ = Util.PlaySound("Play_minimushroom_spore_shoot", self.gameObject);
@@ -359,14 +359,13 @@ namespace UltitemsCyan.Equipment
                 int grabCount = inventory.GetItemCountEffective(item);
                 if (grabCount > 0)
                 {
-                    Inventory.ItemTransformation.TryTransformResult tryTransformResult;
                     if (new Inventory.ItemTransformation
                     {
                         originalItemIndex = item.itemIndex,
                         newItemIndex = GreySolvent.item.itemIndex,
                         maxToTransform = 2147483647,
                         transformationType = 0
-                    }.TryTransform(inventory, out tryTransformResult))
+                    }.TryTransform(inventory, out Inventory.ItemTransformation.TryTransformResult tryTransformResult))
                     {
                         // If item succesfully transformed
                         if (body.GetBody())

@@ -1,3 +1,11 @@
+## 0.14.2
+
+- Fixed Deluged Pail breaking printers and scrappers
+- Reworked Viral Essence
+    - Gives 20% -> 16% speed per buff
+    - Negative effects give twice as much speed
+- Buff Zorse Pill starve damage 20% -> 25%
+
 ## 0.14.1
 
 - Fixed my equipment only being usable when disabled...  (whoops)

@@ -64,21 +64,30 @@ namespace UltitemsCyan.Items.Tier2
         {
             orig(self, itemIndex, countToAdd);
             //Log.Debug("Check Permanent Birthday Candles");
-            CheckBirthday(self, itemIndex, countToAdd);
+            if (countToAdd >= 1)
+            {
+                CheckBirthday(self, itemIndex, countToAdd);
+            }
         }
 
         private void Inventory_GiveItemTemp(On.RoR2.Inventory.orig_GiveItemTemp orig, Inventory self, ItemIndex itemIndex, float countToAdd)
         {
             orig(self, itemIndex, countToAdd);
             //Log.Warning("Ultitems, I don't know what calls this if picking up a tempary item doesn't");
-            CheckBirthday(self, itemIndex, Mathf.CeilToInt(countToAdd));
+            if (countToAdd >= 1f)
+            {
+                CheckBirthday(self, itemIndex, Mathf.CeilToInt(countToAdd));
+            }
         }
 
         private void Inventory_GiveItemPermanent_ItemIndex_int(On.RoR2.Inventory.orig_GiveItemPermanent_ItemIndex_int orig, Inventory self, ItemIndex itemIndex, int countToAdd)
         {
             orig(self, itemIndex, countToAdd);
             //Log.Debug("Check Permanent Birthday Candles");
-            CheckBirthday(self, itemIndex, countToAdd);
+            if (countToAdd >= 1)
+            {
+                CheckBirthday(self, itemIndex, countToAdd);
+            }
         }
 
         //

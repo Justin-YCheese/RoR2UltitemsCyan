@@ -84,9 +84,9 @@ namespace UltitemsCyan
         public const string PluginGUID = PluginAuthor + "." + PluginName;
         public const string PluginAuthor = "SporkySpig";
         public const string PluginName = "UltitemsCyan";
-        public const string PluginVersion = "0.14.1";
+        public const string PluginVersion = "0.14.2";
 
-        public const string PluginSuffix = "Sporked the Worm? Must by yummy... and equip";
+        public const string PluginSuffix = "Deluged Printers?!?!";
 
         private static ConfigFile UltitemsConfig { get; set; }
 
@@ -391,7 +391,7 @@ namespace UltitemsCyan
             craft.pickup = product.GetObject() ?? null;
             craft.recipes = collectRecipies;
 
-            Debug.Log("Added recipe #" + ultRecipesIndex + " for " + product.GetInt());
+            //Debug.Log("Added recipe #" + ultRecipesIndex + " for " + product.GetInt());
         }
 
         private void Stage_onStageStartGlobal(Stage obj)
