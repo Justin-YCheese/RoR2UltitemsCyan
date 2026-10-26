@@ -69,7 +69,7 @@ namespace UltitemsCyan.Items.Tier1
                         //Log.Debug("Is " + td + "\t > " + maxDamage + "?");
                         if (damageInfo.damage > maxDamage)
                         {
-                            Log.Warning("Koala BLOCK " + damageInfo.damage + " to " + maxDamage + " ! ! for " + victimBody.name);
+                            //Log.Warning("Koala BLOCK " + damageInfo.damage + " to " + maxDamage + " ! ! for " + victimBody.name);
                             EffectManager.SpawnEffect(HealthComponent.AssetReferences.bearEffectPrefab, new EffectData
                             {
                                 origin = damageInfo.position,

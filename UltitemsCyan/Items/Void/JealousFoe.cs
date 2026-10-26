@@ -50,7 +50,7 @@ namespace UltitemsCyan.Items.Void
                 ItemTier.VoidTier1,
                 UltAssets.JubilantFoeSprite,
                 UltAssets.JubilantFoePrefab,
-                [ItemTag.Utility, ItemTag.OnKillEffect],
+                [ItemTag.CanBeTemporary, ItemTag.Utility, ItemTag.OnKillEffect],
                 ToyRobot.item
             );
         }
@@ -134,7 +134,7 @@ namespace UltitemsCyan.Items.Void
             {
                 if (_currentPhase == EyePhase.cooldown)
                 {
-                    Log.Debug(" ! ! ! ! ! ! Phase Set ! ! Coll Lecting");
+                    //Log.Debug(" ! ! ! ! ! ! Phase Set ! ! Coll Lecting");
                     // There should already be no Cooldown Buff
                     _currentPhase = EyePhase.collecting;
                     //_ = Util.PlaySound("Play_UI_arenaMode_voidCollapse_select", body.gameObject);
@@ -146,7 +146,7 @@ namespace UltitemsCyan.Items.Void
             {
                 if (_currentPhase == EyePhase.collecting)
                 {
-                    Log.Debug(" ! ! ! ! ! ! Phase Set ! ! conSUME");
+                    //Log.Debug(" ! ! ! ! ! ! Phase Set ! ! conSUME");
                     _currentPhase = EyePhase.consuming;
                     // Convert Drowsy buffs to awake buffs
                     int buffCount = body.GetBuffCount(EyeDrowsyBuff.buff);
@@ -162,7 +162,7 @@ namespace UltitemsCyan.Items.Void
             {
                 if (_currentPhase == EyePhase.consuming)
                 {
-                    Log.Debug(" ! ! ! ! ! ! Phase Set ! ! c o o l down");
+                    //Log.Debug(" ! ! ! ! ! ! Phase Set ! ! c o o l down");
                     // There should already be no Awake Buffs
                     _currentPhase = EyePhase.cooldown;
                     eyePhaseStopwatch = float.PositiveInfinity;

@@ -7,6 +7,8 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Networking;
 
+using BepInEx.Logging;
+
 namespace UltitemsCyan.Items.Void
 {
 
@@ -51,7 +53,7 @@ namespace UltitemsCyan.Items.Void
                 ItemTier.VoidTier2,
                 UltAssets.DownloadedRAMSprite,
                 UltAssets.DownloadedRAMPrefab,
-                [ItemTag.Damage],
+                [ItemTag.CanBeTemporary, ItemTag.Damage],
                 OverclockedGPU.item
             );
         }
@@ -159,7 +161,7 @@ namespace UltitemsCyan.Items.Void
 
             public void UpdateStopwatch(float newTime)
             {
-                //Log.Debug("New attack at " + newTime);
+                Log.Logger(LogLevel.Debug, "New attack at " + newTime);
                 attackingStopwatch = newTime;
             }
 
@@ -171,7 +173,7 @@ namespace UltitemsCyan.Items.Void
                     if (_attacking != value)
                     {
                         _attacking = value;
-                        //Log.Warning(body.name + " attack ram toggeled!: " + _attacking);
+                        Log.Logger(LogLevel.Warning, body.name + " attack ram toggeled!: " + _attacking);
                         // If not attacking
                         if (!_attacking)
                         {
@@ -187,11 +189,13 @@ namespace UltitemsCyan.Items.Void
 #pragma warning disable IDE0051 // Remove unused private members
             private void OnAwake()
             {
+                Log.Logger(LogLevel.Debug, "DownloadedRAM Awake");
                 enabled = false;
             }
 
             private void OnDisable()
             {
+                Log.Logger(LogLevel.Debug, "DownloadedRAM Disable");
                 attackingStopwatch = 0;
                 DealingDamage = false;
             }
@@ -199,10 +203,9 @@ namespace UltitemsCyan.Items.Void
             private void FixedUpdate()
             {
                 // If too much time has passed since last dealing damage
-                //Log.Debug("RAM Times: " + attackingStopwatch);
+                Log.Logger(LogLevel.Debug, "RAM Times: " + attackingStopwatch);
                 DealingDamage = Run.instance.time <= attackingStopwatch + notAttackingDelay;
             }
         }
-        ///
     }
 }

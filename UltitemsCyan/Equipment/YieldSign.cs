@@ -70,7 +70,7 @@ namespace UltitemsCyan.Equipment
             {
                 //Log.Warning("YIELD! Preform Equipment");
                 //Log.Debug(" ))) --- ))) EquipmentSlot_PerformEquipmentAction ID: " + equipment.equipmentIndex);
-                self.characterBody.inventory.SetEquipmentIndex(YieldSignStop.equipment.equipmentIndex, true);
+                self.characterBody.inventory.SetEquipmentIndex(YieldSignStop.equipment.equipmentIndex, self.activeEquipmentLocation);
                 return true;
             }
             else

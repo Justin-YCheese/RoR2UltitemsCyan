@@ -59,7 +59,7 @@ namespace UltitemsCyan.Items.Void
                 ItemTier.VoidTier3,
                 UltAssets.WormHolesSprite,
                 UltAssets.WormHolesPrefab,
-                [ItemTag.Damage, ItemTag.Utility],
+                [ItemTag.CanBeTemporary, ItemTag.Damage, ItemTag.Utility],
                 Grapevine.item
             );
             CreateWormZoneGameObject();
@@ -125,13 +125,13 @@ namespace UltitemsCyan.Items.Void
             // Also GetCleanCount removes old zones
             if (HoleToken.GetCleanCount() + 1 > wormsHolesPerStack * grabCount)
             {
-                Log.Debug(" worm worm --- Too many worms DO NOT Spawn");
+                //Log.Debug(" worm worm --- Too many worms DO NOT Spawn");
                 return;
             }
             // If it is too soon to add another worm
             else if (!HoleToken.GetCooldownReady())
             {
-                Log.Debug(" worm worm --- Too fast! There's a worm cooldown");
+                //Log.Debug(" worm worm --- Too fast! There's a worm cooldown");
                 return;
             }
 
@@ -146,16 +146,16 @@ namespace UltitemsCyan.Items.Void
             //sphere.Networkradius = wormBaseRadius + wormRadiusPerItem * grabCount;
 
             // Calculate and set syncedRadius
-            Log.Warning(" | | | server set radius  | | |");
+            //Log.Warning(" | | | server set radius  | | |");
             WormHoleSync wormSyncSize = wormZoneInstance.GetComponent<WormHoleSync>();
             SphereZone sphere = wormZoneInstance.transform.Find("Camp 1 - Void Monsters & Interactables").GetComponent<SphereZone>();
 
-            Log.Warning(" | | | sync: " + wormSyncSize.syncedRadius + " old radius: " + sphere.radius + " | | |");
+            //Log.Warning(" | | | sync: " + wormSyncSize.syncedRadius + " old radius: " + sphere.radius + " | | |");
 
             wormSyncSize.syncedRadius = wormBaseRadius + wormRadiusPerItem * grabCount;
             wormSyncSize.OnRadiusChanged(wormSyncSize.syncedRadius);
             
-            Log.Warning(" | | | sync: " + wormSyncSize.syncedRadius + " NEW radius: " + sphere.radius + " | | |");
+            //Log.Warning(" | | | sync: " + wormSyncSize.syncedRadius + " NEW radius: " + sphere.radius + " | | |");
 
             // Add zone to owned zones
             HoleToken.EnqueueWorm(wormZoneInstance);
@@ -226,11 +226,11 @@ namespace UltitemsCyan.Items.Void
             Transform CampOne = wormZone.transform.Find("Camp 1 - Void Monsters & Interactables");
             if (CampOne)
             {
-                Log.Debug(" worm worm --- Found and deactivate Camp One Director");
+                //Log.Debug(" worm worm --- Found and deactivate Camp One Director");
                 UnityEngine.Object.Destroy(CampOne.gameObject.GetComponent<CampDirector>());
                 UnityEngine.Object.Destroy(CampOne.gameObject.GetComponent<CombatDirector>());
 
-                Log.Debug(" worm worm --- SphereZone");
+                //Log.Debug(" worm worm --- SphereZone");
                 SphereZone sphere = CampOne.gameObject.GetComponent<SphereZone>();
                 sphere.radius = wormInitialRadius;
                 sphere.Networkradius = wormInitialRadius;
@@ -256,7 +256,7 @@ namespace UltitemsCyan.Items.Void
             Transform CampTwo = wormZone.transform.Find("Camp 2 - Flavor Props & Void Elites");
             if (CampTwo)
             {
-                Log.Debug(" worm worm --- Found and deactivate Camp Two Director");
+                //Log.Debug(" worm worm --- Found and deactivate Camp Two Director");
                 CampTwo.gameObject.SetActive(false);
                 //UnityEngine.Object.Destroy(CampTwo.gameObject);
             }

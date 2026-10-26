@@ -153,7 +153,8 @@ namespace UltitemsCyan.Items.Lunar
         // Thread snaps, Lose life or items
         private static void SnapBody(CharacterBody body, CharacterBody killer)
         {
-            Log.Warning(body.GetUserName() + "'s thread was snapped by chance");
+            // TODO replace snap messages
+            //Log.Warning(body.GetUserName() + "'s thread was snapped by chance");
 
             EffectManager.SpawnEffect(BrittleDeathEffect, new EffectData
             {
@@ -165,7 +166,7 @@ namespace UltitemsCyan.Items.Lunar
             if (Util.CheckRoll(50f, 0))
             {
                 // Remove Item Stack
-                Log.Debug("An item snapped...");
+                //Log.Debug("An item snapped...");
                 // TODO doublecheck this orders temporary items as well
                 List<ItemIndex> itemList = body.inventory.itemAcquisitionOrder;
                 ItemDef lastItem = ItemCatalog.GetItemDef(itemList[^1]);
@@ -290,7 +291,7 @@ namespace UltitemsCyan.Items.Lunar
                         silverScrapLimit = count - count % costMultiplier;
                     }
 
-                    Log.Debug(" Silver Scrap Limit: " + silverScrapLimit);
+                    //Log.Debug(" Silver Scrap Limit: " + silverScrapLimit);
 
                     if (silverScrapLimit < costMultiplier)
                     {

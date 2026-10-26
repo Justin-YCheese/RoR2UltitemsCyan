@@ -31,7 +31,7 @@ namespace UltitemsCyan.Items.Void
                 ItemTier.VoidTier3,
                 UltAssets.ResinBounceSprite,
                 UltAssets.ResinWhirlpoolPrefab,
-                [ItemTag.Utility],
+                [ItemTag.CanBeTemporary, ItemTag.Utility],
                 ViralEssence.item
             );
         }

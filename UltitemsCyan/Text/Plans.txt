@@ -19,6 +19,7 @@
 
 	When updating mod check:
 - Bugs / Tests
+- Make sure EnableDebugLogs is false
 - Version number (Ultitems Main / Manifest)
 - Readme in Thunderstore folder
 	- Then copy to workspace
@@ -47,11 +48,17 @@
 - Inhabited Coffin is an actually aproriate size
 	- How do I change the size for the other items?
 
+- Obso
+	
+
 - Obsolute: In simulacrum you can erradicate items from the universe Must be similar to erasing
+	- Only make sound when your items change
 	- With things called void suppressor
+		- public static bool SuppressItem(ItemIndex suppressedIndex, ItemIndex transformedIndex = ItemIndex.None)
 	- Will turn any instances of that object into scrap
 	- But doesn't remove from command list
 	- But does persist through levels
+		- But not between proper saves
 
 - Check damageInfo.procCoefficient > 0f for my proc items
 

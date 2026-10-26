@@ -287,14 +287,14 @@ namespace UltitemsCyan.Items.Tier2
             // Called on Startup
             public void SetWard(BuffWard aWard)
             {
-                Log.Debug(" ()() Add Buffward");
+                //Log.Debug(" ()() Add Buffward");
                 ward = aWard;
                 zoneList.Add(ward);
             }
 
             private void OnDisable()
             {
-                Log.Debug(" ()() Remove Buffward");
+                //Log.Debug(" ()() Remove Buffward");
                 _ = zoneList.Remove(ward);
             }
 
@@ -336,7 +336,7 @@ namespace UltitemsCyan.Items.Tier2
 
             private void OnEnable()
             {
-                Log.Debug(" ()() Add Holdout Zone");
+                //Log.Debug(" ()() Add Holdout Zone");
                 _enabledTime = Run.FixedTimeStamp.now;
                 zoneList.Add(_holdoutZoneController);
                 _holdoutZoneController.calcRadius += ApplyRadius;

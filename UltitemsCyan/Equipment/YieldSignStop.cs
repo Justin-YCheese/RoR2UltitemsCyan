@@ -61,7 +61,7 @@ namespace UltitemsCyan.Equipment
             if (NetworkServer.active && !self.equipmentDisabled && equipmentDef == equipment)
             {
                 Log.Debug("Yields Stop");
-                self.characterBody.inventory.SetEquipmentIndex(YieldSign.equipment.equipmentIndex, true);
+                self.characterBody.inventory.SetEquipmentIndex(YieldSign.equipment.equipmentIndex, self.activeEquipmentLocation);
                 return true;
             }
             else

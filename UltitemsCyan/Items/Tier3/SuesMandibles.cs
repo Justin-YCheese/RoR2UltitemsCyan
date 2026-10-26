@@ -48,7 +48,7 @@ namespace UltitemsCyan.Items.Tier3
                 int grabCount = victim.inventory.GetItemCountEffective(item);
                 if (grabCount > 0)
                 {
-                    Log.Warning(" ! ! ! Killing Blow ! ! ! ");
+                    //Log.Warning(" ! ! ! Killing Blow ! ! ! ");
                     //Log.Debug("S Teeth Combined: " + self.combinedHealth + " FullCombined: " + self.fullCombinedHealth + " Damage: " + damageInfo.damage + " Alive? " + self.alive);
 
                     // Consume Item
@@ -63,7 +63,7 @@ namespace UltitemsCyan.Items.Tier3
                     }.TryTransform(victim.inventory, out tryTransformResult))
                     {
                         // If item succesfully transformed
-                        Log.Warning(" Sue's saved your ! ! ! Killing Blow ! ! ! ");
+                        //Log.Warning(" Sue's saved your ! ! ! Killing Blow ! ! ! ");
 
                         // Regain one health
                         self.health = 1;

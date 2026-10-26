@@ -1,9 +1,16 @@
+## 0.14.3
+
+- My void items can be temporary
+
 ## 0.14.2
 
 - Fixed Deluged Pail breaking printers and scrappers
 - Reworked Viral Essence
     - Gives 20% -> 16% speed per buff
     - Negative effects give twice as much speed
+- Changed Macroseismograph
+    - damage 1,000,000% -> 500,000%
+    - radius 110m -> 150m
 - Buff Zorse Pill starve damage 20% -> 25%
 
 ## 0.14.1

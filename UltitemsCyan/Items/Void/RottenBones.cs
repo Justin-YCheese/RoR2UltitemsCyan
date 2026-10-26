@@ -33,7 +33,7 @@ namespace UltitemsCyan.Items.Void
                 ItemTier.VoidTier2,
                 UltAssets.RottenBonesSprite,
                 UltAssets.RottenBonesPrefab,
-                [ItemTag.Utility, ItemTag.OnStageBeginEffect],
+                [ItemTag.CanBeTemporary, ItemTag.Utility, ItemTag.OnStageBeginEffect],
                 BirthdayCandles.item
             );
         }
@@ -64,7 +64,7 @@ namespace UltitemsCyan.Items.Void
                 //Log.Warning(" ::----:: Found Bones?");
                 if (self.inventory.GetItemCountEffective(item) > 0)
                 {
-                    Log.Warning("Give Rotting Bones");
+                    //Log.Warning("Give Rotting Bones");
                     // If within time intervals give item behavior
                     if (Run.instance.time < Ultitems.stageStartTime + rotTimeInterval * rotsPerItem)
                     {

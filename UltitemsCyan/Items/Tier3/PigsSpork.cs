@@ -71,12 +71,12 @@ namespace UltitemsCyan.Items.Tier3
             orig(self);
             if (self && self.inventory)
             {
-                _ = self.AddItemBehavior<DreamFuelBehaviour>(self.inventory.GetItemCountEffective(item));
+                _ = self.AddItemBehavior<PigSporkBehaviour>(self.inventory.GetItemCountEffective(item));
             }
         }//*/
 
         // Speed at full health
-        public class DreamFuelBehaviour : CharacterBody.ItemBehavior
+        public class PigSporkBehaviour : CharacterBody.ItemBehavior
         {
             public HealthComponent healthComponent;
             private float _currentHealth = 0;

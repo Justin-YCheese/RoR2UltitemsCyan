@@ -22,7 +22,7 @@ namespace UltitemsCyan.Equipment
                 "MACROSEISMOGRAPHCONSUMED",
                 "Macro Friend",
                 "It's broken something inside you...   but it'll never leave you",
-                "And now it will never leave you",
+                "And now it will never leave you", // TODO Change to something that works better with description
                 "Broken soul, and forever buddy",
                 cooldown,
                 true,

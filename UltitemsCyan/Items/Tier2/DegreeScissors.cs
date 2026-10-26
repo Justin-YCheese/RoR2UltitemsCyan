@@ -96,7 +96,7 @@ namespace UltitemsCyan.Items.Tier2
                 // Don't need to check for regenerating scrap because it is restored before this check
                 if (definition.isConsumed && !definition.hidden) //definition.name.ToUpper().Contains("CONSUMED") // Checking for "consumed"
                 {
-                    Log.Debug("Adding consumed item " + definition.name);
+                    //Log.Debug("Adding consumed item " + definition.name);
                     consumedItems.Add(definition);
                 }
             }

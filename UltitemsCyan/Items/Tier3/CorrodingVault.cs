@@ -86,7 +86,8 @@ namespace UltitemsCyan.Items.Tier3
 
                             int quantityInVault = rng.RangeInt(minQuantityInVault, maxQuantityInVault + 1);
 
-                            Log.Info("Vault contained " + quantityInVault + " items...");
+                            // TODO Replace Vault Message
+                            //Log.Info("Vault contained " + quantityInVault + " items...");
 
                             // Give 15 different white items
                             for (int i = 0; i < quantityInVault; i++)
@@ -110,7 +111,7 @@ namespace UltitemsCyan.Items.Tier3
 
                                 if (length == 0)
                                 {
-                                    Log.Debug("Ran out of white items...   Resetting Pool");
+                                    //Log.Debug("Ran out of white items...   Resetting Pool");
                                     length = allWhiteItems.Length;
                                     Run.instance.availableTier1DropList.CopyTo(allWhiteItems);
                                 }

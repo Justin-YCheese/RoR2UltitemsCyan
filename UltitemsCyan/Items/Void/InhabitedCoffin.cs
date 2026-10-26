@@ -33,7 +33,7 @@ namespace UltitemsCyan.Items.Void
                 ItemTier.VoidTier3,
                 UltAssets.InhabitedCoffinSprite,
                 UltAssets.InhabitedCoffinPrefab,
-                [ItemTag.Utility, ItemTag.OnStageBeginEffect, ItemTag.AIBlacklist],
+                [ItemTag.CanBeTemporary, ItemTag.Utility, ItemTag.OnStageBeginEffect, ItemTag.AIBlacklist],
                 CorrodingVault.item
             );
         }

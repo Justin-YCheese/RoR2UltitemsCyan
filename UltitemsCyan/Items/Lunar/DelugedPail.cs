@@ -110,7 +110,6 @@ namespace UltitemsCyan.Items.Lunar
         private void Inventory_GiveItemTemp(On.RoR2.Inventory.orig_GiveItemTemp orig, Inventory self, ItemIndex itemIndex, float countToAdd)
         {
             orig(self, itemIndex, countToAdd);
-            Log.Info("Pail Check Count: " + countToAdd);
             if (countToAdd > 0) // Was given an item
             {
                 CheckPailRestack(self, itemIndex);
@@ -120,7 +119,6 @@ namespace UltitemsCyan.Items.Lunar
         private void Inventory_GiveItemPermanent_ItemIndex_int(On.RoR2.Inventory.orig_GiveItemPermanent_ItemIndex_int orig, Inventory self, ItemIndex itemIndex, int countToAdd)
         {
             orig(self, itemIndex, countToAdd);
-            Log.Info("Pail Check Count: " + countToAdd);
             if (countToAdd > 0) // Was given an item
             {
                 CheckPailRestack(self, itemIndex);

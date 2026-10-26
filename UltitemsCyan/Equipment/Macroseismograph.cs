@@ -22,14 +22,13 @@ namespace UltitemsCyan.Equipment
 
         private const float cooldown = 300f;
 
-        private const int radius = 110;
+        private const int radius = 150;
         private const float delay = 1.25f;
         private const float force = 8000f; //7450f //10500f (too high)
-        private const float earthquakeDamage = 5000f; // 100,000% = 1,000
+        private const float earthquakeDamage = 5000f; // 500,000% = 5,000
 
         private static readonly GameObject willOWisp = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/ExplodeOnDeath/WilloWispDelay.prefab").WaitForCompletion();
         private static readonly GameObject explosionEffect = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/FallBoots/BootShockwave.prefab").WaitForCompletion();
-        //private static readonly GameObject explosionEffect = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/FallBoots/BootShockwave.prefab").WaitForCompletion();
         //private static readonly GameObject explosionEffect = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/FallBoots/BootShockwave.prefab").WaitForCompletion();
         //private static readonly GameObject warningEffect = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Meteor/MeteorStrikePredictionEffect.prefab").WaitForCompletion();
         //private static readonly GameObject warningEffect = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Common/GenericDelayBlast.prefab").WaitForCompletion();
@@ -55,7 +54,7 @@ namespace UltitemsCyan.Equipment
             equipment = CreateItemDef(
                 "MACROSEISMOGRAPH",
                 itemName,
-                "While on the ground, summons a tremendious power...  <style=cDeath>BUT forgo all equipments</style>",
+                "While on the ground, summons a tremendious power...  <style=cDeath>BUT consume and keep this equipment</style>",
                 "Deal <style=cIsDamage>500000%</style> damage to all enemies within <style=cIsDamage>180m</style>. On use the equipment is <style=cIsDamage>consumed</style> and <style=cIsHealth>cannot be dropped</style>.",
                 "This seismograph must be broken, it always reads at least 10. But there's no way that's true, I don't feel anything, yet I always try to avoid looking at it. It seems ominous, almost alive...",
                 cooldown,
@@ -73,8 +72,6 @@ namespace UltitemsCyan.Equipment
             On.RoR2.EquipmentSlot.PerformEquipmentAction += EquipmentSlot_PerformEquipmentAction;
         }
 
-
-        // Delete Existing instances of the item, and remove from drops
         private bool EquipmentSlot_PerformEquipmentAction(On.RoR2.EquipmentSlot.orig_PerformEquipmentAction orig, EquipmentSlot self, EquipmentDef equipmentDef)
         {
             if (NetworkServer.active && !self.equipmentDisabled && equipmentDef == equipment)
@@ -165,7 +162,7 @@ namespace UltitemsCyan.Equipment
                     // Send notification and consume equipment
                     CharacterMasterNotificationQueue.SendTransformNotification(
                         activator.master, activator.inventory.currentEquipmentIndex, MacroseismographConsumed.equipment.equipmentIndex, CharacterMasterNotificationQueue.TransformationType.Default);
-                    activator.inventory.SetEquipmentIndex(MacroseismographConsumed.equipment.equipmentIndex, true);
+                    activator.inventory.SetEquipmentIndex(MacroseismographConsumed.equipment.equipmentIndex, self.activeEquipmentLocation);
 
                     return true;
                 }

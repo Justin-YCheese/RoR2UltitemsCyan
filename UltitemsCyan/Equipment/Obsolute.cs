@@ -146,12 +146,12 @@ namespace UltitemsCyan.Equipment
                             equipment.cooldown = cooldown;
                         }
 
-                        Log.Debug("Last Item: " + lastItem.name);
+                        //Log.Debug("Last Item: " + lastItem.name);
 
                         // * * * For Every player and monster remove the item
                         foreach (CharacterMaster body in CharacterMaster.readOnlyInstancesList)
                         {
-                            Log.Debug("who? " + body.name);
+                            //Log.Debug("who? " + body.name);
                             // Checks inventory in function
                             DissolveItem(body, lastItem);
                         }
@@ -165,16 +165,16 @@ namespace UltitemsCyan.Equipment
                         CheckEmptyTierList(lastItem); // also check if empty, if so then add solute to item tier
 
                         // PRINT TEST
-                        Log.Debug(PickupCatalog.itemIndexToPickupIndex[printTestItem] + " is in? "
-                            + thisRun.availableLunarCombinedDropList.Contains(PickupCatalog.itemIndexToPickupIndex[printTestItem])
-                            + " and " + thisRun.availableLunarItemDropList.Contains(PickupCatalog.itemIndexToPickupIndex[printTestItem]));
+                        //Log.Debug(PickupCatalog.itemIndexToPickupIndex[printTestItem] + " is in? "
+                        //    + thisRun.availableLunarCombinedDropList.Contains(PickupCatalog.itemIndexToPickupIndex[printTestItem])
+                        //    + " and " + thisRun.availableLunarItemDropList.Contains(PickupCatalog.itemIndexToPickupIndex[printTestItem]));
 
                         thisRun.RefreshLunarCombinedDropList(); // Might need to be ran on next frame instead
 
                         // PRINT TEST
-                        Log.Debug(PickupCatalog.itemIndexToPickupIndex[printTestItem] + " is in? "
-                            + thisRun.availableLunarCombinedDropList.Contains(PickupCatalog.itemIndexToPickupIndex[printTestItem])
-                            + " and " + thisRun.availableLunarItemDropList.Contains(PickupCatalog.itemIndexToPickupIndex[printTestItem]));
+                        //Log.Debug(PickupCatalog.itemIndexToPickupIndex[printTestItem] + " is in? "
+                        //    + thisRun.availableLunarCombinedDropList.Contains(PickupCatalog.itemIndexToPickupIndex[printTestItem])
+                        //    + " and " + thisRun.availableLunarItemDropList.Contains(PickupCatalog.itemIndexToPickupIndex[printTestItem]));
 
                         dissolvedList.Add(lastItem.itemIndex);
                         //Log.Debug(" &&& &&& Refresh Items ");
@@ -262,7 +262,7 @@ namespace UltitemsCyan.Equipment
         {
             if (dissolvedList.Contains(itemIndex) && self)
             {
-                Log.Debug("Grabbed a disolved item...");
+                //Log.Debug("Grabbed a disolved item...");
                 _ = Util.PlaySound("Play_minimushroom_spore_shoot", self.gameObject);
                 itemIndex = GreySolvent.item.itemIndex;
             }
@@ -467,7 +467,7 @@ namespace UltitemsCyan.Equipment
             }
             if (list.Count == 0)
             {
-                Log.Debug(item.tier.ToString() + " | replace with Solute");
+                //Log.Debug(item.tier.ToString() + " | replace with Solute");
                 list.Add(PickupCatalog.itemIndexToPickupIndex[(int)GreySolvent.item.itemIndex]);
                 Log.Warning("Solute is " + (list.Contains(PickupCatalog.itemIndexToPickupIndex[(int)GreySolvent.item.itemIndex]) ? "in" : "NOT IN") + " list now...");
             }

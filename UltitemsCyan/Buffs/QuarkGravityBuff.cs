@@ -103,7 +103,7 @@ namespace UltitemsCyan.Buffs
                     // If not already the same value
                     if (_hasQuarkBuff != value)
                     {
-                        Log.Warning(body.name + " " + value + " gravity toggled!: " + _hasQuarkBuff);
+                        //Log.Warning(body.name + " " + value + " gravity toggled!: " + _hasQuarkBuff);
 
                         _hasQuarkBuff = value;
                     }

@@ -2,6 +2,7 @@
 using UltitemsCyan.Buffs;
 using UltitemsCyan.Items.Tier1;
 using BepInEx.Configuration;
+using BepInEx.Logging;
 
 namespace UltitemsCyan.Items.Void
 {
@@ -72,17 +73,17 @@ namespace UltitemsCyan.Items.Void
 
                 if (grabCount > 0 && self.hasCharacterMotor && self.jumpInputReceived)
                 {
-                    //Log.Warning("Is Authority? " + self.isAuthority + " Is Local? " + self.isLocalPlayer + " Is Local Authority? " + self.localPlayerAuthority + " is? " + self.rigidbody);
+                    Log.Logger(LogLevel.Warning, "Is Authority? " + self.isAuthority + " Is Local? " + self.isLocalPlayer + " Is Local Authority? " + self.localPlayerAuthority + " is? " + self.rigidbody);
                     // For both host and not host
                     // True | False | True | rigidbody
 
-                    //Log.Debug("characterMotor, jumpInput, body: " + self.hasCharacterMotor + " | " + self.jumpInputReceived + " | " + self.characterBody);
-                    //Log.Debug("Jumps: " + self.characterMotor.jumpCount + " < " + self.characterBody.maxJumpCount);
+                    Log.Logger(LogLevel.Debug, "characterMotor, jumpInput, body: " + self.hasCharacterMotor + " | " + self.jumpInputReceived + " | " + self.characterBody);
+                    Log.Logger(LogLevel.Debug, "Jumps: " + self.characterMotor.jumpCount + " < " + self.characterBody.maxJumpCount);
                     if (self.characterMotor.jumpCount < self.characterBody.maxJumpCount)
                     {
                         //   *   *   *   ADD EFFECT   *   *   *   //
 
-                        //Log.Debug("Crysotope Jump ? ? ? adding buff for " + (baseDuration + durationPerStack * (grabCount - 1)) + " seconds");
+                        Log.Logger(LogLevel.Debug, "Crysotope Jump ? ? ? adding buff for " + (baseDuration + durationPerStack * (grabCount - 1)) + " seconds");
                         //self.characterBody.AddTimedBuffAuthority(FrisbeeFlyingBuff.buff.buffIndex, baseDuration + (durationPerStack * (grabCount - 1)));
 
                         CrysotopeBehavior behavior = self.characterBody.GetComponent<CrysotopeBehavior>();
@@ -90,7 +91,7 @@ namespace UltitemsCyan.Items.Void
                         behavior.UpdateStopwatch(Run.instance.time);
                         body.SetBuffCount(CrysotopeFlyingBuff.buff.buffIndex, 1);
 
-                        //Log.Debug("Has Timed def Buff? " + self.HasBuff(CrysotopeFlyingBuff.buff));
+                        Log.Logger(LogLevel.Debug, "Has Timed def Buff? " + self.HasBuff(CrysotopeFlyingBuff.buff));
                     }
                 }
             }

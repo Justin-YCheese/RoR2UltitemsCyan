@@ -30,7 +30,7 @@ namespace UltitemsCyan.Items.Void
                 ItemTier.VoidTier1,
                 UltAssets.DriedHamSprite,
                 UltAssets.DriedHamPrefab,
-                [ItemTag.Healing],
+                [ItemTag.CanBeTemporary, ItemTag.Healing],
                 CremeBrulee.item
             );
         }

@@ -1,23 +1,4 @@
 using BepInEx;
-
-using R2API;
-
-using RoR2;
-using UnityEngine;
-using UnityEngine.AddressableAssets;
-using System.Collections.Generic;
-
-using UltitemsCyan.Items.Tier1;
-using UltitemsCyan.Items.Tier2;
-using UltitemsCyan.Items.Tier3;
-using UltitemsCyan.Items.Lunar;
-using UltitemsCyan.Items.Void;
-using UltitemsCyan.Items.Food;
-using UltitemsCyan.Items.Untiered;
-using UltitemsCyan.Equipment;
-using UltitemsCyan.Buffs;
-
-using System.Linq;
 //using HarmonyLib;
 
 // Unused?
@@ -28,14 +9,32 @@ using System.Linq;
 //using Unity.Audio;
 //using R2API.Utils;
 using BepInEx.Configuration;
-//using System;
-using UltitemsCyan.Items;
+//using RoR2.ContentManagement;
+//using RoR2.ExpansionManagement;
+using R2API;
+using R2API.Utils;
+using RoR2;
 using RoR2.ContentManagement;
 //using RoR2.ExpansionManagement;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using UltitemsCyan.Buffs;
+using UltitemsCyan.Equipment;
+//using System;
+using UltitemsCyan.Items;
+using UltitemsCyan.Items.Food;
+using UltitemsCyan.Items.Lunar;
+using UltitemsCyan.Items.Tier1;
+using UltitemsCyan.Items.Tier2;
+using UltitemsCyan.Items.Tier3;
+using UltitemsCyan.Items.Untiered;
+using UltitemsCyan.Items.Void;
+using UnityEngine;
+using UnityEngine.AddressableAssets;
 
-//using RoR2.ContentManagement;
-//using RoR2.ExpansionManagement;
+[assembly: HG.Reflection.SearchableAttribute.OptIn]
+//[assembly: HG.Reflection.SearchableAttribute.OptInAttribute]
 
 namespace UltitemsCyan
 {
@@ -51,14 +50,9 @@ namespace UltitemsCyan
 
     [BepInDependency(DotAPI.PluginGUID)]
 
-    //[BepInDependency(PrefabAPI.PluginGUID)]
     // This attribute is required, and lists metadata for your plugin.
     [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
-
-    // TODO: Check if I need this for my mod specifically 
-    // [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.EveryoneNeedSameModVersion)]
-
-
+    [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.EveryoneNeedSameModVersion)]
 
     // This is the main declaration of our plugin class.
     // BepInEx searches for all classes inheriting from BaseUnityPlugin to initialize on startup.
@@ -84,9 +78,9 @@ namespace UltitemsCyan
         public const string PluginGUID = PluginAuthor + "." + PluginName;
         public const string PluginAuthor = "SporkySpig";
         public const string PluginName = "UltitemsCyan";
-        public const string PluginVersion = "0.14.2";
+        public const string PluginVersion = "0.15.0";
 
-        public const string PluginSuffix = "Deluged Printers?!?!";
+        public const string PluginSuffix = "Hallowed Who? 21";
 
         private static ConfigFile UltitemsConfig { get; set; }
 
@@ -440,7 +434,7 @@ namespace UltitemsCyan
 
             public IEnumerator LoadStaticContentAsync(LoadStaticContentAsyncArgs args)
             {
-                Log.Warning("-JY Load Static");
+                //Log.Warning("-JY Load Static");
                 contentPack.identifier = identifier;
                 contentPack.craftableDefs.Add([.. Recipies]);
                 args.ReportProgress(1f);
@@ -449,7 +443,7 @@ namespace UltitemsCyan
 
             public IEnumerator GenerateContentPackAsync(GetContentPackAsyncArgs args)
             {
-                Log.Warning("-JY Generate");
+                //Log.Warning("-JY Generate");
                 ContentPack.Copy(contentPack, args.output);
                 args.ReportProgress(1f);
                 yield break;
@@ -457,7 +451,7 @@ namespace UltitemsCyan
 
             public IEnumerator FinalizeAsync(FinalizeAsyncArgs args)
             {
-                Log.Warning("-JY Finalize");
+                //Log.Warning("-JY Finalize");
                 args.ReportProgress(1f);
                 yield break;
             }
