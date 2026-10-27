@@ -8,7 +8,7 @@ namespace UltitemsCyan
 
 
         // Make a setting mostly for myself or other debugging
-        private const bool EnableDebugLogs = true;
+        private const bool EnableDebugLogs = false;
 
         internal static void Init(ManualLogSource logSource)
         {

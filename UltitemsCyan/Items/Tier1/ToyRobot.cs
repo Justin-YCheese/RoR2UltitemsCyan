@@ -146,19 +146,12 @@ namespace UltitemsCyan.Items.Tier1
 
                 //sphereSearch.center = body.transform.position;
                 sphereSearch.origin = body.transform.position;
-
-                Log.Logger(LogLevel.Debug, "Toy 1.1");
-
                 sphereSearch.radius = stack * pickupRange;
-
-                Log.Logger(LogLevel.Debug, "Toy 1.2");
 
                 //GravitationControllers have sphere colliders to check whenever a player is in radius no matter what...
                 colliders.Clear();
 
-                Log.Logger(LogLevel.Debug, "Toy 1.3");
-
-                sphereSearch.RefreshCandidates().OrderCandidatesByDistance().GetColliders(colliders);
+                sphereSearch.RefreshCandidates().GetColliders(colliders);
 
                 Log.Logger(LogLevel.Debug, "Toy 2");
 
